@@ -1,0 +1,21 @@
+# 서버 배포 시 사용할 설정 파일
+''' 추후 서버 배포 후 사용
+spring:
+  config:
+    activate:
+      on-profile: server
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: ${DATASOURCE_URL}
+    username: ${DATASOURCE_USERNAME}
+    password: ${DATASOURCE_PASSWORD}
+  jpa:
+    database: mysql
+    database-platform: org.hibernate.dialect.MySQLDialect
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        format_sql: true
+'''
