@@ -1,0 +1,19 @@
+# 로컬 환경에서 사용할 설정 파일
+spring:
+  config:
+    activate:
+      on-profile: local
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: ${SPRING_DATASOURCE_URL} # jdbc:mysql://localhost:3306/samryong
+    username: ${SPRING_DATASOURCE_USERNAME} # root
+    password: ${SPRING_DATASOURCE_PASSWORD}
+  jpa:
+    database: mysql
+    database-platform: org.hibernate.dialect.MySQLDialect
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        format_sql: true

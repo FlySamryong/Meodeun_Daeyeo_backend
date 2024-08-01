@@ -1,1 +1,7 @@
-spring.application.name=samryong
+# 공통 설정
+spring:
+  application:
+    name: samryong
+  profiles:
+    active: local
+
