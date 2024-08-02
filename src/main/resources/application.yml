@@ -5,3 +5,10 @@ spring:
   profiles:
     active: local
 
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+    groups-order: DESC # path, query, body, response 순 출력
+    tags-sorter: alpha # 태그를 알파벳 순으로 정렬
+    operations-sorter: method # delete - get - patch - post - put 순으로 정렬
+  use-fqn: true #
