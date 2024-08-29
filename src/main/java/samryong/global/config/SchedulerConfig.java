@@ -1,4 +1,4 @@
-package samryong.config;
+package samryong.global.config;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
