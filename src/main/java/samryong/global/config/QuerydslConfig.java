@@ -1,4 +1,4 @@
-package samryong.config;
+package samryong.global.config;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;
