@@ -1,3 +1,8 @@
 package samryong.member.service;
 
-public interface MemberService {}
+import samryong.member.domain.Member;
+
+public interface MemberService {
+
+    Member getMember(Long memberId);
+}
