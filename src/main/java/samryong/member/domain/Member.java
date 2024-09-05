@@ -24,7 +24,7 @@ public class Member {
     private Long id;
 
     @Column(columnDefinition = "varchar(30)")
-    private String nicName;
+    private String nickName;
 
     @Column(columnDefinition = "varchar(50)")
     private String email;

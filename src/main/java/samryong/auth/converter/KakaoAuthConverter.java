@@ -12,7 +12,7 @@ public class KakaoAuthConverter {
     public static Member toMember(HashMap<String, Object> userInfo) {
         return Member.builder()
                 .email((String) userInfo.get("email"))
-                .nicName((String) userInfo.get("nickname"))
+                .nickName((String) userInfo.get("nickname"))
                 .build();
     }
 
@@ -20,7 +20,7 @@ public class KakaoAuthConverter {
             String accessToken, String refreshToken, Member member) {
         return LoginResponse.builder()
                 .id(member.getId())
-                .name(member.getNicName())
+                .name(member.getNickName())
                 .token(AuthToken.builder().accessToken(accessToken).refreshToken(refreshToken).build())
                 .build();
     }

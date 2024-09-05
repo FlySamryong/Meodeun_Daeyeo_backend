@@ -12,6 +12,8 @@ import samryong.auth.dto.AuthResponseDTO;
 import samryong.auth.dto.AuthResponseDTO.LoginResponse;
 import samryong.auth.service.AuthService;
 import samryong.global.response.ApiResponse;
+import samryong.member.domain.Member;
+import samryong.security.resolver.annotation.AuthMember;
 import samryong.security.resolver.annotation.GetToken;
 
 @RestController
@@ -35,7 +37,7 @@ public class AuthController {
     }
 
     @GetMapping("/test")
-    public ApiResponse<String> testAuth() {
-        return ApiResponse.onSuccess("인증 성공", "인증 성공");
+    public ApiResponse<String> testAuth(@AuthMember Member member) {
+        return ApiResponse.onSuccess("인증 성공", "인증 성공 + " + member.getId());
     }
 }
