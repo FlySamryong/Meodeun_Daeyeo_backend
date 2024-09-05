@@ -41,7 +41,7 @@ public class AuthMemberArgumentResolver implements HandlerMethodArgumentResolver
 
         if (authentication != null) {
             if (authentication.getName().equals("anonymousUser")) {
-                throw new GlobalException(GlobalErrorCode._BAD_REQUEST);
+                throw new GlobalException(GlobalErrorCode._UNAUTHORIZED);
             } else {
                 principal = authentication.getPrincipal();
             }
