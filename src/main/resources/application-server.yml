@@ -19,6 +19,8 @@ spring:
       hibernate:
         format_sql: true
   data:
+    mongodb:
+      uri: ${MONGODB_URL}
     redis:
       host: ${REDIS_URL}
       port: 6379
