@@ -15,4 +15,10 @@ public class ErrorResponse {
         this.code = globalErrorCode.getCode();
         this.message = globalErrorCode.getMessage();
     }
+
+    public ErrorResponse(String code, String message) {
+        this.isSuccess = false;
+        this.code = code;
+        this.message = message;
+    }
 }
