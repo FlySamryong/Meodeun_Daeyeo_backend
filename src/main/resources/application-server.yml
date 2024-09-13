@@ -31,4 +31,11 @@ jwt:
   secret: ${JWT_SECRET_KEY}
   access-token-validity: ${JWT_ACCESS_TOKEN_TIME}
   refresh-token-validity: ${JWT_REFRESH_TOKEN_TIME}
+  
+nonghyup:
+  api:
+    access-token: ${NONGHYUP_ACCESS_TOKEN} # 농협 API Access Token
+    iscd : ${NONGHYUP_ISCD} # 농협 API ISCD, 기관 코드
+    fintech-apsno: "001" # 농협 API FintechApsno, 핀테크 앱 일련번호, 테스트 시 001로 고정
+    brdt-brno: ${NONGHYUP_BRDT_BRNO} # 농협 API BrdtBrno, 테스트 예금주 생년월일
 '''
