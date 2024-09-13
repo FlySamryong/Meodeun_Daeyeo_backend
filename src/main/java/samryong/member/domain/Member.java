@@ -1,15 +1,16 @@
 package samryong.member.domain;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import samryong.account.domain.Account;
+import samryong.location.domain.Location;
+import samryong.report.domain.Report;
+
+import java.util.List;
 
 @Entity
 @Getter
@@ -28,4 +29,24 @@ public class Member {
 
     @Column(columnDefinition = "varchar(50)")
     private String email;
+
+    @Column(name ="manner_rate", columnDefinition = "Long")
+    private Long manner_rate;
+
+    @ManyToOne
+    @JoinColumn(name = "location_id")
+    private Location location;
+
+    @OneToOne(mappedBy = "member", cascade = CascadeType.ALL)
+    private Account bankInfo;
+
+    //신고자가 만든 신고 목록
+    @OneToMany(mappedBy = "reporter")
+    private List<Report> reports;
+
+    //신고받은 신고 목록
+    @OneToMany(mappedBy = "reported")
+    private List<Report> reportsReceived;
+
+
 }
