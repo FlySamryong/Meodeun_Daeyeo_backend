@@ -18,6 +18,8 @@ spring:
       hibernate:
         format_sql: true
   data:
+    mongodb:
+      uri: mongodb://localhost:27017/samryong
     redis:
       host: localhost
       port: 6379
