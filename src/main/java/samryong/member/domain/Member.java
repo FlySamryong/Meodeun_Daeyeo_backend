@@ -30,6 +30,7 @@ public class Member {
     @Column(columnDefinition = "varchar(50)")
     private String email;
 
+    //매너온도
     @Column(name ="manner_rate", columnDefinition = "Long")
     private Long manner_rate;
 
