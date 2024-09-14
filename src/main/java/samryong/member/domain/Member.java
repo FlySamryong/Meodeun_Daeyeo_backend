@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import samryong.account.domain.Account;
 import samryong.location.domain.Location;
+import samryong.rent.domain.Rent;
 import samryong.report.domain.Report;
 
 import java.util.List;
@@ -49,5 +50,12 @@ public class Member {
     @OneToMany(mappedBy = "reported")
     private List<Report> reportsReceived;
 
+    //빌린 리스트
+    @OneToMany(mappedBy = "rent_item")
+    private List<Rent> rentList;
+
+    //빌려준 리스트
+    @OneToMany(mappedBy = "loan_item")
+    private List<Rent> loanList;
 
 }
