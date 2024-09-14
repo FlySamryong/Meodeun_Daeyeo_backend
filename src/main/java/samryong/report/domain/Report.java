@@ -23,12 +23,12 @@ public class Report {
     private String report_content;
 
     // 신고자
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "reporter_id")
     private Member reporter;
 
     // 신고받은 사람
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "reported_id")
     private Member reported;
 

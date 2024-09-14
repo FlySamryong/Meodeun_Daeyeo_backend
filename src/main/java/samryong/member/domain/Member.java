@@ -35,7 +35,7 @@ public class Member {
     @Column(name ="manner_rate", columnDefinition = "Long")
     private Long manner_rate;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "location_id")
     private Location location;
 
