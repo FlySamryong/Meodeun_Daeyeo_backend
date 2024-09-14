@@ -39,6 +39,10 @@ public class Rent extends BaseEntity {
     @JoinColumn(name = "renter_id")
     private Member renter; // 대여자
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "owner_id")
+    private Member owner; // 물품 소유자
+
     private LocalDateTime startDate; // 대여 시작일
 
     private LocalDateTime endDate; // 대여 종료일
