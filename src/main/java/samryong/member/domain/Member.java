@@ -1,6 +1,15 @@
 package samryong.member.domain;
 
-import jakarta.persistence.*;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import java.util.List;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -9,6 +18,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import samryong.account.domain.Account;
 import samryong.chat.domain.ChatRoom;
+import samryong.global.BaseEntity;
 import samryong.location.domain.Location;
 import samryong.rent.domain.Rent;
 import samryong.report.domain.Report;
@@ -18,7 +28,7 @@ import samryong.report.domain.Report;
 @Builder
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Member {
+public class Member extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -39,8 +49,8 @@ public class Member {
     @JoinColumn(name = "location_id")
     private Location location;
 
-    @OneToOne(mappedBy = "member", cascade = CascadeType.ALL)
-    private Account bankInfo;
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
+    private List<Account> accounts;
 
     // 신고자가 만든 신고 목록
     @OneToMany(mappedBy = "reporter")
@@ -51,13 +61,18 @@ public class Member {
     private List<Report> reportsReceived;
 
     // 빌린 리스트
-    @OneToMany(mappedBy = "rent_item")
+    @OneToMany(mappedBy = "renter")
     private List<Rent> rentList;
 
     // 빌려준 리스트
-    @OneToMany(mappedBy = "loan_item")
+    @OneToMany(mappedBy = "owner")
     private List<Rent> loanList;
 
-    @OneToMany(mappedBy = "chatroom")
-    private List<ChatRoom> chatRooms;
+    // 채팅방 리스트
+    @OneToMany(mappedBy = "owner")
+    private List<ChatRoom> ownerChatRooms;
+
+    // 채팅방 리스트
+    @OneToMany(mappedBy = "renter")
+    private List<ChatRoom> renterChatRooms;
 }
