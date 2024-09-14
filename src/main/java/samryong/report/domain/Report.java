@@ -31,5 +31,4 @@ public class Report {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "reported_id")
     private Member reported;
-
 }

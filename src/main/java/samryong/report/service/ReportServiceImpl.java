@@ -5,5 +5,4 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class ReportServiceImpl extends ReportService{
-}
+public class ReportServiceImpl implements ReportService {}

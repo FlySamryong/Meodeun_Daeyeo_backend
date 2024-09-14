@@ -5,5 +5,4 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class LocationServiceImpl extends LocationService{
-}
+public class LocationServiceImpl implements LocationService {}

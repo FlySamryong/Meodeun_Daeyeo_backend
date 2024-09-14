@@ -1,4 +1,5 @@
 package samryong.account.domain;
+
 import jakarta.persistence.*;
 import lombok.*;
 import samryong.member.domain.Member;

@@ -1,4 +1,3 @@
 package samryong.location.service;
 
-public interface LocationService {
-}
+public interface LocationService {}

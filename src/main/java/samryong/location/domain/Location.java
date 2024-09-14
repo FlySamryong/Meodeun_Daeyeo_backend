@@ -1,9 +1,9 @@
 package samryong.location.domain;
+
 import jakarta.persistence.*;
+import java.util.List;
 import lombok.*;
 import samryong.member.domain.Member;
-
-import java.util.List;
 
 @Entity
 @Getter
@@ -28,5 +28,4 @@ public class Location {
 
     @OneToMany(mappedBy = "location")
     private List<Member> members;
-
 }
