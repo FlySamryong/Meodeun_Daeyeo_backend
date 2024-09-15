@@ -16,6 +16,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import samryong.domain.item.entity.Item;
 import samryong.domain.member.entity.Member;
 import samryong.global.BaseEntity;
 
