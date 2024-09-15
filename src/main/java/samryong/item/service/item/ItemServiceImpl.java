@@ -1,8 +1,8 @@
-package samryong.item.service;
+package samryong.item.service.item;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class Item_CategoryServiceImpl implements Item_Category {}
+public class ItemServiceImpl implements ItemService {}

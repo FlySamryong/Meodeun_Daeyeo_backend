@@ -1,4 +1,4 @@
-package samryong.item.service;
+package samryong.item.service.category;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
