@@ -37,5 +37,5 @@ public class Location extends BaseEntity {
     private String neighborhood;
 
     @OneToMany(mappedBy = "location")
-    private List<Member> members;
+    private List<Member> memberList;
 }

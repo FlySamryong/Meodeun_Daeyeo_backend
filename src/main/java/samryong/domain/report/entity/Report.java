@@ -29,10 +29,10 @@ public class Report extends BaseEntity {
     private Long id;
 
     @Column(name = "report_reason")
-    private String report_reason;
+    private String reportReason;
 
     @Column(name = "repoert_content")
-    private String report_content;
+    private String reportContent;
 
     // 신고자
     @ManyToOne(fetch = FetchType.LAZY)

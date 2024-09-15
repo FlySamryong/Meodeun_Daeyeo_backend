@@ -29,10 +29,10 @@ public class Account extends BaseEntity {
     private Long id;
 
     @Column(name = "account_num")
-    private String account_num; // 계좌번호
+    private String accountNum; // 계좌번호
 
     @Column(name = "fin_tech_account_num")
-    private String fin_tech_account_num; // 핀테크 어카운트 번호
+    private String finTechAccountNum; // 핀테크 어카운트 번호
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")

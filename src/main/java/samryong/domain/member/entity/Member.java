@@ -43,22 +43,22 @@ public class Member extends BaseEntity {
 
     // 매너온도
     @Column(name = "manner_rate", columnDefinition = "Long")
-    private Long manner_rate;
+    private Long mannerRate;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "location_id")
     private Location location;
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
-    private List<Account> accounts;
+    private List<Account> accountList;
 
     // 신고자가 만든 신고 목록
     @OneToMany(mappedBy = "reporter")
-    private List<Report> reports;
+    private List<Report> reportsMadeList;
 
     // 신고받은 신고 목록
     @OneToMany(mappedBy = "reported")
-    private List<Report> reportsReceived;
+    private List<Report> reportsReceivedList;
 
     // 빌린 리스트
     @OneToMany(mappedBy = "renter")
@@ -70,9 +70,9 @@ public class Member extends BaseEntity {
 
     // 채팅방 리스트
     @OneToMany(mappedBy = "owner")
-    private List<ChatRoom> ownerChatRooms;
+    private List<ChatRoom> ownerChatRoomList;
 
     // 채팅방 리스트
     @OneToMany(mappedBy = "renter")
-    private List<ChatRoom> renterChatRooms;
+    private List<ChatRoom> renterChatRoomList;
 }
