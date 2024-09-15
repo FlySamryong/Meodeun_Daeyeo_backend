@@ -10,10 +10,10 @@ import org.springframework.web.bind.support.WebDataBinderFactory;
 import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
+import samryong.domain.member.entity.Member;
+import samryong.domain.member.service.MemberService;
 import samryong.global.code.GlobalErrorCode;
 import samryong.global.exception.GlobalException;
-import samryong.member.domain.Member;
-import samryong.member.service.MemberService;
 import samryong.security.resolver.annotation.AuthMember;
 
 @Component

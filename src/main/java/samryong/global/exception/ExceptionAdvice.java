@@ -5,7 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
-import samryong.bank.nonghyup.exception.NonghyupException;
+import samryong.domain.bank.nonghyup.exception.NonghyupException;
 import samryong.global.code.GlobalErrorCode;
 import samryong.global.response.ErrorResponse;
 

@@ -14,13 +14,13 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
-import samryong.auth.converter.KakaoAuthConverter;
-import samryong.auth.dto.AuthResponseDTO.LoginResponse;
+import samryong.domain.auth.converter.KakaoAuthConverter;
+import samryong.domain.auth.dto.AuthResponseDTO.LoginResponse;
+import samryong.domain.member.entity.Member;
+import samryong.domain.member.repository.MemberRepository;
+import samryong.domain.redis.service.RefreshTokenService;
 import samryong.global.code.GlobalErrorCode;
 import samryong.global.exception.GlobalException;
-import samryong.member.domain.Member;
-import samryong.member.repository.MemberRepository;
-import samryong.redis.service.RefreshTokenService;
 
 @Component
 @RequiredArgsConstructor
