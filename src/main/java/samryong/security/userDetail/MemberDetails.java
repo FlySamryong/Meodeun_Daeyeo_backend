@@ -8,7 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import samryong.member.domain.Member;
+import samryong.domain.member.entity.Member;
 
 @RequiredArgsConstructor
 public class MemberDetails implements UserDetails {
