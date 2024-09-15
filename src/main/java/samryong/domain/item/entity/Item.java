@@ -16,7 +16,11 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import samryong.domain.chat.entity.ChatRoom;
+import samryong.domain.location.entity.Location;
 import samryong.domain.member.entity.Member;
+import samryong.domain.rent.entity.Rent;
+import samryong.global.BaseEntity;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
@@ -63,7 +67,7 @@ public class Item extends BaseEntity {
     @OneToMany(mappedBy = "item")
     private List<ItemCategory> itemCategoryList; // 상품 카테고리 목록
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne
     @JoinColumn(name = "location_id")
     private Location location;
 
