@@ -1,12 +1,24 @@
 package samryong.domain.chat.entity;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.Id;
 import java.time.LocalDateTime;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document("chat_message")
+@Builder
+@Getter
+@AllArgsConstructor
+@NoArgsConstructor
 public class ChatMessage {
 
     @Id private String id; // MongoBDB ID는 스트링으로 설정
@@ -19,6 +31,8 @@ public class ChatMessage {
 
     private String imageUri; // 사진
 
+    @JsonSerialize(using = LocalDateTimeSerializer.class)
+    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     private LocalDateTime createdAt; // 메시지 생성 시간
 
     @Enumerated(EnumType.STRING)
