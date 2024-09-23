@@ -13,6 +13,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import samryong.domain.member.entity.Member;
 import samryong.global.BaseEntity;
 
@@ -34,6 +35,7 @@ public class Account extends BaseEntity {
     @Column(name = "fin_tech_account_num")
     private String finTechAccountNum; // 핀테크 어카운트 번호
 
+    @Setter
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
