@@ -19,6 +19,7 @@ public enum GlobalErrorCode {
 
     // 사용자 관련 에러
     MEMBER_NOT_FOUND(HttpStatus.NOT_FOUND, "MEMBER400", "해당 사용자를 찾을 수 없습니다."),
+    ACCOUNT_ALREADY_EXIST(HttpStatus.BAD_REQUEST, "ACCOUNT401", "이미 등록된 계좌입니다."),
 
     // 인증 관련 에러
     KAKAO_AUTH_ERROR(HttpStatus.UNAUTHORIZED, "AUTH403", "카카오 인증에 실패했습니다."),
