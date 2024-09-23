@@ -10,6 +10,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import java.util.ArrayList;
 import java.util.List;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -75,4 +76,10 @@ public class Member extends BaseEntity {
     // 채팅방 리스트
     @OneToMany(mappedBy = "renter")
     private List<ChatRoom> renterChatRoomList;
+
+    public void addAccount(Account account) {
+        account.setMember(this);
+        if (this.accountList == null) this.accountList = new ArrayList<>();
+        this.accountList.add(account);
+    }
 }

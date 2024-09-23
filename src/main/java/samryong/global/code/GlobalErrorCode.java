@@ -20,6 +20,7 @@ public enum GlobalErrorCode {
 
     // 사용자 관련 에러
     MEMBER_NOT_FOUND(HttpStatus.NOT_FOUND, "MEMBER400", "해당 사용자를 찾을 수 없습니다."),
+    ACCOUNT_ALREADY_EXIST(HttpStatus.BAD_REQUEST, "ACCOUNT401", "이미 등록된 계좌입니다."),
 
     // 아이템 관련 에러
     ITEM_NOT_FOUND(HttpStatus.NOT_FOUND, "ITEM400", "해당 아이템을 찾을 수 없습니다."),
