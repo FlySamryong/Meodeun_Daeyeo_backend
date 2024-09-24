@@ -39,3 +39,18 @@ nonghyup:
     iscd : ${NONGHYUP_ISCD} # 농협 API ISCD, 기관 코드
     fintech-apsno: "001" # 농협 API FintechApsno, 핀테크 앱 일련번호, 테스트 시 001로 고정
     brdt-brno: ${NONGHYUP_BRDT_BRNO} # 농협 API BrdtBrno, 테스트 예금주 생년월일
+
+cloud:
+  aws:
+    s3:
+      bucket: samryong
+      path:
+        item: item
+        member: member
+    region:
+      static: ap-northeast-2
+    stack:
+      auto: false
+    credentials:
+      accessKey: ${AWS_ACCESS_KEY_ID}
+      secretKey: ${AWS_SECRET_ACCESS_KEY}
