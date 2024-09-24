@@ -6,4 +6,6 @@ import samryong.domain.account.entity.Account;
 
 public interface AccountRepository extends JpaRepository<Account, Long> {
     Optional<Account> findById(long id);
+
+    Optional<Account> findByAccountNum(String accountNum);
 }

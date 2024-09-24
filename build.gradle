@@ -30,6 +30,9 @@ dependencies {
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+	implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310'
+	implementation "org.springframework.boot:spring-boot-starter-aop"
+	implementation 'org.springframework.boot:spring-boot-starter-validation'\
 
 	// DB 관련
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
@@ -55,15 +58,20 @@ dependencies {
 	// spring security
 	testImplementation 'org.springframework.security:spring-security-test'
 	implementation 'org.springframework.boot:spring-boot-starter-security'
+	implementation 'org.springframework.security:spring-security-messaging'
 
 	// redis
 	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
 
 	// s3
 	implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
+  
+	// websocket
+	implementation 'org.springframework.boot:spring-boot-starter-websocket'
 
-	// validation
-	implementation 'org.springframework.boot:spring-boot-starter-validation'
+	// stomp
+	implementation 'org.webjars:stomp-websocket:2.3.4'
+
 }
 
 tasks.named('test') {

@@ -91,4 +91,10 @@ public class Member extends BaseEntity {
         if (itemList == null) itemList = new ArrayList<>();
         itemList.add(item);
     }
+
+    public void addAccount(Account account) {
+        account.setMember(this);
+        if (this.accountList == null) this.accountList = new ArrayList<>();
+        this.accountList.add(account);
+    }
 }
