@@ -10,6 +10,8 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
+import java.util.ArrayList;
 import java.util.List;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -18,6 +20,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import samryong.domain.account.entity.Account;
 import samryong.domain.chat.entity.ChatRoom;
+import samryong.domain.image.Image;
+import samryong.domain.item.entity.Item;
 import samryong.domain.location.entity.Location;
 import samryong.domain.rent.entity.Rent;
 import samryong.domain.report.entity.Report;
@@ -41,6 +45,9 @@ public class Member extends BaseEntity {
     @Column(columnDefinition = "varchar(50)")
     private String email;
 
+    @OneToOne(mappedBy = "member", cascade = CascadeType.ALL)
+    private Image profileImage;
+
     // 매너온도
     @Column(name = "manner_rate", columnDefinition = "Long")
     private Long mannerRate;
@@ -60,6 +67,10 @@ public class Member extends BaseEntity {
     @OneToMany(mappedBy = "reported")
     private List<Report> reportsReceivedList;
 
+    // 등록한 물품 리스트
+    @OneToMany(mappedBy = "member")
+    private List<Item> itemList;
+
     // 빌린 리스트
     @OneToMany(mappedBy = "renter")
     private List<Rent> rentList;
@@ -75,4 +86,9 @@ public class Member extends BaseEntity {
     // 채팅방 리스트
     @OneToMany(mappedBy = "renter")
     private List<ChatRoom> renterChatRoomList;
+
+    public void addItem(Item item) {
+        if (itemList == null) itemList = new ArrayList<>();
+        itemList.add(item);
+    }
 }
