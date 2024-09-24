@@ -54,8 +54,7 @@ public class SecurityConfig {
                                                 "/api/auth/kakao/reissue",
                                                 "/swagger-ui/**",
                                                 "/swagger-resources/**",
-                                                "/v3/api-docs/**",
-                                                "/api/items")
+                                                "/v3/api-docs/**")
                                         .permitAll()
                                         .anyRequest()
                                         .authenticated())
