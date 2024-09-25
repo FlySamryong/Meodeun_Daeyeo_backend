@@ -35,6 +35,7 @@ public class ChatRoomController {
         return ApiResponse.onSuccess("채팅방 생성 성공", chatRoomService.createChatRoom(renter, requestDTO));
     }
 
+    @Operation(summary = "채팅방 메시지 조회", description = "채팅방의 메시지를 조회합니다.")
     @GetMapping("/room/messageList")
     @AuthChatMember // 채팅방 멤버인지 우선 확인
     public ApiResponse<ChatMessageResponseListDTO> getMessageList(
