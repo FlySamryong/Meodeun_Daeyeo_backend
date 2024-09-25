@@ -26,6 +26,6 @@ public class LocationController {
     @Operation(summary = "관리자의 위치 등록 API", description = "위치를 등록합니다.")
     public ApiResponse<Long> createLocation(
             @AuthMember Member member, @RequestBody @Valid LocationRequestDTO locationDTO) {
-        return ApiResponse.onSuccess("위 등록 성공", locationService.createLocation(locationDTO));
+        return ApiResponse.onSuccess("위치 등록 성공", locationService.createLocation(locationDTO));
     }
 }
