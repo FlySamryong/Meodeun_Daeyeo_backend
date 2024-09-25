@@ -1,7 +1,10 @@
 package samryong.domain.item.entity;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -9,7 +12,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
+import java.util.ArrayList;
 import java.util.List;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -17,6 +20,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import samryong.domain.chat.entity.ChatRoom;
+import samryong.domain.image.Image;
 import samryong.domain.location.entity.Location;
 import samryong.domain.member.entity.Member;
 import samryong.domain.rent.entity.Rent;
@@ -44,6 +48,7 @@ public class Item extends BaseEntity {
     @Column(columnDefinition = "varchar(255)")
     private String description; // 상품 설명
 
+    @Enumerated(EnumType.STRING)
     private Status status; // 상품 상태
 
     @Column(name = "rental_period")
@@ -55,8 +60,8 @@ public class Item extends BaseEntity {
     @Column(name = "rental_deposit")
     private Long deposit; // 보증금
 
-    @Column(name = "image_url")
-    private String imageUrl; // 이미지 URL
+    @OneToMany(mappedBy = "item", cascade = CascadeType.ALL)
+    private List<Image> imageList; // 상품 이미지 목록
 
     @OneToMany(mappedBy = "item")
     private List<ChatRoom> chatRoomsList; // 채팅방 목록
@@ -67,7 +72,7 @@ public class Item extends BaseEntity {
     @OneToMany(mappedBy = "item")
     private List<ItemCategory> itemCategoryList; // 상품 카테고리 목록
 
-    @OneToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "location_id")
     private Location location;
 
@@ -75,5 +80,21 @@ public class Item extends BaseEntity {
         RENTED, // 대여 중
         UNAVAILABLE, // 대여 불가
         AVAILABLE // 대여 가능
+    }
+
+    public void addItemCategory(ItemCategory itemCategory) {
+        itemCategory.setItem(this);
+        if (this.itemCategoryList == null) this.itemCategoryList = new ArrayList<>();
+        this.itemCategoryList.add(itemCategory);
+    }
+
+    public void addImage(Image image) {
+        image.setItem(this);
+        if (this.imageList == null) this.imageList = new ArrayList<>();
+        this.imageList.add(image);
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
     }
 }

@@ -63,13 +63,14 @@ dependencies {
 	// redis
 	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
 
+	// s3
+	implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
+  
 	// websocket
 	implementation 'org.springframework.boot:spring-boot-starter-websocket'
 
 	// stomp
 	implementation 'org.webjars:stomp-websocket:2.3.4'
-
-
 
 }
 
@@ -124,3 +125,5 @@ tasks.named('compileJava') {
 	dependsOn 'spotlessApply'
 	dependsOn 'updateGitHooks'
 }
+
+

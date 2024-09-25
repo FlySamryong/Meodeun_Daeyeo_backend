@@ -6,6 +6,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+import java.util.ArrayList;
 import java.util.List;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -31,4 +32,10 @@ public class Category extends BaseEntity {
 
     @OneToMany(mappedBy = "category")
     private List<ItemCategory> itemCategoryList;
+
+    public void addItemCategory(ItemCategory itemCategory) {
+        itemCategory.setCategory(this);
+        if (this.itemCategoryList == null) this.itemCategoryList = new ArrayList<>();
+        this.itemCategoryList.add(itemCategory);
+    }
 }

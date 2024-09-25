@@ -1,12 +1,14 @@
-package samryong.domain.location.entity;
+package samryong.domain.image;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
-import java.util.List;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -21,25 +23,24 @@ import samryong.global.BaseEntity;
 @Builder
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Location extends BaseEntity {
+public class Image extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "location_id")
+    @Column(name = "image_id")
     private Long id;
 
-    @Column(name = "city", columnDefinition = "varchar(30)")
-    private String city;
+    private String imageUri;
 
-    @Column(name = "district", columnDefinition = "varchar(30)")
-    private String district;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "item_id")
+    private Item item;
 
-    @Column(name = "neighborhood", columnDefinition = "varchar(40)")
-    private String neighborhood;
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "member_id")
+    private Member member;
 
-    @OneToMany(mappedBy = "location")
-    private List<Member> memberList;
-
-    @OneToMany(mappedBy = "location")
-    private List<Item> itemList;
+    public void setItem(Item item) {
+        this.item = item;
+    }
 }

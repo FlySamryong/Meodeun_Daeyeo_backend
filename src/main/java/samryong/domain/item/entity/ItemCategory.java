@@ -34,4 +34,12 @@ public class ItemCategory extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "item_id")
     private Item item;
+
+    public void setItem(Item item) {
+        this.item = item;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
+    }
 }
