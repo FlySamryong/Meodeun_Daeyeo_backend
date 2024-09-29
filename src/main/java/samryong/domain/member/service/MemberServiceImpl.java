@@ -1,6 +1,7 @@
 package samryong.domain.member.service;
 
 import jakarta.transaction.Transactional;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import samryong.domain.account.converter.AccountConverter;
@@ -9,6 +10,8 @@ import samryong.domain.account.dto.NonghyupAccountDTO.NonghyupAccountResponseDTO
 import samryong.domain.account.entity.Account;
 import samryong.domain.account.repository.AccountRepository;
 import samryong.domain.bank.nonghyup.provider.NonghyupTransactionProvider;
+import samryong.domain.location.dto.LocationDTO;
+import samryong.domain.member.dto.memberDTO;
 import samryong.domain.member.entity.Member;
 import samryong.domain.member.repository.MemberRepository;
 import samryong.global.code.GlobalErrorCode;
@@ -46,5 +49,29 @@ public class MemberServiceImpl implements MemberService {
 
         memberRepository.save(member);
         return AccountConverter.toAccountResponseDTO(account);
+    }
+
+    @Override
+    public memberDTO.MemberRequestDTO getMyPage(Long memberId) {
+        Optional<Member> memberOptional = memberRepository.findById(memberId);
+
+        if (memberOptional.isPresent()) {
+            Member member = memberOptional.get();
+
+            return new memberDTO.MemberRequestDTO(
+                    member.getNickName(),
+                    member.getEmail(),
+                    member.getProfileImage(),
+                    member.getMannerRate(),
+                    new LocationDTO.LocationRequestDTO(
+                            member.getLocation().getCity(),
+                            member.getLocation().getDistrict(),
+                            member.getLocation().getNeighborhood()),
+                    member.getAccountList().stream()
+                            .map(account -> new NonghyupAccountRequestDTO(account.getAccountNum()))
+                            .toList());
+        } else {
+            throw new IllegalArgumentException("member not found");
+        }
     }
 }

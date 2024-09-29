@@ -4,12 +4,10 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import samryong.domain.account.dto.NonghyupAccountDTO.NonghyupAccountRequestDTO;
 import samryong.domain.account.dto.NonghyupAccountDTO.NonghyupAccountResponseDTO;
+import samryong.domain.member.dto.memberDTO;
 import samryong.domain.member.entity.Member;
 import samryong.domain.member.service.MemberService;
 import samryong.global.response.ApiResponse;
@@ -29,5 +27,11 @@ public class MemberController {
             @AuthMember Member member, @Valid @RequestBody NonghyupAccountRequestDTO requestDTO) {
         return ApiResponse.onSuccess(
                 "농협 입출금 계좌 등록 성공", memberService.registerAccount(member, requestDTO));
+    }
+
+    @GetMapping("/mypage")
+    public ApiResponse<memberDTO.MemberRequestDTO> getMyPage(
+            @AuthMember @PathVariable Member member) {
+        return ApiResponse.onSuccess("마이페이지 조회 완료", memberService.getMyPage(member.getId()));
     }
 }
