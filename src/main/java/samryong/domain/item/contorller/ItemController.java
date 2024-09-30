@@ -9,6 +9,8 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import samryong.domain.item.dto.CategoryDTO.CategoryRequestDTO;
+import samryong.domain.item.dto.ItemDTO.ItemListRequestDTO;
+import samryong.domain.item.dto.ItemDTO.ItemPreviewListResponseDTO;
 import samryong.domain.item.dto.ItemDTO.ItemRequestDTO;
 import samryong.domain.item.service.category.CategoryService;
 import samryong.domain.item.service.item.ItemService;
@@ -42,5 +44,13 @@ public class ItemController {
     public ApiResponse<Long> createCategory(
             @AuthMember Member member, @RequestBody @Valid CategoryRequestDTO categoryDTO) {
         return ApiResponse.onSuccess("카테고리 등록 성공", categoryService.createCategory(categoryDTO));
+    }
+
+    @PostMapping("/search")
+    @Operation(summary = "물품 검색", description = "물품명, 물품 설명, 카테고리, 위치를 통해 물품을 검색합니다.")
+    public ApiResponse<ItemPreviewListResponseDTO> searchItem(
+            @RequestBody @Valid ItemListRequestDTO requestDTO,
+            @RequestParam(value = "page", defaultValue = "0", required = false) int page) {
+        return ApiResponse.onSuccess("물품 검색 성공", itemService.searchItem(requestDTO, page));
     }
 }

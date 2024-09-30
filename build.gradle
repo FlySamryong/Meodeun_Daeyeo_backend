@@ -65,12 +65,15 @@ dependencies {
 
 	// s3
 	implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
-  
+
 	// websocket
 	implementation 'org.springframework.boot:spring-boot-starter-websocket'
 
 	// stomp
 	implementation 'org.webjars:stomp-websocket:2.3.4'
+
+	// elastic search
+	implementation 'org.springframework.boot:spring-boot-starter-data-elasticsearch'
 
 }
 

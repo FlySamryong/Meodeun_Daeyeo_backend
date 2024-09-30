@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import samryong.domain.location.converter.LocationConverter;
 import samryong.domain.location.dto.LocationDTO.LocationRequestDTO;
 import samryong.domain.location.entity.Location;
+import samryong.domain.location.repository.LocationElasticRepository;
 import samryong.domain.location.repository.LocationRepository;
 import samryong.global.code.GlobalErrorCode;
 import samryong.global.exception.GlobalException;
@@ -14,6 +15,7 @@ import samryong.global.exception.GlobalException;
 public class LocationServiceImpl implements LocationService {
 
     private final LocationRepository locationRepository;
+    private final LocationElasticRepository locationElasticRepository;
 
     @Override
     public Location getLocation(LocationRequestDTO requestDTO) {
@@ -27,6 +29,8 @@ public class LocationServiceImpl implements LocationService {
     public Long createLocation(LocationRequestDTO locationDTO) {
         Location location = LocationConverter.toLocation(locationDTO);
         locationRepository.save(location);
+        locationElasticRepository.save(LocationConverter.toLocationDocument(location));
+
         return location.getId();
     }
 }
