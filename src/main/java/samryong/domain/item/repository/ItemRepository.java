@@ -5,4 +5,4 @@ import org.springframework.stereotype.Repository;
 import samryong.domain.item.entity.Item;
 
 @Repository
-public interface ItemRepository extends JpaRepository<Item, Long> {}
+public interface ItemRepository extends JpaRepository<Item, Long> { }

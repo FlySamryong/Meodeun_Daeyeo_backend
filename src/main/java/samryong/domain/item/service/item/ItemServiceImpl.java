@@ -2,6 +2,7 @@ package samryong.domain.item.service.item;
 
 import jakarta.transaction.Transactional;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -80,5 +81,13 @@ public class ItemServiceImpl implements ItemService {
                     String imageUri = amazonS3Manager.uploadFile(keyName, image);
                     item.addImage(ImageConverter.toItemImage(imageUri, item));
                 });
+    }
+    public Item showItem(Long itemId){
+        Optional<Item> itemOptional = itemRepository.findById(itemId);
+        if (itemOptional.isPresent()) {
+            return itemOptional.get();
+        } else {
+            throw new RuntimeException("Item not found with id: " + itemId);
+        }
     }
 }
