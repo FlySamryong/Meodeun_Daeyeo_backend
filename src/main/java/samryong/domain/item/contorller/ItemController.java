@@ -43,8 +43,7 @@ public class ItemController {
 
     @PostMapping("/create/category")
     @Operation(summary = "관리자의 카테고리 등록 API", description = "카테고리를 등록합니다.")
-    public ApiResponse<Long> createCategory(
-            @AuthMember Member member, @RequestBody @Valid CategoryRequestDTO categoryDTO) {
+    public ApiResponse<Long> createCategory(@RequestBody @Valid CategoryRequestDTO categoryDTO) {
         return ApiResponse.onSuccess("카테고리 등록 성공", categoryService.createCategory(categoryDTO));
     }
 
