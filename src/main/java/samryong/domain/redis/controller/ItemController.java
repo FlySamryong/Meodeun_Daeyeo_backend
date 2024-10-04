@@ -2,14 +2,13 @@ package samryong.domain.redis.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
 import samryong.domain.member.entity.Member;
 import samryong.domain.redis.service.RecentItemService;
-import org.springframework.web.bind.annotation.*;
 import samryong.security.resolver.annotation.AuthMember;
-
-import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -38,4 +37,5 @@ public class ItemController {
 
         // 다른 URL로 forward
         return "forward:/api/item/recent";
+    }
 }
