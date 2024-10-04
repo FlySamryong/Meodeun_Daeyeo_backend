@@ -4,7 +4,6 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -48,5 +47,4 @@ public class ItemDTO {
         private Long deposit;
         private List<ItemCategory> categoryList;
     }
-
 }

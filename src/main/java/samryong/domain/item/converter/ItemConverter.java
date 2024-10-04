@@ -22,7 +22,7 @@ public class ItemConverter {
                 .build();
     }
 
-    public static ItemDTO.ItemResponseDTO toResponseDTO(Item item){
+    public static ItemDTO.ItemResponseDTO toResponseDTO(Item item) {
         return ItemDTO.ItemResponseDTO.builder()
                 .itemId(item.getId())
                 .name(item.getName())

@@ -22,7 +22,6 @@ import samryong.domain.location.dto.LocationDTO.LocationRequestDTO;
 import samryong.domain.location.entity.Location;
 import samryong.domain.location.service.LocationService;
 import samryong.domain.member.entity.Member;
-import samryong.domain.member.repository.MemberRepository;
 import samryong.domain.uuid.Uuid;
 import samryong.domain.uuid.UuidRepository;
 import samryong.global.aws.AmazonS3Manager;
@@ -39,7 +38,6 @@ public class ItemServiceImpl implements ItemService {
     private final ItemCategoryService itemCategoryService;
     private final UuidRepository uuidRepository;
     private final AmazonS3Manager amazonS3Manager;
-    private final MemberRepository memberRepository;
 
     @Override
     @Transactional
@@ -82,7 +80,8 @@ public class ItemServiceImpl implements ItemService {
                     item.addImage(ImageConverter.toItemImage(imageUri, item));
                 });
     }
-    public Item showItem(Long itemId){
+
+    public Item showItem(Long itemId) {
         Optional<Item> itemOptional = itemRepository.findById(itemId);
         if (itemOptional.isPresent()) {
             return itemOptional.get();
