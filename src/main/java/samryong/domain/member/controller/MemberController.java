@@ -30,8 +30,7 @@ public class MemberController {
     }
 
     @GetMapping("/mypage")
-    public ApiResponse<memberDTO.MemberRequestDTO> getMyPage(
-            @AuthMember @PathVariable Member member) {
+    public ApiResponse<memberDTO.MemberResponseDTO> getMyPage(@AuthMember Member member) {
         return ApiResponse.onSuccess("마이페이지 조회 완료", memberService.getMyPage(member.getId()));
     }
 }

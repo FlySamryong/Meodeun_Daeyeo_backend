@@ -10,7 +10,7 @@ import samryong.domain.account.dto.NonghyupAccountDTO.NonghyupAccountResponseDTO
 import samryong.domain.account.entity.Account;
 import samryong.domain.account.repository.AccountRepository;
 import samryong.domain.bank.nonghyup.provider.NonghyupTransactionProvider;
-import samryong.domain.location.dto.LocationDTO;
+import samryong.domain.location.converter.LocationConverter;
 import samryong.domain.member.dto.memberDTO;
 import samryong.domain.member.entity.Member;
 import samryong.domain.member.repository.MemberRepository;
@@ -52,26 +52,23 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public memberDTO.MemberRequestDTO getMyPage(Long memberId) {
+    public memberDTO.MemberResponseDTO getMyPage(Long memberId) {
         Optional<Member> memberOptional = memberRepository.findById(memberId);
 
         if (memberOptional.isPresent()) {
             Member member = memberOptional.get();
 
-            return new memberDTO.MemberRequestDTO(
+            return new memberDTO.MemberResponseDTO(
                     member.getNickName(),
                     member.getEmail(),
                     member.getProfileImage(),
                     member.getMannerRate(),
-                    new LocationDTO.LocationRequestDTO(
-                            member.getLocation().getCity(),
-                            member.getLocation().getDistrict(),
-                            member.getLocation().getNeighborhood()),
+                    LocationConverter.toResponseDTO(member.getLocation()),
                     member.getAccountList().stream()
-                            .map(account -> new NonghyupAccountRequestDTO(account.getAccountNum()))
+                            .map(account -> AccountConverter.toAccountResponseDTO(account))
                             .toList());
         } else {
-            throw new IllegalArgumentException("member not found");
+            throw new GlobalException(GlobalErrorCode._NOT_FOUND);
         }
     }
 }

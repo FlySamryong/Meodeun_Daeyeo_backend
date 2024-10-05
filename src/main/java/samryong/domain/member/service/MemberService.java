@@ -11,5 +11,5 @@ public interface MemberService {
 
     NonghyupAccountResponseDTO registerAccount(Member member, NonghyupAccountRequestDTO requestDTO);
 
-    memberDTO.MemberRequestDTO getMyPage(Long memberId);
+    memberDTO.MemberResponseDTO getMyPage(Long memberId);
 }
