@@ -1,6 +1,7 @@
 package samryong.domain.location.converter;
 
 import org.springframework.stereotype.Component;
+import samryong.domain.location.dto.LocationDTO;
 import samryong.domain.location.document.LocationDocument;
 import samryong.domain.location.dto.LocationDTO.LocationRequestDTO;
 import samryong.domain.location.dto.LocationDTO.LocationResponseDTO;
@@ -15,6 +16,17 @@ public class LocationConverter {
                 .district(requestDTO.getDistrict())
                 .neighborhood(requestDTO.getNeighborhood())
                 .build();
+    }
+
+
+    public static LocationResponseDTO toLocationResponseDTO(Location location) {
+        if (location == null) return null;
+
+        return LocationDTO.LocationResponseDTO.builder()
+                .city(location.getCity())
+                .district(location.getDistrict())
+                .neighborhood(location.getNeighborhood())
+                .build(); 
     }
 
     public static LocationDocument toLocationDocument(Location location) {
@@ -33,4 +45,5 @@ public class LocationConverter {
                 .neighborhood(locationdocument.getNeighborhood())
                 .build();
     }
+
 }

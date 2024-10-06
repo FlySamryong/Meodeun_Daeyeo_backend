@@ -28,7 +28,6 @@ public class LocationDTO {
     @AllArgsConstructor
     @NoArgsConstructor
     public static class LocationResponseDTO {
-
         private String city;
         private String district;
         private String neighborhood;
