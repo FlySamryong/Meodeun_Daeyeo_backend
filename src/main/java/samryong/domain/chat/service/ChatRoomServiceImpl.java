@@ -5,20 +5,29 @@ import static samryong.global.code.GlobalErrorCode.MEMBER_NOT_FOUND;
 
 import jakarta.annotation.PostConstruct;
 import jakarta.transaction.Transactional;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.listener.ChannelTopic;
 import org.springframework.data.redis.listener.RedisMessageListenerContainer;
+import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.stereotype.Service;
 import samryong.domain.chat.converter.ChatRoomConverter;
 import samryong.domain.chat.dto.ChatRoomDTO.ChatRoomHashDTO;
+import samryong.domain.chat.dto.ChatRoomDTO.ChatRoomListResponseDTO;
 import samryong.domain.chat.dto.ChatRoomDTO.ChatRoomRequestDTO;
+import samryong.domain.chat.dto.ChatRoomDTO.ChatRoomResponseDTO;
+import samryong.domain.chat.entity.ChatMessage;
 import samryong.domain.chat.entity.ChatRoom;
 import samryong.domain.chat.redis.RedisSubscriber;
+import samryong.domain.chat.repository.ChatMessageRepository;
 import samryong.domain.chat.repository.ChatRoomRepository;
 import samryong.domain.item.entity.Item;
 import samryong.domain.item.repository.ItemRepository;
@@ -32,12 +41,14 @@ import samryong.global.exception.GlobalException;
 public class ChatRoomServiceImpl implements ChatRoomService {
 
     private final MemberRepository memberRepository;
+    private final ChatMessageRepository chatMessageRepository;
     private final ItemRepository itemRepository;
     private final ChatRoomRepository chatRoomRepository;
     private final RedisMessageListenerContainer redisMessageListenerContainer;
     private final RedisSubscriber redisSubscriber;
     private final RedisTemplate<String, Object> redisTemplate;
     private final SimpMessageSendingOperations messagingTemplate;
+    private final RedisTemplate<String, ChatMessage> redisTemplateMessage;
 
     private static final String CHAT_Rooms = "CHAT_ROOM";
     private HashOperations<String, String, ChatRoomHashDTO> opsHashChatRoom;
@@ -94,12 +105,62 @@ public class ChatRoomServiceImpl implements ChatRoomService {
         }
     }
 
+    // 채팅방 목록 조회
+    @Override
+    public ChatRoomListResponseDTO getChatRoomList(Member member) {
+
+        List<ChatRoomResponseDTO> chatRoomDTOList = new ArrayList<>();
+
+        Sort sort = Sort.by(Sort.Direction.DESC, "updatedDate");
+        List<ChatRoom> chatRoomList = chatRoomRepository.findAllByRenterOrOwner(member, member, sort);
+
+        for (ChatRoom chatRoom : chatRoomList) {
+            ChatRoomResponseDTO chatRoomDTO =
+                    ChatRoomConverter.toChatRoomResponseDTO(chatRoom, getLastMessage(chatRoom.getId()));
+            chatRoomDTOList.add(chatRoomDTO);
+        }
+
+        return ChatRoomConverter.toChatRoomListResponseDTO(chatRoomDTOList);
+    }
+
+    // 채팅방 마지막 메시지 업데이트
+    @Override
+    public void updateChatRoomLastMessage(Long chatRoomId) {
+        ChatRoom chatRoom =
+                chatRoomRepository
+                        .findById(chatRoomId)
+                        .orElseThrow(() -> new GlobalException(GlobalErrorCode.CHAT_ROOM_NOT_FOUND));
+
+        chatRoom.setUpdatedDate(LocalDateTime.now());
+        chatRoomRepository.save(chatRoom);
+    }
+
+    // 채팅방 마지막 메시지 조회
+    @Override
+    public ChatMessage getLastMessage(Long roomId) {
+
+        ChatMessage latestMessage = redisTemplateMessage.opsForList().index(roomId.toString(), 0);
+
+        if (latestMessage == null) {
+
+            latestMessage = chatMessageRepository.findTopByChatRoomIdOrderByCreatedAtDesc(roomId);
+
+            if (latestMessage == null) return null;
+
+            redisTemplateMessage.setValueSerializer(new Jackson2JsonRedisSerializer<>(ChatMessage.class));
+            redisTemplateMessage.opsForList().leftPush(roomId.toString(), latestMessage);
+        }
+
+        return latestMessage;
+    }
+
     // redis 채널에서 채팅방 조회
     @Override
     public ChannelTopic getTopic(Long chatRoomId) {
         return topics.get(chatRoomId.toString());
     }
 
+    // 채팅방 멤버 확인
     @Override
     public boolean isMemberOfChatRoom(Long roomId, Long memberId) {
 
