@@ -2,7 +2,7 @@ package samryong.domain.member.service;
 
 import samryong.domain.account.dto.NonghyupAccountDTO.NonghyupAccountRequestDTO;
 import samryong.domain.account.dto.NonghyupAccountDTO.NonghyupAccountResponseDTO;
-import samryong.domain.member.dto.memberDTO;
+import samryong.domain.member.dto.MemberDTO.MyInformationResponseDTO;
 import samryong.domain.member.entity.Member;
 
 public interface MemberService {
@@ -11,5 +11,5 @@ public interface MemberService {
 
     NonghyupAccountResponseDTO registerAccount(Member member, NonghyupAccountRequestDTO requestDTO);
 
-    memberDTO.MemberResponseDTO getMyPage(Long memberId);
+    MyInformationResponseDTO getMyPage(Long memberId);
 }

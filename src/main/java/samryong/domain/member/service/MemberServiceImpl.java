@@ -1,7 +1,6 @@
 package samryong.domain.member.service;
 
 import jakarta.transaction.Transactional;
-import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import samryong.domain.account.converter.AccountConverter;
@@ -10,8 +9,8 @@ import samryong.domain.account.dto.NonghyupAccountDTO.NonghyupAccountResponseDTO
 import samryong.domain.account.entity.Account;
 import samryong.domain.account.repository.AccountRepository;
 import samryong.domain.bank.nonghyup.provider.NonghyupTransactionProvider;
-import samryong.domain.location.converter.LocationConverter;
-import samryong.domain.member.dto.memberDTO;
+import samryong.domain.member.converter.MemberConverter;
+import samryong.domain.member.dto.MemberDTO.MyInformationResponseDTO;
 import samryong.domain.member.entity.Member;
 import samryong.domain.member.repository.MemberRepository;
 import samryong.global.code.GlobalErrorCode;
@@ -52,23 +51,13 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public memberDTO.MemberResponseDTO getMyPage(Long memberId) {
-        Optional<Member> memberOptional = memberRepository.findById(memberId);
+    public MyInformationResponseDTO getMyPage(Long memberId) {
 
-        if (memberOptional.isPresent()) {
-            Member member = memberOptional.get();
+        Member member =
+                memberRepository
+                        .findById(memberId)
+                        .orElseThrow(() -> new GlobalException(GlobalErrorCode.MEMBER_NOT_FOUND));
 
-            return new memberDTO.MemberResponseDTO(
-                    member.getNickName(),
-                    member.getEmail(),
-                    member.getProfileImage(),
-                    member.getMannerRate(),
-                    LocationConverter.toResponseDTO(member.getLocation()),
-                    member.getAccountList().stream()
-                            .map(account -> AccountConverter.toAccountResponseDTO(account))
-                            .toList());
-        } else {
-            throw new GlobalException(GlobalErrorCode._NOT_FOUND);
-        }
+        return MemberConverter.toMemberResponseDTO(member);
     }
 }
