@@ -7,6 +7,7 @@ import samryong.domain.item.converter.CategoryConverter;
 import samryong.domain.item.dto.CategoryDTO.CategoryRequestDTO;
 import samryong.domain.item.entity.Category;
 import samryong.domain.item.repository.CategoryRepository;
+import samryong.domain.item.repository.elastic.CategoryElasticRepository;
 import samryong.global.code.GlobalErrorCode;
 import samryong.global.exception.GlobalException;
 
@@ -15,6 +16,7 @@ import samryong.global.exception.GlobalException;
 public class CategoryServiceImpl implements CategoryService {
 
     private final CategoryRepository categoryRepository;
+    private final CategoryElasticRepository categoryElasticRepository;
 
     @Override
     public List<Category> getCategoryList(List<CategoryRequestDTO> categoryList) {
@@ -32,9 +34,15 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
+    public Category findCategoryByName(String name) {
+        return categoryRepository.findByName(name).orElse(null);
+    }
+
+    @Override
     public Long createCategory(CategoryRequestDTO categoryDTO) {
         Category category = CategoryConverter.toCategory(categoryDTO);
         categoryRepository.save(category);
+        categoryElasticRepository.save(CategoryConverter.toCategoryDocument(category));
         return category.getId();
     }
 }

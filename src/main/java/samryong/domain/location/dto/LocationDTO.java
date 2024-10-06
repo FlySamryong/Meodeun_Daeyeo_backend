@@ -25,8 +25,8 @@ public class LocationDTO {
 
     @Getter
     @Builder
-    @NoArgsConstructor
     @AllArgsConstructor
+    @NoArgsConstructor
     public static class LocationResponseDTO {
         private String city;
         private String district;
