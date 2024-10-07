@@ -2,6 +2,7 @@ package samryong.domain.chat.service;
 
 import jakarta.transaction.Transactional;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 import lombok.RequiredArgsConstructor;
@@ -25,6 +26,7 @@ public class ChatMessageServiceImpl implements ChatMessageService {
     private final RedisTemplate<String, ChatMessage> redisTemplateMessage;
 
     @Override
+    @Transactional
     public void publishMessage(ChatMessageRequestDTO requestDTO) {
 
         chatRoomService.enterChatRoom(requestDTO.getChatRoomId()); // 리스너와 연동
@@ -45,13 +47,17 @@ public class ChatMessageServiceImpl implements ChatMessageService {
 
         redisTemplateMessage.opsForList().leftPush(chatMessage.getChatRoomId().toString(), chatMessage);
 
-        redisTemplateMessage.expire(chatMessage.getChatRoomId().toString(), 1, TimeUnit.MINUTES);
+        redisTemplateMessage.expire(chatMessage.getChatRoomId().toString(), 30, TimeUnit.MINUTES);
+
+        chatRoomService.updateChatRoomLastMessage(chatMessage.getChatRoomId());
     }
 
+    @Override
     public ChatMessageResponseListDTO getMessageList(Long roomId) {
 
         List<ChatMessage> messageList = new ArrayList<>();
 
+        redisTemplateMessage.setValueSerializer(new Jackson2JsonRedisSerializer<>(ChatMessage.class));
         List<ChatMessage> redisMessageList =
                 redisTemplateMessage.opsForList().range(roomId.toString(), 0, 99);
         if (redisMessageList == null || redisMessageList.isEmpty()) {
@@ -61,14 +67,13 @@ public class ChatMessageServiceImpl implements ChatMessageService {
             for (ChatMessage chatMessage : dbMessageList) {
 
                 messageList.add(chatMessage);
-                redisTemplateMessage.setValueSerializer(
-                        new Jackson2JsonRedisSerializer<>(ChatMessage.class));
                 redisTemplateMessage
                         .opsForList()
                         .leftPush(chatMessage.getChatRoomId().toString(), chatMessage);
             }
         } else {
             messageList.addAll(redisMessageList);
+            messageList.sort(Comparator.comparing(ChatMessage::getCreatedAt).reversed());
         }
 
         return ChatMessageConverter.toChatMessageResponseListDTO(messageList);
