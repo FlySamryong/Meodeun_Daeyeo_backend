@@ -11,9 +11,9 @@ import org.springframework.web.bind.annotation.RestController;
 import samryong.domain.auth.dto.AuthResponseDTO;
 import samryong.domain.auth.service.AuthService;
 import samryong.domain.member.entity.Member;
+import samryong.global.annotation.AuthMember;
+import samryong.global.annotation.GetToken;
 import samryong.global.response.ApiResponse;
-import samryong.security.resolver.annotation.AuthMember;
-import samryong.security.resolver.annotation.GetToken;
 
 @RestController
 @RequiredArgsConstructor

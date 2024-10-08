@@ -18,7 +18,7 @@ public class AuthChatMemberAspect {
 
     private final ChatRoomService chatRoomService;
 
-    @Before("@annotation(samryong.domain.chat.aspect.annotation.AuthChatMember) && args(roomId)")
+    @Before("@annotation(samryong.global.annotation.AuthChatMember) && args(roomId)")
     public void authChatMember(Long roomId) {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
