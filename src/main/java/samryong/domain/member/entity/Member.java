@@ -49,8 +49,14 @@ public class Member extends BaseEntity {
     private Image profileImage;
 
     // 매너온도
-    @Column(name = "manner_rate", columnDefinition = "Long")
-    private Long mannerRate;
+    @Column(name = "manner_rate", nullable = false)
+    @Builder.Default
+    private Long mannerRate = 0L;
+
+    // 평가 횟수
+    @Column(name = "manner_count", nullable = false)
+    @Builder.Default
+    private Long mannerCount = 0L;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "location_id")
@@ -100,5 +106,10 @@ public class Member extends BaseEntity {
 
     public void addProfileImage(Image profileImage) {
         this.profileImage = profileImage;
+    }
+
+    public void setMannerRate(Long mannerRate, Long mannerCount) {
+        this.mannerRate = mannerRate;
+        this.mannerCount = mannerCount;
     }
 }

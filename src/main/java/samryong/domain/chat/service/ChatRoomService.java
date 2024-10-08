@@ -21,4 +21,6 @@ public interface ChatRoomService {
     void updateChatRoomLastMessage(Long chatRoomId);
 
     ChatMessage getLastMessage(Long roomId);
+
+    void updateMannerRate(Member member, Long roomId, Long mannerRate);
 }

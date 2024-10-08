@@ -12,4 +12,6 @@ public interface MemberService {
     NonghyupAccountResponseDTO registerAccount(Member member, NonghyupAccountRequestDTO requestDTO);
 
     MyInformationResponseDTO getMyPage(Long memberId);
+
+    void updateMannerRate(Member member, Long mannerRate);
 }

@@ -33,6 +33,7 @@ import samryong.domain.item.entity.Item;
 import samryong.domain.item.repository.ItemRepository;
 import samryong.domain.member.entity.Member;
 import samryong.domain.member.repository.MemberRepository;
+import samryong.domain.member.service.MemberService;
 import samryong.global.code.GlobalErrorCode;
 import samryong.global.exception.GlobalException;
 
@@ -49,6 +50,7 @@ public class ChatRoomServiceImpl implements ChatRoomService {
     private final RedisTemplate<String, Object> redisTemplate;
     private final SimpMessageSendingOperations messagingTemplate;
     private final RedisTemplate<String, ChatMessage> redisTemplateMessage;
+    private final MemberService memberService;
 
     private static final String CHAT_Rooms = "CHAT_ROOM";
     private HashOperations<String, String, ChatRoomHashDTO> opsHashChatRoom;
@@ -121,6 +123,23 @@ public class ChatRoomServiceImpl implements ChatRoomService {
         }
 
         return ChatRoomConverter.toChatRoomListResponseDTO(chatRoomDTOList);
+    }
+
+    // 채팅 상대방 매너 온도 업데이트
+    @Override
+    public void updateMannerRate(Member member, Long roomId, Long mannerRate) {
+
+        ChatRoom chatRoom =
+                chatRoomRepository
+                        .findById(roomId)
+                        .orElseThrow(() -> new GlobalException(GlobalErrorCode.CHAT_ROOM_NOT_FOUND));
+
+        Member targetMember =
+                member.getId().equals(chatRoom.getOwner().getId())
+                        ? chatRoom.getRenter()
+                        : chatRoom.getOwner();
+
+        memberService.updateMannerRate(targetMember, mannerRate);
     }
 
     // 채팅방 마지막 메시지 업데이트

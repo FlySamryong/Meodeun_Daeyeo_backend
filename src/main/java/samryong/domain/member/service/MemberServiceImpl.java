@@ -60,4 +60,15 @@ public class MemberServiceImpl implements MemberService {
 
         return MemberConverter.toMemberResponseDTO(member);
     }
+
+    @Override
+    @Transactional
+    public void updateMannerRate(Member member, Long mannerRate) {
+
+        Long newMannerRate =
+                (member.getMannerRate() * member.getMannerCount() + mannerRate)
+                        / (member.getMannerCount() + 1);
+        member.setMannerRate(newMannerRate, member.getMannerCount() + 1);
+        memberRepository.save(member);
+    }
 }
