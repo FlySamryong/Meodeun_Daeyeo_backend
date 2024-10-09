@@ -1,5 +1,7 @@
 package samryong.domain.item.converter;
 
+import java.util.List;
+import java.util.stream.Collectors;
 import org.springframework.stereotype.Component;
 import samryong.domain.item.dto.ItemDTO;
 import samryong.domain.item.dto.ItemDTO.ItemRequestDTO;
@@ -32,5 +34,15 @@ public class ItemConverter {
                 .deposit(item.getDeposit())
                 .categoryList(item.getItemCategoryList())
                 .build();
+    }
+
+    public static List<ItemDTO.ItemResponseDTO> toResponseDTOList(List<Object> objectItemList) {
+        return objectItemList.stream()
+                .map(
+                        item -> {
+                            Item castedItem = (Item) item;
+                            return toResponseDTO(castedItem);
+                        })
+                .collect(Collectors.toList());
     }
 }
