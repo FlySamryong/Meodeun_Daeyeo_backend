@@ -3,7 +3,7 @@ package samryong.domain.item.service.item;
 import java.util.List;
 import org.springframework.web.multipart.MultipartFile;
 import samryong.domain.item.dto.ItemDTO.ItemRequestDTO;
-import samryong.domain.item.entity.Item;
+import samryong.domain.item.dto.ItemDTO.ItemResponseDTO;
 import samryong.domain.location.dto.LocationDTO.LocationRequestDTO;
 import samryong.domain.member.entity.Member;
 
@@ -15,5 +15,5 @@ public interface ItemService {
             LocationRequestDTO locationDTO,
             List<MultipartFile> imageList);
 
-    Item showItem(Long itemId);
+    ItemResponseDTO getItemDetail(Long itemId, Member member);
 }

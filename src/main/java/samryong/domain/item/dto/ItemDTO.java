@@ -8,7 +8,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import samryong.domain.item.entity.ItemCategory;
+import samryong.domain.item.dto.CategoryDTO.CategoryResponseDTO;
 
 public class ItemDTO {
     @Getter
@@ -45,6 +45,33 @@ public class ItemDTO {
         private Long period;
         private Long fee;
         private Long deposit;
-        private List<ItemCategory> categoryList;
+        private List<CategoryResponseDTO> categoryList;
+    }
+
+    @Getter
+    @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class RecentItemResponseDTO {
+        private String name;
+        private String description;
+        private Long fee;
+        private List<CategoryResponseDTO> categoryList;
+    }
+
+    @Getter
+    @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class ItemResponseListDTO {
+        private List<ItemResponseDTO> itemList;
+    }
+
+    @Getter
+    @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class RecentItemResponseListDTO {
+        private List<RecentItemResponseDTO> itemList;
     }
 }

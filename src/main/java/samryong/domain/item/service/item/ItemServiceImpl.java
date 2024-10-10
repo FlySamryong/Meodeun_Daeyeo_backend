@@ -2,7 +2,6 @@ package samryong.domain.item.service.item;
 
 import jakarta.transaction.Transactional;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -10,6 +9,7 @@ import org.springframework.web.multipart.MultipartFile;
 import samryong.domain.image.ImageConverter;
 import samryong.domain.item.converter.ItemConverter;
 import samryong.domain.item.dto.ItemDTO.ItemRequestDTO;
+import samryong.domain.item.dto.ItemDTO.ItemResponseDTO;
 import samryong.domain.item.entity.Category;
 import samryong.domain.item.entity.Item;
 import samryong.domain.item.entity.ItemCategory;
@@ -22,9 +22,12 @@ import samryong.domain.location.dto.LocationDTO.LocationRequestDTO;
 import samryong.domain.location.entity.Location;
 import samryong.domain.location.service.LocationService;
 import samryong.domain.member.entity.Member;
+import samryong.domain.redis.service.RecentItemService;
 import samryong.domain.uuid.Uuid;
 import samryong.domain.uuid.UuidRepository;
 import samryong.global.aws.AmazonS3Manager;
+import samryong.global.code.GlobalErrorCode;
+import samryong.global.exception.GlobalException;
 
 @Service
 @RequiredArgsConstructor
@@ -38,6 +41,7 @@ public class ItemServiceImpl implements ItemService {
     private final ItemCategoryService itemCategoryService;
     private final UuidRepository uuidRepository;
     private final AmazonS3Manager amazonS3Manager;
+    private final RecentItemService recentItemService;
 
     @Override
     @Transactional
@@ -81,12 +85,15 @@ public class ItemServiceImpl implements ItemService {
                 });
     }
 
-    public Item showItem(Long itemId) {
-        Optional<Item> itemOptional = itemRepository.findById(itemId);
-        if (itemOptional.isPresent()) {
-            return itemOptional.get();
-        } else {
-            throw new RuntimeException("Item not found with id: " + itemId);
-        }
+    @Override
+    @Transactional
+    public ItemResponseDTO getItemDetail(Long itemId, Member member) {
+        Item item =
+                itemRepository
+                        .findById(itemId)
+                        .orElseThrow(() -> new GlobalException(GlobalErrorCode.ITEM_NOT_FOUND));
+        recentItemService.saveRecentItem(member, itemId); // 최근 본 상품 저장
+
+        return ItemConverter.toItemResponseDTO(item);
     }
 }

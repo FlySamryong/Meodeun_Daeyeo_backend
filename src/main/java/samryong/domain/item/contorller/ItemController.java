@@ -1,7 +1,5 @@
 package samryong.domain.item.contorller;
 
-import static samryong.domain.item.converter.ItemConverter.toResponseDTOList;
-
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -10,10 +8,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import samryong.domain.item.converter.ItemConverter;
 import samryong.domain.item.dto.CategoryDTO.CategoryRequestDTO;
-import samryong.domain.item.dto.ItemDTO;
 import samryong.domain.item.dto.ItemDTO.ItemRequestDTO;
+import samryong.domain.item.dto.ItemDTO.ItemResponseDTO;
+import samryong.domain.item.dto.ItemDTO.RecentItemResponseListDTO;
 import samryong.domain.item.service.category.CategoryService;
 import samryong.domain.item.service.item.ItemService;
 import samryong.domain.location.dto.LocationDTO.LocationRequestDTO;
@@ -50,20 +48,15 @@ public class ItemController {
     }
 
     @GetMapping("/{itemId}")
-    @Operation(summary = "물품 상세 조회", description = "사용자가 물품을 조회합니다.")
-    public ApiResponse<ItemDTO.ItemResponseDTO> getItemDetails(
+    @Operation(summary = "물품 상세 조회", description = "사용자가 물품을 상세 조회합니다.")
+    public ApiResponse<ItemResponseDTO> getItemDetails(
             @PathVariable Long itemId, @AuthMember Member member) {
-        ItemDTO.ItemResponseDTO itemResponse =
-                ItemConverter.toResponseDTO(itemService.showItem(itemId));
-        recentItemService.saveRecentItem(member, itemId);
-        return ApiResponse.onSuccess("물품조회 완료", itemResponse);
+        return ApiResponse.onSuccess("물품조회 완료", itemService.getItemDetail(itemId, member));
     }
 
     @GetMapping("/recent")
-    @Operation(summary = "최근 물품 조회", description = "사용자가 최근 물품을 조회합니다.")
-    public ApiResponse<List<ItemDTO.ItemResponseDTO>> getRecentItem(@AuthMember Member member) {
-        List<Object> recentItems = recentItemService.getRecentItems(member);
-        List<ItemDTO.ItemResponseDTO> itemResponseList = toResponseDTOList(recentItems);
-        return ApiResponse.onSuccess("최근 물품 조회 완료", itemResponseList);
+    @Operation(summary = "최근 물품 조회", description = "사용자가 최근에 본 아이템을 조회합니다.")
+    public ApiResponse<RecentItemResponseListDTO> getRecentItem(@AuthMember Member member) {
+        return ApiResponse.onSuccess("최근 물품 조회 완료", recentItemService.getRecentItemList(member));
     }
 }

@@ -23,8 +23,6 @@ spring:
     redis:
       host: localhost
       port: 6379
-    elasticsearch:
-      uris: http://elasticsearch:9200
 
 kakao:
   client: ${KAKAO_CLIENT_ID} # REST-API 키

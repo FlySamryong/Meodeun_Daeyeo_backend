@@ -36,6 +36,17 @@ public class RedisConfig {
         return redisTemplate;
     }
 
+    @Bean
+    public RedisTemplate<String, Long> redisTemplateLong(
+            RedisConnectionFactory redisConnectionFactory) {
+        RedisTemplate<String, Long> redisTemplate = new RedisTemplate<>();
+        redisTemplate.setConnectionFactory(redisConnectionFactory);
+        redisTemplate.setKeySerializer(new StringRedisSerializer());
+        redisTemplate.setValueSerializer(
+                new Jackson2JsonRedisSerializer<>(Long.class)); // Long 타입으로 직렬화
+        return redisTemplate;
+    }
+
     // redis 의 pub/sub 기능을 이용하기 위해 pub/sub 메시지를 처리하는 MessageListener 설정
     @Bean
     public RedisMessageListenerContainer redisMessageListener(

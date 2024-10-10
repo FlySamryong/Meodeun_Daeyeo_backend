@@ -1,11 +1,11 @@
 package samryong.domain.redis.service;
 
-import java.util.List;
+import samryong.domain.item.dto.ItemDTO.RecentItemResponseListDTO;
 import samryong.domain.member.entity.Member;
 
 public interface RecentItemService {
 
     void saveRecentItem(Member member, Long itemId);
 
-    List<Object> getRecentItems(Member member);
+    RecentItemResponseListDTO getRecentItemList(Member member);
 }
