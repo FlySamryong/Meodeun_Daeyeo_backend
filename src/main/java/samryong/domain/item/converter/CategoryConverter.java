@@ -23,9 +23,9 @@ public class CategoryConverter {
         return categoryList.stream()
                 .map(CategoryConverter::toCategoryResponseDTO)
                 .collect(Collectors.toList());
+    }
 
     public static CategoryDocument toCategoryDocument(Category category) {
         return CategoryDocument.builder().id(category.getId()).name(category.getName()).build();
-
     }
 }

@@ -10,11 +10,10 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import samryong.domain.item.dto.CategoryDTO.CategoryResponseDTO;
 import samryong.domain.item.dto.CategoryDTO.CategoryRequestDTO;
+import samryong.domain.item.dto.CategoryDTO.CategoryResponseDTO;
 import samryong.domain.location.dto.LocationDTO.LocationRequestDTO;
 import samryong.domain.location.dto.LocationDTO.LocationResponseDTO;
-
 
 public class ItemDTO {
     @Getter

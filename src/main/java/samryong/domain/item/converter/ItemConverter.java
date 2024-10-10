@@ -1,17 +1,5 @@
 package samryong.domain.item.converter;
 
-
-import java.util.List;
-import java.util.stream.Collectors;
-import org.springframework.stereotype.Component;
-import samryong.domain.item.dto.ItemDTO;
-import samryong.domain.item.dto.ItemDTO.ItemRequestDTO;
-import samryong.domain.item.dto.ItemDTO.ItemResponseDTO;
-import samryong.domain.item.dto.ItemDTO.ItemResponseListDTO;
-import samryong.domain.item.dto.ItemDTO.RecentItemResponseDTO;
-import samryong.domain.item.dto.ItemDTO.RecentItemResponseListDTO;
-import samryong.domain.item.entity.Item;
-import samryong.domain.item.entity.ItemCategory;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -19,11 +7,17 @@ import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
 import samryong.domain.image.Image;
 import samryong.domain.item.document.ItemDocument;
+import samryong.domain.item.dto.ItemDTO;
 import samryong.domain.item.dto.ItemDTO.ItemPreviewListResponseDTO;
 import samryong.domain.item.dto.ItemDTO.ItemPreviewResponseDTO;
 import samryong.domain.item.dto.ItemDTO.ItemRequestDTO;
+import samryong.domain.item.dto.ItemDTO.ItemResponseDTO;
+import samryong.domain.item.dto.ItemDTO.ItemResponseListDTO;
+import samryong.domain.item.dto.ItemDTO.RecentItemResponseDTO;
+import samryong.domain.item.dto.ItemDTO.RecentItemResponseListDTO;
 import samryong.domain.item.entity.Category;
 import samryong.domain.item.entity.Item;
+import samryong.domain.item.entity.ItemCategory;
 import samryong.domain.location.converter.LocationConverter;
 import samryong.domain.location.entity.Location;
 import samryong.domain.member.entity.Member;
@@ -42,7 +36,7 @@ public class ItemConverter {
                 .member(member)
                 .build();
     }
-  
+
     public static ItemDocument toItemDocument(Item item, List<Category> categoryList) {
         return ItemDocument.builder()
                 .id(item.getId())
@@ -64,7 +58,6 @@ public class ItemConverter {
                                 .collect(Collectors.toList()))
                 .build();
     }
-  
 
     public static ItemPreviewResponseDTO toItemPreviewResponseDTO(ItemDocument itemDocument) {
         return ItemPreviewResponseDTO.builder()
@@ -94,8 +87,8 @@ public class ItemConverter {
                                 .collect(Collectors.toList()))
                 .build();
     }
-  
-      public static ItemResponseDTO toItemResponseDTO(Item item) {
+
+    public static ItemResponseDTO toItemResponseDTO(Item item) {
         return ItemResponseDTO.builder()
                 .itemId(item.getId())
                 .name(item.getName())
@@ -139,5 +132,4 @@ public class ItemConverter {
                                 .collect(Collectors.toList()))
                 .build();
     }
-
 }
