@@ -9,4 +9,6 @@ import samryong.domain.chat.entity.ChatMessage;
 public interface ChatMessageRepository extends MongoRepository<ChatMessage, String> {
 
     List<ChatMessage> findTop100ByChatRoomIdOrderByCreatedAtDesc(Long chatRoomId);
+
+    ChatMessage findTopByChatRoomIdOrderByCreatedAtDesc(Long chatRoomId);
 }

@@ -97,4 +97,8 @@ public class Member extends BaseEntity {
         if (this.accountList == null) this.accountList = new ArrayList<>();
         this.accountList.add(account);
     }
+
+    public void addProfileImage(Image profileImage) {
+        this.profileImage = profileImage;
+    }
 }

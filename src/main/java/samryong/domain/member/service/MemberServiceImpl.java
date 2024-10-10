@@ -9,6 +9,8 @@ import samryong.domain.account.dto.NonghyupAccountDTO.NonghyupAccountResponseDTO
 import samryong.domain.account.entity.Account;
 import samryong.domain.account.repository.AccountRepository;
 import samryong.domain.bank.nonghyup.provider.NonghyupTransactionProvider;
+import samryong.domain.member.converter.MemberConverter;
+import samryong.domain.member.dto.MemberDTO.MyInformationResponseDTO;
 import samryong.domain.member.entity.Member;
 import samryong.domain.member.repository.MemberRepository;
 import samryong.global.code.GlobalErrorCode;
@@ -46,5 +48,16 @@ public class MemberServiceImpl implements MemberService {
 
         memberRepository.save(member);
         return AccountConverter.toAccountResponseDTO(account);
+    }
+
+    @Override
+    public MyInformationResponseDTO getMyPage(Long memberId) {
+
+        Member member =
+                memberRepository
+                        .findById(memberId)
+                        .orElseThrow(() -> new GlobalException(GlobalErrorCode.MEMBER_NOT_FOUND));
+
+        return MemberConverter.toMemberResponseDTO(member);
     }
 }

@@ -22,7 +22,6 @@ public class NonghyupAccountDTO {
     @AllArgsConstructor
     @NoArgsConstructor
     public static class NonghyupAccountResponseDTO {
-
         private String accountNum;
         private String finTechAccountNum;
     }

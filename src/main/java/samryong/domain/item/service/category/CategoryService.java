@@ -10,5 +10,7 @@ public interface CategoryService {
 
     Category getCategoryByName(String name);
 
+    Category findCategoryByName(String name);
+
     Long createCategory(CategoryRequestDTO categoryDTO);
 }

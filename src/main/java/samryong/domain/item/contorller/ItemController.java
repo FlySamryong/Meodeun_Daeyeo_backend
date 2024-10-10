@@ -9,6 +9,8 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import samryong.domain.item.dto.CategoryDTO.CategoryRequestDTO;
+import samryong.domain.item.dto.ItemDTO.ItemListRequestDTO;
+import samryong.domain.item.dto.ItemDTO.ItemPreviewListResponseDTO;
 import samryong.domain.item.dto.ItemDTO.ItemRequestDTO;
 import samryong.domain.item.dto.ItemDTO.ItemResponseDTO;
 import samryong.domain.item.dto.ItemDTO.RecentItemResponseListDTO;
@@ -58,5 +60,13 @@ public class ItemController {
     @Operation(summary = "최근 물품 조회", description = "사용자가 최근에 본 아이템을 조회합니다.")
     public ApiResponse<RecentItemResponseListDTO> getRecentItem(@AuthMember Member member) {
         return ApiResponse.onSuccess("최근 물품 조회 완료", recentItemService.getRecentItemList(member));
+
+    @PostMapping("/search")
+    @Operation(summary = "물품 검색", description = "물품명, 물품 설명, 카테고리, 위치를 통해 물품을 검색합니다.")
+    public ApiResponse<ItemPreviewListResponseDTO> searchItem(
+            @RequestBody @Valid ItemListRequestDTO requestDTO,
+            @RequestParam(value = "page", defaultValue = "0", required = false) int page) {
+        return ApiResponse.onSuccess("물품 검색 성공", itemService.searchItem(requestDTO, page));
+
     }
 }

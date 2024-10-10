@@ -16,6 +16,8 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 import samryong.domain.auth.converter.KakaoAuthConverter;
 import samryong.domain.auth.dto.AuthResponseDTO.LoginResponse;
+import samryong.domain.image.Image;
+import samryong.domain.image.ImageConverter;
 import samryong.domain.member.entity.Member;
 import samryong.domain.member.repository.MemberRepository;
 import samryong.domain.redis.service.RefreshTokenService;
@@ -108,10 +110,12 @@ public class KakaoAuthProvider {
         Long id = jsonNode.get("id").asLong();
         String email = jsonNode.get("kakao_account").get("email").asText();
         String nickname = jsonNode.get("properties").get("nickname").asText();
+        String profileImage = jsonNode.get("properties").get("profile_image").asText();
 
         userInfo.put("id", id);
         userInfo.put("email", email);
         userInfo.put("nickname", nickname);
+        userInfo.put("profileImage", profileImage);
 
         return userInfo;
     }
@@ -123,6 +127,9 @@ public class KakaoAuthProvider {
 
         if (kakaoUser == null) {
             newMember = memberRepository.save(KakaoAuthConverter.toMember(userInfo));
+            Image profileImage =
+                    ImageConverter.toProfileImage(userInfo.get("profileImage").toString(), newMember);
+            newMember.addProfileImage(profileImage);
         } else {
             newMember = kakaoUser;
         }
