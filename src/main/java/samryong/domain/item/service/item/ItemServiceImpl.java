@@ -15,6 +15,7 @@ import samryong.domain.item.document.ItemDocument;
 import samryong.domain.item.dto.ItemDTO.ItemListRequestDTO;
 import samryong.domain.item.dto.ItemDTO.ItemPreviewListResponseDTO;
 import samryong.domain.item.dto.ItemDTO.ItemRequestDTO;
+import samryong.domain.item.dto.ItemDTO.ItemResponseDTO;
 import samryong.domain.item.entity.Category;
 import samryong.domain.item.entity.Item;
 import samryong.domain.item.entity.ItemCategory;
@@ -28,9 +29,12 @@ import samryong.domain.location.dto.LocationDTO.LocationRequestDTO;
 import samryong.domain.location.entity.Location;
 import samryong.domain.location.service.LocationService;
 import samryong.domain.member.entity.Member;
+import samryong.domain.redis.service.RecentItemService;
 import samryong.domain.uuid.Uuid;
 import samryong.domain.uuid.UuidRepository;
 import samryong.global.aws.AmazonS3Manager;
+import samryong.global.code.GlobalErrorCode;
+import samryong.global.exception.GlobalException;
 
 @Service
 @RequiredArgsConstructor
@@ -44,6 +48,7 @@ public class ItemServiceImpl implements ItemService {
     private final ItemCategoryService itemCategoryService;
     private final UuidRepository uuidRepository;
     private final AmazonS3Manager amazonS3Manager;
+    private final RecentItemService recentItemService;
     private final ItemElasticRepository itemElasticRepository;
 
     @Override
@@ -108,5 +113,17 @@ public class ItemServiceImpl implements ItemService {
                     String imageUri = amazonS3Manager.uploadFile(keyName, image);
                     item.addImage(ImageConverter.toItemImage(imageUri, item));
                 });
+    }
+
+    @Override
+    @Transactional
+    public ItemResponseDTO getItemDetail(Long itemId, Member member) {
+        Item item =
+                itemRepository
+                        .findById(itemId)
+                        .orElseThrow(() -> new GlobalException(GlobalErrorCode.ITEM_NOT_FOUND));
+        recentItemService.saveRecentItem(member, itemId); // 최근 본 상품 저장
+
+        return ItemConverter.toItemResponseDTO(item);
     }
 }

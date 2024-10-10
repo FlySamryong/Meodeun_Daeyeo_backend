@@ -10,12 +10,13 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import samryong.domain.item.dto.CategoryDTO.CategoryResponseDTO;
 import samryong.domain.item.dto.CategoryDTO.CategoryRequestDTO;
 import samryong.domain.location.dto.LocationDTO.LocationRequestDTO;
 import samryong.domain.location.dto.LocationDTO.LocationResponseDTO;
 
-public class ItemDTO {
 
+public class ItemDTO {
     @Getter
     @AllArgsConstructor
     @NoArgsConstructor
@@ -40,7 +41,48 @@ public class ItemDTO {
         @Min(value = 1, message = "보증금은 0보다 커야 합니다.")
         private Long deposit;
 
-        private ArrayList<CategoryRequestDTO> categoryList;
+        private ArrayList<CategoryDTO.CategoryRequestDTO> categoryList;
+    }
+
+    @Getter
+    @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class ItemResponseDTO {
+        private Long itemId;
+        private String name;
+        private String description;
+        private Long period;
+        private Long fee;
+        private Long deposit;
+        private List<CategoryResponseDTO> categoryList;
+    }
+
+    @Getter
+    @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class RecentItemResponseDTO {
+        private String name;
+        private String description;
+        private Long fee;
+        private List<CategoryResponseDTO> categoryList;
+    }
+
+    @Getter
+    @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class ItemResponseListDTO {
+        private List<ItemResponseDTO> itemList;
+    }
+
+    @Getter
+    @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class RecentItemResponseListDTO {
+        private List<RecentItemResponseDTO> itemList;
     }
 
     @Getter
