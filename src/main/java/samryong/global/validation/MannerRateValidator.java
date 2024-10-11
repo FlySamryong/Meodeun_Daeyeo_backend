@@ -12,7 +12,7 @@ public class MannerRateValidator implements ConstraintValidator<MannerRateValid,
     @Override
     public boolean isValid(Long value, ConstraintValidatorContext context) {
 
-        boolean isValid = value >= 0 && value <= 100;
+        boolean isValid = value >= 0 && value <= 5;
         if (!isValid) {
             context.disableDefaultConstraintViolation();
             context

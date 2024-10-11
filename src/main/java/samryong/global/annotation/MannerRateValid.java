@@ -16,7 +16,7 @@ import samryong.global.validation.MannerRateValidator;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface MannerRateValid {
 
-    String message() default "매너 온도의 범위는 0-100 사이여야 합니다.";
+    String message() default "매너 온도의 범위는 0-5 사이여야 합니다.";
 
     Class<?>[] groups() default {};
 
