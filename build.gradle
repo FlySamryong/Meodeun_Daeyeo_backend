@@ -128,5 +128,3 @@ tasks.named('compileJava') {
 	dependsOn 'spotlessApply'
 	dependsOn 'updateGitHooks'
 }
-
-
