@@ -20,12 +20,11 @@ public class SchedulerService {
     private final MemberRepository memberRepository;
     private final RedisTemplate<String, Object> redisTemplate;
 
-    private static final long EXPIRATION_TIME_IN_MILLIS = 120000; // 2분
+    private static final long EXPIRATION_TIME_IN_MILLIS = 1000 * 60 * 60 * 12; // 12시간
 
-    @Scheduled(initialDelay = 1000, fixedDelay = 1000 * 60) // 1분마다 실행
+    @Scheduled(initialDelay = 1000, fixedDelay = 1000 * 60 * 60) // 1시간 마다 실행
     @Transactional
     public void checkMannerRateExpiration() {
-        System.out.println("checkMannerRateExpiration");
         Set<String> keys = redisTemplate.keys("MANNER_RATE*");
         if (keys == null || keys.isEmpty()) return; // null 또는 빈 경우 빠르게 반환
 
