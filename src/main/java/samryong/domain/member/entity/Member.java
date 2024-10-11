@@ -51,7 +51,7 @@ public class Member extends BaseEntity {
     // 매너온도
     @Column(name = "manner_rate", nullable = false)
     @Builder.Default
-    private Long mannerRate = 0L;
+    private double mannerRate = 0.0;
 
     // 평가 횟수
     @Column(name = "manner_count", nullable = false)
@@ -108,7 +108,7 @@ public class Member extends BaseEntity {
         this.profileImage = profileImage;
     }
 
-    public void setMannerRate(Long mannerRate, Long mannerCount) {
+    public void setMannerRate(double mannerRate, Long mannerCount) {
         this.mannerRate = mannerRate;
         this.mannerCount = mannerCount;
     }

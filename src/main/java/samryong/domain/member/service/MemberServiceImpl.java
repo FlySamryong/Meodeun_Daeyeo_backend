@@ -65,9 +65,13 @@ public class MemberServiceImpl implements MemberService {
     @Transactional
     public void updateMannerRate(Member member, Long mannerRate) {
 
-        Long newMannerRate =
+        double newMannerRate =
                 (member.getMannerRate() * member.getMannerCount() + mannerRate)
                         / (member.getMannerCount() + 1);
+
+        // 소수점 첫째 자리까지만 허용 (반올림)
+        newMannerRate = Math.round(newMannerRate * 10) / 10.0;
+
         member.setMannerRate(newMannerRate, member.getMannerCount() + 1);
         memberRepository.save(member);
     }

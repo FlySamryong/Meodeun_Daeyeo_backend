@@ -22,7 +22,7 @@ public class MemberDTO {
 
         private String profileImage;
 
-        private Long mannerRate;
+        private double mannerRate;
 
         private LocationResponseDTO location;
 
