@@ -12,9 +12,9 @@ import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
 import samryong.domain.member.entity.Member;
 import samryong.domain.member.service.MemberService;
+import samryong.global.annotation.AuthMember;
 import samryong.global.code.GlobalErrorCode;
 import samryong.global.exception.GlobalException;
-import samryong.security.resolver.annotation.AuthMember;
 
 @Component
 @RequiredArgsConstructor

@@ -4,13 +4,13 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import samryong.domain.chat.aspect.annotation.AuthChatMember;
 import samryong.domain.chat.dto.ChatMessageDTO.ChatMessageRequestDTO;
 import samryong.domain.chat.dto.ChatMessageDTO.ChatMessageResponseListDTO;
 import samryong.domain.chat.dto.ChatRoomDTO.ChatRoomListResponseDTO;
@@ -18,11 +18,14 @@ import samryong.domain.chat.dto.ChatRoomDTO.ChatRoomRequestDTO;
 import samryong.domain.chat.service.ChatMessageService;
 import samryong.domain.chat.service.ChatRoomService;
 import samryong.domain.member.entity.Member;
+import samryong.global.annotation.AuthChatMember;
+import samryong.global.annotation.AuthMember;
+import samryong.global.annotation.MannerRateValid;
 import samryong.global.response.ApiResponse;
-import samryong.security.resolver.annotation.AuthMember;
 
 @RestController
 @RequiredArgsConstructor
+@Validated
 @RequestMapping("/api/chat")
 @Tag(name = "Chat", description = "채팅 관련 API")
 public class ChatRoomController {
@@ -49,6 +52,17 @@ public class ChatRoomController {
     @GetMapping("/room/list")
     public ApiResponse<ChatRoomListResponseDTO> getChatRoomList(@AuthMember Member member) {
         return ApiResponse.onSuccess("사용자 채팅방 목록 조회 성공", chatRoomService.getChatRoomList(member));
+    }
+
+    @Operation(summary = "채팅 상대방 매너 온도 설정", description = "채팅 상대방의 매너 온도를 설정합니다.")
+    @GetMapping("/room/update/mannerRate")
+    @AuthChatMember // 채팅방 멤버인지 우선 확인
+    public ApiResponse<String> updateMannerRate(
+            @AuthMember Member member,
+            @RequestParam(value = "roomId") Long roomId,
+            @RequestParam(value = "mannerRate") @MannerRateValid Long mannerRate) {
+        chatRoomService.updateMannerRate(member, roomId, mannerRate);
+        return ApiResponse.onSuccess("매너 온도 설정 성공", null);
     }
 
     @Operation(summary = "채팅 메시지 보내기 테스트 api", description = "채팅 메시지를 보냅니다.")

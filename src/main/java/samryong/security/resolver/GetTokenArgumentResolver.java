@@ -8,9 +8,9 @@ import org.springframework.web.bind.support.WebDataBinderFactory;
 import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
+import samryong.global.annotation.GetToken;
 import samryong.global.code.GlobalErrorCode;
 import samryong.global.exception.GlobalException;
-import samryong.security.resolver.annotation.GetToken;
 
 @Slf4j
 @Component

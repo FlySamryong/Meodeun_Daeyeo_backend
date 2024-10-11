@@ -14,8 +14,8 @@ import samryong.domain.account.dto.NonghyupAccountDTO.NonghyupAccountResponseDTO
 import samryong.domain.member.dto.MemberDTO.MyInformationResponseDTO;
 import samryong.domain.member.entity.Member;
 import samryong.domain.member.service.MemberService;
+import samryong.global.annotation.AuthMember;
 import samryong.global.response.ApiResponse;
-import samryong.security.resolver.annotation.AuthMember;
 
 @RestController
 @RequiredArgsConstructor

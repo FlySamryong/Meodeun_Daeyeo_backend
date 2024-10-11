@@ -1,5 +1,7 @@
 package samryong.global.exception;
 
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.ConstraintViolationException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatusCode;
@@ -29,6 +31,20 @@ public class ExceptionAdvice extends ResponseEntityExceptionHandler {
         return handleExceptionInternal(e);
     }
 
+    @ExceptionHandler(ConstraintViolationException.class)
+    public ResponseEntity<ErrorResponse> handleConstraintViolationException(
+            ConstraintViolationException e) {
+
+        String errorMessage =
+                e.getConstraintViolations().stream()
+                        .map(ConstraintViolation::getMessage)
+                        .findFirst()
+                        .orElseThrow(() -> new GlobalException(GlobalErrorCode._INTERNAL_SERVER_ERROR));
+
+        String message = GlobalErrorCode.valueOf(errorMessage).toString();
+        return handleExceptionInternal(message);
+    }
+
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(
             MethodArgumentNotValidException e,
@@ -48,5 +64,10 @@ public class ExceptionAdvice extends ResponseEntityExceptionHandler {
     private ResponseEntity<ErrorResponse> handleExceptionInternal(NonghyupException e) {
         return ResponseEntity.status(e.getHttpStatus().value())
                 .body(new ErrorResponse(e.getCode(), e.getMessage()));
+    }
+
+    private ResponseEntity<ErrorResponse> handleExceptionInternal(String message) {
+        return ResponseEntity.status(GlobalErrorCode.valueOf(message).getHttpStatus().value())
+                .body(new ErrorResponse(GlobalErrorCode.valueOf(message)));
     }
 }

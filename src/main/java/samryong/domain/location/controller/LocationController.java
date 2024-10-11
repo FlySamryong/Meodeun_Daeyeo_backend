@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.RestController;
 import samryong.domain.location.dto.LocationDTO.LocationRequestDTO;
 import samryong.domain.location.service.LocationService;
 import samryong.domain.member.entity.Member;
+import samryong.global.annotation.AuthMember;
 import samryong.global.response.ApiResponse;
-import samryong.security.resolver.annotation.AuthMember;
 
 @RestController
 @RequiredArgsConstructor
