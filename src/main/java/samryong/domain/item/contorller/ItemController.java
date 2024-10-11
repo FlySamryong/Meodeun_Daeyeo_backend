@@ -18,8 +18,8 @@ import samryong.domain.item.service.category.CategoryService;
 import samryong.domain.item.service.item.ItemService;
 import samryong.domain.location.dto.LocationDTO.LocationRequestDTO;
 import samryong.domain.member.entity.Member;
-import samryong.global.annotation.AuthMember;
 import samryong.domain.redis.service.RecentItemService;
+import samryong.global.annotation.AuthMember;
 import samryong.global.response.ApiResponse;
 
 @RestController
