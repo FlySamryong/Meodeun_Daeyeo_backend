@@ -52,7 +52,8 @@ public class ChatRoomServiceImpl implements ChatRoomService {
     private final RedisTemplate<String, ChatMessage> redisTemplateMessage;
     private final MemberService memberService;
 
-    private static final String CHAT_Rooms = "CHAT_ROOM";
+    private static final String CHAT_ROOM = "CHAT_ROOM";
+    private static final String MANNER_RATE = "MANNER_RATE";
     private HashOperations<String, String, ChatRoomHashDTO> opsHashChatRoom;
     private Map<String, ChannelTopic> topics;
 
@@ -84,7 +85,7 @@ public class ChatRoomServiceImpl implements ChatRoomService {
         Long chatRoomId = chatRoomRepository.save(chatRoom).getId();
 
         opsHashChatRoom.put(
-                CHAT_Rooms, chatRoomId.toString(), ChatRoomConverter.toChatRoomHashDTO(chatRoom));
+                CHAT_ROOM, chatRoomId.toString(), ChatRoomConverter.toChatRoomHashDTO(chatRoom));
 
         messagingTemplate.convertAndSend("/topic/chat/notification/" + owner.getId(), chatRoom.getId());
         return chatRoomId;
@@ -125,7 +126,7 @@ public class ChatRoomServiceImpl implements ChatRoomService {
         return ChatRoomConverter.toChatRoomListResponseDTO(chatRoomDTOList);
     }
 
-    // 채팅 상대방 매너 온도 업데이트
+    // 채팅 상대방 매너 온도 Redis에 저장
     @Override
     public void updateMannerRate(Member member, Long roomId, Long mannerRate) {
 
@@ -139,7 +140,12 @@ public class ChatRoomServiceImpl implements ChatRoomService {
                         ? chatRoom.getRenter()
                         : chatRoom.getOwner();
 
-        memberService.updateMannerRate(targetMember, mannerRate);
+        String key = MANNER_RATE + chatRoom.getId() + "-" + member.getId() + ":" + targetMember.getId();
+        Map<String, Object> fields = new HashMap<>();
+        fields.put("mannerRate", mannerRate); // 매너 온도
+        fields.put("createdAt", System.currentTimeMillis()); // 생성 시간
+
+        redisTemplate.opsForHash().putAll(key, fields);
     }
 
     // 채팅방 마지막 메시지 업데이트
