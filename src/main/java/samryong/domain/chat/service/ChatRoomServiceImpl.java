@@ -33,7 +33,6 @@ import samryong.domain.item.entity.Item;
 import samryong.domain.item.repository.ItemRepository;
 import samryong.domain.member.entity.Member;
 import samryong.domain.member.repository.MemberRepository;
-import samryong.domain.member.service.MemberService;
 import samryong.global.code.GlobalErrorCode;
 import samryong.global.exception.GlobalException;
 
@@ -50,7 +49,7 @@ public class ChatRoomServiceImpl implements ChatRoomService {
     private final RedisTemplate<String, Object> redisTemplate;
     private final SimpMessageSendingOperations messagingTemplate;
     private final RedisTemplate<String, ChatMessage> redisTemplateMessage;
-    private final MemberService memberService;
+    private static final String CHAT_MESSAGE_KEY = "CHAT_ROOM:";
 
     private static final String CHAT_ROOM = "CHAT_ROOM";
     private static final String MANNER_RATE = "MANNER_RATE";
@@ -96,9 +95,7 @@ public class ChatRoomServiceImpl implements ChatRoomService {
     @Transactional
     public void enterChatRoom(Long chatRoomId) {
 
-        chatRoomRepository
-                .findById(chatRoomId)
-                .orElseThrow(() -> new GlobalException(GlobalErrorCode.CHAT_ROOM_NOT_FOUND));
+        getChatRoom(chatRoomId);
 
         ChannelTopic topic = getTopic(chatRoomId);
         if (topic == null) {
@@ -130,10 +127,7 @@ public class ChatRoomServiceImpl implements ChatRoomService {
     @Override
     public void updateMannerRate(Member member, Long roomId, Long mannerRate) {
 
-        ChatRoom chatRoom =
-                chatRoomRepository
-                        .findById(roomId)
-                        .orElseThrow(() -> new GlobalException(GlobalErrorCode.CHAT_ROOM_NOT_FOUND));
+        ChatRoom chatRoom = getChatRoom(roomId);
 
         Member targetMember =
                 member.getId().equals(chatRoom.getOwner().getId())
@@ -151,10 +145,7 @@ public class ChatRoomServiceImpl implements ChatRoomService {
     // 채팅방 마지막 메시지 업데이트
     @Override
     public void updateChatRoomLastMessage(Long chatRoomId) {
-        ChatRoom chatRoom =
-                chatRoomRepository
-                        .findById(chatRoomId)
-                        .orElseThrow(() -> new GlobalException(GlobalErrorCode.CHAT_ROOM_NOT_FOUND));
+        ChatRoom chatRoom = getChatRoom(chatRoomId);
 
         chatRoom.setUpdatedDate(LocalDateTime.now());
         chatRoomRepository.save(chatRoom);
@@ -164,7 +155,9 @@ public class ChatRoomServiceImpl implements ChatRoomService {
     @Override
     public ChatMessage getLastMessage(Long roomId) {
 
-        ChatMessage latestMessage = redisTemplateMessage.opsForList().index(roomId.toString(), 0);
+        String key = CHAT_MESSAGE_KEY + roomId;
+
+        ChatMessage latestMessage = redisTemplateMessage.opsForList().index(key, 0);
 
         if (latestMessage == null) {
 
@@ -173,7 +166,7 @@ public class ChatRoomServiceImpl implements ChatRoomService {
             if (latestMessage == null) return null;
 
             redisTemplateMessage.setValueSerializer(new Jackson2JsonRedisSerializer<>(ChatMessage.class));
-            redisTemplateMessage.opsForList().leftPush(roomId.toString(), latestMessage);
+            redisTemplateMessage.opsForList().leftPush(key, latestMessage);
         }
 
         return latestMessage;
@@ -189,12 +182,16 @@ public class ChatRoomServiceImpl implements ChatRoomService {
     @Override
     public boolean isMemberOfChatRoom(Long roomId, Long memberId) {
 
-        ChatRoom chatRoom =
-                chatRoomRepository
-                        .findById(roomId)
-                        .orElseThrow(() -> new GlobalException(GlobalErrorCode.CHAT_ROOM_NOT_FOUND));
+        ChatRoom chatRoom = getChatRoom(roomId);
 
         return chatRoom.getRenter().getId().equals(memberId)
                 || chatRoom.getOwner().getId().equals(memberId);
+    }
+
+    @Override
+    public ChatRoom getChatRoom(Long roomId) {
+        return chatRoomRepository
+                .findById(roomId)
+                .orElseThrow(() -> new GlobalException(GlobalErrorCode.CHAT_ROOM_NOT_FOUND));
     }
 }

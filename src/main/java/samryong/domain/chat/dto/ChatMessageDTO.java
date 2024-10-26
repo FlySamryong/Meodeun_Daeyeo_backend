@@ -13,6 +13,7 @@ import samryong.domain.chat.entity.ChatMessage.ChatType;
 public class ChatMessageDTO {
 
     @Getter
+    @Builder
     @AllArgsConstructor
     @NoArgsConstructor
     public static class ChatMessageRequestDTO {

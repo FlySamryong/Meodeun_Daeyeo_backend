@@ -4,6 +4,7 @@ import org.springframework.data.redis.listener.ChannelTopic;
 import samryong.domain.chat.dto.ChatRoomDTO.ChatRoomListResponseDTO;
 import samryong.domain.chat.dto.ChatRoomDTO.ChatRoomRequestDTO;
 import samryong.domain.chat.entity.ChatMessage;
+import samryong.domain.chat.entity.ChatRoom;
 import samryong.domain.member.entity.Member;
 
 public interface ChatRoomService {
@@ -23,4 +24,6 @@ public interface ChatRoomService {
     ChatMessage getLastMessage(Long roomId);
 
     void updateMannerRate(Member member, Long roomId, Long mannerRate);
+
+    ChatRoom getChatRoom(Long roomId);
 }

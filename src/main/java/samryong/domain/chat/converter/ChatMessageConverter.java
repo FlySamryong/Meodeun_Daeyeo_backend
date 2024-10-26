@@ -8,6 +8,7 @@ import samryong.domain.chat.dto.ChatMessageDTO.ChatMessageRequestDTO;
 import samryong.domain.chat.dto.ChatMessageDTO.ChatMessageResponseDTO;
 import samryong.domain.chat.dto.ChatMessageDTO.ChatMessageResponseListDTO;
 import samryong.domain.chat.entity.ChatMessage;
+import samryong.domain.member.entity.Member;
 
 @Component
 public class ChatMessageConverter {
@@ -42,6 +43,24 @@ public class ChatMessageConverter {
                         chatMessageList.stream()
                                 .map(ChatMessageConverter::toChatMessageResponseDTO)
                                 .collect(Collectors.toList()))
+                .build();
+    }
+
+    public static ChatMessageRequestDTO toRentRequestChatMessage(Member sender, Long chatRoomId) {
+        return ChatMessageRequestDTO.builder()
+                .chatRoomId(chatRoomId)
+                .senderId(sender.getId())
+                .message("대여료를 송금했습니다. 12시간 내로 확인해주세요.")
+                .type(ChatMessage.ChatType.RENT_REQ)
+                .build();
+    }
+
+    public static ChatMessageRequestDTO toRentAcceptChatMessage(Member sender, Long chatRoomId) {
+        return ChatMessageRequestDTO.builder()
+                .chatRoomId(chatRoomId)
+                .senderId(sender.getId())
+                .message("물품 대여 요청이 수락되었습니다. 대여 기간 동안 잘 사용해주세요.")
+                .type(ChatMessage.ChatType.RENT_ACCEPT)
                 .build();
     }
 }

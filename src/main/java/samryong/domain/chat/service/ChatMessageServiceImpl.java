@@ -15,6 +15,7 @@ import samryong.domain.chat.dto.ChatMessageDTO.ChatMessageResponseListDTO;
 import samryong.domain.chat.entity.ChatMessage;
 import samryong.domain.chat.redis.RedisPublisher;
 import samryong.domain.chat.repository.ChatMessageRepository;
+import samryong.domain.member.entity.Member;
 
 @Service
 @RequiredArgsConstructor
@@ -24,6 +25,7 @@ public class ChatMessageServiceImpl implements ChatMessageService {
     private final RedisPublisher redisPublisher;
     private final ChatRoomService chatRoomService;
     private final RedisTemplate<String, ChatMessage> redisTemplateMessage;
+    private static final String CHAT_ROOM = "CHAT_ROOM:";
 
     @Override
     @Transactional
@@ -40,14 +42,15 @@ public class ChatMessageServiceImpl implements ChatMessageService {
     @Transactional
     public void saveMessage(ChatMessageRequestDTO requestDTO) {
         ChatMessage chatMessage = ChatMessageConverter.toChatMessage(requestDTO);
+        String key = CHAT_ROOM + chatMessage.getChatRoomId();
 
         chatMessageRepository.save(chatMessage);
 
         redisTemplateMessage.setValueSerializer(new Jackson2JsonRedisSerializer<>(ChatMessage.class));
 
-        redisTemplateMessage.opsForList().leftPush(chatMessage.getChatRoomId().toString(), chatMessage);
+        redisTemplateMessage.opsForList().leftPush(key, chatMessage);
 
-        redisTemplateMessage.expire(chatMessage.getChatRoomId().toString(), 30, TimeUnit.MINUTES);
+        redisTemplateMessage.expire(key, 30, TimeUnit.MINUTES);
 
         chatRoomService.updateChatRoomLastMessage(chatMessage.getChatRoomId());
     }
@@ -56,10 +59,10 @@ public class ChatMessageServiceImpl implements ChatMessageService {
     public ChatMessageResponseListDTO getMessageList(Long roomId) {
 
         List<ChatMessage> messageList = new ArrayList<>();
+        String key = CHAT_ROOM + roomId;
 
         redisTemplateMessage.setValueSerializer(new Jackson2JsonRedisSerializer<>(ChatMessage.class));
-        List<ChatMessage> redisMessageList =
-                redisTemplateMessage.opsForList().range(roomId.toString(), 0, 99);
+        List<ChatMessage> redisMessageList = redisTemplateMessage.opsForList().range(key, 0, 99);
         if (redisMessageList == null || redisMessageList.isEmpty()) {
             List<ChatMessage> dbMessageList =
                     chatMessageRepository.findTop100ByChatRoomIdOrderByCreatedAtDesc(roomId);
@@ -67,9 +70,7 @@ public class ChatMessageServiceImpl implements ChatMessageService {
             for (ChatMessage chatMessage : dbMessageList) {
 
                 messageList.add(chatMessage);
-                redisTemplateMessage
-                        .opsForList()
-                        .leftPush(chatMessage.getChatRoomId().toString(), chatMessage);
+                redisTemplateMessage.opsForList().leftPush(key, chatMessage);
             }
         } else {
             messageList.addAll(redisMessageList);
@@ -77,5 +78,19 @@ public class ChatMessageServiceImpl implements ChatMessageService {
         }
 
         return ChatMessageConverter.toChatMessageResponseListDTO(messageList);
+    }
+
+    @Override
+    @Transactional
+    public void sendRentRequestMessage(Member member, Long roomId) {
+        ChatMessageRequestDTO message = ChatMessageConverter.toRentRequestChatMessage(member, roomId);
+        publishMessage(message);
+    }
+
+    @Override
+    @Transactional
+    public void sendRentAcceptMessage(Member member, Long roomId) {
+        ChatMessageRequestDTO message = ChatMessageConverter.toRentAcceptChatMessage(member, roomId);
+        publishMessage(message);
     }
 }
