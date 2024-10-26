@@ -48,6 +48,8 @@ public class Rent extends BaseEntity {
 
     private LocalDateTime endDate; // 대여 종료일
 
+    private Long rentFee; // 대여료
+
     private Long overDueFee; // 연체료
 
     @Enumerated(EnumType.STRING)
@@ -60,5 +62,21 @@ public class Rent extends BaseEntity {
         RETURN_REQUEST, // 반납 요청
         RETURN_ACCEPT, // 반납 승인
         OVERDUE, // 연체
+    }
+
+    public void setItem(Item item) {
+        this.item = item;
+    }
+
+    public void setStartDate(LocalDateTime startDate) {
+        this.startDate = startDate;
+    }
+
+    public void setEndDate(LocalDateTime endDate) {
+        this.endDate = endDate;
+    }
+
+    public void setStatus(RentStatus status) {
+        this.status = status;
     }
 }
