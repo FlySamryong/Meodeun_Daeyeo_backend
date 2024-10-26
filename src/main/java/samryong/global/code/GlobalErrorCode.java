@@ -22,9 +22,11 @@ public enum GlobalErrorCode {
     MEMBER_NOT_FOUND(HttpStatus.NOT_FOUND, "MEMBER404", "해당 사용자를 찾을 수 없습니다."),
     ACCOUNT_ALREADY_EXIST(HttpStatus.BAD_REQUEST, "ACCOUNT401", "이미 등록된 계좌입니다."),
     MANNER_RATE_INVALID(HttpStatus.BAD_REQUEST, "MANNER403", "매너 온도는 0~5 사이의 값이어야 합니다."),
+    NO_ACCOUNT_REGISTERED(HttpStatus.NOT_FOUND, "ACCOUNT404", "등록된 계좌가 없습니다."),
 
     // 아이템 관련 에러
     ITEM_NOT_FOUND(HttpStatus.NOT_FOUND, "ITEM404", "해당 아이템을 찾을 수 없습니다."),
+    ITEM_NOT_AVAILABLE(HttpStatus.BAD_REQUEST, "ITEM403", "대여 가능한 아이템이 아닙니다."),
     CATEGORY_NOT_FOUND(HttpStatus.NOT_FOUND, "CATEGORY404", "해당 카테고리를 찾을 수 없습니다."),
 
     // 채팅 관련 에러
@@ -33,6 +35,13 @@ public enum GlobalErrorCode {
 
     // 위치 관련 에러
     LOCATION_NOT_FOUND(HttpStatus.NOT_FOUND, "LOCATION404", "해당 위치를 찾을 수 없습니다."),
+
+    // 대여 관련 에러
+    NOT_RENTER(HttpStatus.BAD_REQUEST, "RENT403", "대여자가 아닙니다."),
+    NOT_OWNER(HttpStatus.BAD_REQUEST, "RENT403", "소유자가 아닙니다."),
+    RENT_IN_PROGRESS(HttpStatus.BAD_REQUEST, "RENT403", "대여 진행 중입니다."),
+    NO_ACCOUNT_RECEIVER(HttpStatus.NOT_FOUND, "ACCOUNT404", "수신자의 계좌가 없습니다."),
+    RENT_NOT_EXIST(HttpStatus.NOT_FOUND, "RENT404", "대여 정보가 없습니다."),
 
     // 인증 관련 에러
     KAKAO_AUTH_ERROR(HttpStatus.UNAUTHORIZED, "AUTH403", "카카오 인증에 실패했습니다."),
