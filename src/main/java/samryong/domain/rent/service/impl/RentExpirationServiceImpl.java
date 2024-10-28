@@ -32,7 +32,7 @@ public class RentExpirationServiceImpl implements RentExpirationService {
     private final ItemRepository itemRepository;
 
     private static final String RENT = "RENT:";
-    private static final int DEFAULT_OVERDUE_HOURS = 2; // 다음 연체료 출금까지 기간
+    private static final int DEFAULT_OVERDUE_HOURS = 24; // 다음 연체료 출금까지 기간
     private static final String RENT_REQUEST_EXPIRATION_MESSAGE = "대여 요청이 수락되지 않아 대여가 취소되었습니다.";
     private static final String RENT_ACCEPT_EXPIRATION_MESSAGE = "대여 요청을 최종적으로 확인하지 않아 대여가 취소되었습니다.";
     private static final String OVERDUE_MESSAGE = "물품 반납이 지연되어 연체료가 부과되었습니다. 24시간 내로 반납해주세요.";
