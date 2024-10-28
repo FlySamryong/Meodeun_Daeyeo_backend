@@ -2,8 +2,8 @@ package samryong.domain.item.service.item;
 
 import java.util.List;
 import org.springframework.web.multipart.MultipartFile;
-import samryong.domain.item.dto.ItemDTO;
 import samryong.domain.item.dto.ItemDTO.ItemListRequestDTO;
+import samryong.domain.item.dto.ItemDTO.ItemPreviewListResponseDTO;
 import samryong.domain.item.dto.ItemDTO.ItemRequestDTO;
 import samryong.domain.item.dto.ItemDTO.ItemResponseDTO;
 import samryong.domain.location.dto.LocationDTO.LocationRequestDTO;
@@ -19,5 +19,5 @@ public interface ItemService {
 
     ItemResponseDTO getItemDetail(Long itemId, Member member);
 
-    ItemDTO.ItemPreviewListResponseDTO searchItem(ItemListRequestDTO requestDTO, int page);
+    ItemPreviewListResponseDTO searchItem(ItemListRequestDTO requestDTO, int page);
 }

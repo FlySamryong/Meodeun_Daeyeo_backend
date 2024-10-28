@@ -26,6 +26,7 @@ public class ChatRoomConverter {
                 .ownerName(chatRoom.getOwner().getNickName())
                 .renterName(chatRoom.getRenter().getNickName())
                 .itemName(chatRoom.getItem().getName())
+                .ownerProfileImage(chatRoom.getOwner().getProfileImage().getImageUri())
                 .updatedDate(
                         chatRoom.getUpdatedDate() != null
                                 ? chatRoom

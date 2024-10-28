@@ -42,9 +42,11 @@ public class ChatMessage {
         TEXT, // 일반 텍스트 메시지
         IMAGE, // 이미지 메시지
         RENT_REQ, // 물품 대여 요청
-        RENT_RES, // 물품 대여 응답
-        RET_REQ, // 물품 반납 요청
-        RET_RES, // 물품 반납 응답
-        DEPOSIT_RES, // 보증금 요청
+        RENT_ACCEPT, // 물품 대여 수락
+        RENT_AGREE, // 물품 대여 동의
+        DEPOSIT_REQ, // 보증금 반납 요청
+        DEPOSIT_RES, // 보증금 반납 응답
+        OVERDUE, // 연체
+        CANCEL, // 취소
     }
 }

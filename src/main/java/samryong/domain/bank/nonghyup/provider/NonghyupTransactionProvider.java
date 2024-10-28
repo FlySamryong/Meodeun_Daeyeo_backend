@@ -15,7 +15,8 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
-import samryong.domain.bank.nonghyup.dto.request.BankTransferRequestDTO;
+import samryong.domain.bank.nonghyup.dto.request.BankTransferRequestDTO.DepositRequestDTO;
+import samryong.domain.bank.nonghyup.dto.request.BankTransferRequestDTO.WithdrawRequestDTO;
 import samryong.domain.bank.nonghyup.dto.response.CheckOpenFinAccountDirectResponseDTO;
 import samryong.domain.bank.nonghyup.dto.response.DrawingTransferResponseDTO;
 import samryong.domain.bank.nonghyup.dto.response.OpenFinAccountDirectResponseDTO;
@@ -105,7 +106,7 @@ public class NonghyupTransactionProvider {
     }
 
     // 입금 이체, 핀테크 기업 약정 계좌에서 개인 농협 계좌로 입금 이체
-    public void receivedTransferAccountNumber(BankTransferRequestDTO.DepositRequestDTO requestDTO) {
+    public void receivedTransferAccountNumber(DepositRequestDTO requestDTO) {
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setContentType(MediaType.APPLICATION_JSON);
 
@@ -140,7 +141,7 @@ public class NonghyupTransactionProvider {
     }
 
     // 출금 이체, 개인 농협 계좌에서 핀테크 기업 약정 계좌로 출금 이체
-    public void drawingTransfer(BankTransferRequestDTO.WithdrawRequestDTO requestDTO) {
+    public void drawingTransfer(WithdrawRequestDTO requestDTO) {
 
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setContentType(MediaType.APPLICATION_JSON);

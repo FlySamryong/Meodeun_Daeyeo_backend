@@ -94,6 +94,18 @@ public class Item extends BaseEntity {
         this.imageList.add(image);
     }
 
+    public void addRent(Rent rent) {
+        rent.setItem(this);
+        if (this.rentList == null) this.rentList = new ArrayList<>();
+        this.rentList.add(rent);
+    }
+
+    public void removeRent(Rent rent) {
+        rent.setItem(null);
+        if (this.rentList == null) return;
+        this.rentList.remove(rent);
+    }
+
     public void setStatus(Status status) {
         this.status = status;
     }

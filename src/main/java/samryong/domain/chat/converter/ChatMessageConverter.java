@@ -8,6 +8,8 @@ import samryong.domain.chat.dto.ChatMessageDTO.ChatMessageRequestDTO;
 import samryong.domain.chat.dto.ChatMessageDTO.ChatMessageResponseDTO;
 import samryong.domain.chat.dto.ChatMessageDTO.ChatMessageResponseListDTO;
 import samryong.domain.chat.entity.ChatMessage;
+import samryong.domain.chat.entity.ChatMessage.ChatType;
+import samryong.domain.member.entity.Member;
 
 @Component
 public class ChatMessageConverter {
@@ -42,6 +44,16 @@ public class ChatMessageConverter {
                         chatMessageList.stream()
                                 .map(ChatMessageConverter::toChatMessageResponseDTO)
                                 .collect(Collectors.toList()))
+                .build();
+    }
+
+    public static ChatMessageRequestDTO toRentMessage(
+            Member sender, Long chatRoomId, String message, ChatType type) {
+        return ChatMessageRequestDTO.builder()
+                .chatRoomId(chatRoomId)
+                .senderId(sender.getId())
+                .message(message)
+                .type(type)
                 .build();
     }
 }

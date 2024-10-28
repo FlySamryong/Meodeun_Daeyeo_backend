@@ -13,6 +13,7 @@ import samryong.domain.member.converter.MemberConverter;
 import samryong.domain.member.dto.MemberDTO.MyInformationResponseDTO;
 import samryong.domain.member.entity.Member;
 import samryong.domain.member.repository.MemberRepository;
+import samryong.domain.rent.entity.Rent;
 import samryong.global.code.GlobalErrorCode;
 import samryong.global.exception.GlobalException;
 
@@ -74,5 +75,17 @@ public class MemberServiceImpl implements MemberService {
 
         member.setMannerRate(newMannerRate, member.getMannerCount() + 1);
         memberRepository.save(member);
+    }
+
+    @Override
+    @Transactional
+    public void updateRentList(Member member, Rent rent) {
+        member.addRent(rent);
+    }
+
+    @Override
+    @Transactional
+    public void updateLoanList(Member member, Rent rent) {
+        member.addLoan(rent);
     }
 }
