@@ -48,9 +48,10 @@ public class RedisConfig {
     }
 
     // redis 의 pub/sub 기능을 이용하기 위해 pub/sub 메시지를 처리하는 MessageListener 설정
+    // 또는 Redis 키 만료 이벤트를 처리하기 위해 KeyExpirationEventMessageListener 설정
     @Bean
     public RedisMessageListenerContainer redisMessageListener(
-            RedisConnectionFactory connectionFactory) { // 1.
+            RedisConnectionFactory connectionFactory) {
         RedisMessageListenerContainer container = new RedisMessageListenerContainer();
         container.setConnectionFactory(connectionFactory);
         return container;
