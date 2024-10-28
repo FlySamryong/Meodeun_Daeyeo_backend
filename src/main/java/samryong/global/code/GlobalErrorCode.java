@@ -20,7 +20,7 @@ public enum GlobalErrorCode {
 
     // 사용자 관련 에러
     MEMBER_NOT_FOUND(HttpStatus.NOT_FOUND, "MEMBER404", "해당 사용자를 찾을 수 없습니다."),
-    ACCOUNT_ALREADY_EXIST(HttpStatus.BAD_REQUEST, "ACCOUNT401", "이미 등록된 계좌입니다."),
+    ACCOUNT_ALREADY_EXIST(HttpStatus.BAD_REQUEST, "ACCOUNT400", "이미 등록된 계좌입니다."),
     MANNER_RATE_INVALID(HttpStatus.BAD_REQUEST, "MANNER403", "매너 온도는 0~5 사이의 값이어야 합니다."),
     NO_ACCOUNT_REGISTERED(HttpStatus.NOT_FOUND, "ACCOUNT404", "등록된 계좌가 없습니다."),
 
@@ -42,11 +42,13 @@ public enum GlobalErrorCode {
     RENT_IN_PROGRESS(HttpStatus.BAD_REQUEST, "RENT403", "대여 진행 중입니다."),
     NO_ACCOUNT_RECEIVER(HttpStatus.NOT_FOUND, "ACCOUNT404", "수신자의 계좌가 없습니다."),
     RENT_NOT_EXIST(HttpStatus.NOT_FOUND, "RENT404", "대여 정보가 없습니다."),
+    OTP_NOT_MATCH(HttpStatus.BAD_REQUEST, "RENT400", "OTP가 일치하지 않습니다."),
+    INVALID_RENT_STATUS(HttpStatus.BAD_REQUEST, "RENT400", "유효하지 않은 대여 상태입니다."),
 
     // 인증 관련 에러
     KAKAO_AUTH_ERROR(HttpStatus.UNAUTHORIZED, "AUTH403", "카카오 인증에 실패했습니다."),
-    AUTH_EXPIRED_TOKEN(HttpStatus.UNAUTHORIZED, "AUTH401", "만료된 토큰입니다."),
-    AUTH_INVALID_TOKEN(HttpStatus.NOT_FOUND, "AUTH402", "유효하지 않은 토큰입니다.."),
+    AUTH_EXPIRED_TOKEN(HttpStatus.UNAUTHORIZED, "AUTH403", "만료된 토큰입니다."),
+    AUTH_INVALID_TOKEN(HttpStatus.NOT_FOUND, "AUTH403", "유효하지 않은 토큰입니다.."),
     AUTH_INVALID_REFRESH_TOKEN(HttpStatus.UNAUTHORIZED, "AUTH403", "유효하지 않은 리프레시 토큰입니다.");
 
     private final HttpStatus httpStatus;
