@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
 import samryong.domain.image.Image;
+import samryong.domain.image.ImageConverter;
 import samryong.domain.item.document.ItemDocument;
 import samryong.domain.item.dto.ItemDTO;
 import samryong.domain.item.dto.ItemDTO.ItemPreviewListResponseDTO;
@@ -20,6 +21,7 @@ import samryong.domain.item.entity.Item;
 import samryong.domain.item.entity.ItemCategory;
 import samryong.domain.location.converter.LocationConverter;
 import samryong.domain.location.entity.Location;
+import samryong.domain.member.converter.MemberConverter;
 import samryong.domain.member.entity.Member;
 
 @Component
@@ -101,6 +103,14 @@ public class ItemConverter {
                                 item.getItemCategoryList().stream()
                                         .map(ItemCategory::getCategory)
                                         .collect(Collectors.toList())))
+                .location(LocationConverter.toLocationResponseDTO(item.getLocation()))
+                .owner(MemberConverter.toOwnerResponseDTO(item.getMember()))
+                .imageList(
+                        item.getImageList() != null
+                                ? item.getImageList().stream()
+                                        .map(ImageConverter::toImageResponseDTO)
+                                        .collect(Collectors.toList())
+                                : Collections.emptyList())
                 .build();
     }
 

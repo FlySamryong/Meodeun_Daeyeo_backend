@@ -36,6 +36,8 @@ public class ChatRoomDTO {
 
         private String renterName; // 물품 대여자 이름
 
+        private String ownerProfileImage; // 물품 등록자 프로필 이미지
+
         private String updatedDate; // 채팅방 최근 메시지 업데이트 시간
 
         private String lastMessage; // 채팅방 마지막 메시지

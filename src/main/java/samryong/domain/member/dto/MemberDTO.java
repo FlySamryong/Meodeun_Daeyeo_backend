@@ -28,4 +28,21 @@ public class MemberDTO {
 
         private List<NonghyupAccountResponseDTO> accountList;
     }
+
+    @Getter
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class MemberResponseDTO {
+
+        private Long memberId;
+
+        private String nickName;
+
+        private String profileImage;
+
+        private double mannerRate;
+
+        private LocationResponseDTO location;
+    }
 }

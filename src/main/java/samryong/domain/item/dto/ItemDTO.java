@@ -10,10 +10,12 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import samryong.domain.image.ImageDTO.ImageResponseDTO;
 import samryong.domain.item.dto.CategoryDTO.CategoryRequestDTO;
 import samryong.domain.item.dto.CategoryDTO.CategoryResponseDTO;
 import samryong.domain.location.dto.LocationDTO.LocationRequestDTO;
 import samryong.domain.location.dto.LocationDTO.LocationResponseDTO;
+import samryong.domain.member.dto.MemberDTO.MemberResponseDTO;
 
 public class ItemDTO {
     @Getter
@@ -54,7 +56,11 @@ public class ItemDTO {
         private Long period;
         private Long fee;
         private Long deposit;
+        private String status;
+        private LocationResponseDTO location;
         private List<CategoryResponseDTO> categoryList;
+        private List<ImageResponseDTO> imageList;
+        private MemberResponseDTO owner;
     }
 
     @Getter
