@@ -100,6 +100,12 @@ public class Item extends BaseEntity {
         this.rentList.add(rent);
     }
 
+    public void removeRent(Rent rent) {
+        rent.setItem(null);
+        if (this.rentList == null) return;
+        this.rentList.remove(rent);
+    }
+
     public void setStatus(Status status) {
         this.status = status;
     }

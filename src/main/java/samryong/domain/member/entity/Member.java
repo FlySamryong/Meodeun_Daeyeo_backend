@@ -98,6 +98,16 @@ public class Member extends BaseEntity {
         itemList.add(item);
     }
 
+    public void addRent(Rent rent) {
+        if (rentList == null) rentList = new ArrayList<>();
+        rentList.add(rent);
+    }
+
+    public void addLoan(Rent rent) {
+        if (loanList == null) loanList = new ArrayList<>();
+        loanList.add(rent);
+    }
+
     public void addAccount(Account account) {
         account.setMember(this);
         if (this.accountList == null) this.accountList = new ArrayList<>();
