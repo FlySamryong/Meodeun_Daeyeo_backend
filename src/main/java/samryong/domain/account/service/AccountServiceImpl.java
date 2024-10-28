@@ -1,5 +1,6 @@
 package samryong.domain.account.service;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import samryong.domain.account.entity.Account;
@@ -17,6 +18,7 @@ public class AccountServiceImpl implements AccountService {
 
     // 사용자-> 운영자 계좌로 대여료 송금
     @Override
+    @Transactional
     public void drawTransfer(Member sender, Member receiver, Long fee) {
 
         checkAccount(sender, receiver); // 계좌 유무 확인
@@ -28,6 +30,7 @@ public class AccountServiceImpl implements AccountService {
 
     // 운영자-> 사용자 계좌로 대여료 송금
     @Override
+    @Transactional
     public void receiveTransfer(Member receiver, Long fee) {
 
         checkAccount(receiver); // 계좌 유무 확인
@@ -44,7 +47,8 @@ public class AccountServiceImpl implements AccountService {
                 .orElseThrow(() -> new GlobalException(GlobalErrorCode.NO_ACCOUNT_REGISTERED));
     }
 
-    private void checkAccount(Member sender, Member receiver) {
+    @Transactional
+    public void checkAccount(Member sender, Member receiver) {
         if (sender.getAccountList().isEmpty()) {
             throw new GlobalException(GlobalErrorCode.NO_ACCOUNT_REGISTERED);
         }

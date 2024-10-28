@@ -59,7 +59,6 @@ public class Rent extends BaseEntity {
         REQUEST, // 대여 요청
         ACCEPT, // 대여 승인
         RENT_PROCESS, // 대여 진행
-        RETURN_REQUEST, // 반납 요청
         RETURN_ACCEPT, // 반납 승인
         OVERDUE, // 연체
     }

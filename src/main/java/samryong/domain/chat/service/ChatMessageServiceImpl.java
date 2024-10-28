@@ -82,15 +82,10 @@ public class ChatMessageServiceImpl implements ChatMessageService {
 
     @Override
     @Transactional
-    public void sendRentRequestMessage(Member member, Long roomId) {
-        ChatMessageRequestDTO message = ChatMessageConverter.toRentRequestChatMessage(member, roomId);
-        publishMessage(message);
-    }
-
-    @Override
-    @Transactional
-    public void sendRentAcceptMessage(Member member, Long roomId) {
-        ChatMessageRequestDTO message = ChatMessageConverter.toRentAcceptChatMessage(member, roomId);
-        publishMessage(message);
+    public void sendRentActivityMessage(
+            Member member, Long roomId, String message, ChatMessage.ChatType type) {
+        ChatMessageRequestDTO chatMessage =
+                ChatMessageConverter.toRentMessage(member, roomId, message, type);
+        publishMessage(chatMessage);
     }
 }
