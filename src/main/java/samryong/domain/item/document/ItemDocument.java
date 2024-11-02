@@ -2,7 +2,7 @@ package samryong.domain.item.document;
 
 import static org.springframework.data.elasticsearch.annotations.FieldType.*;
 
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.List;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -35,7 +35,7 @@ public class ItemDocument {
     private String description; // 상품 설명
 
     @Field(type = FieldType.Date, format = DateFormat.date_time)
-    private LocalDateTime createdDate; // 상품 등록 날짜
+    private OffsetDateTime createdDate; // 상품 등록 날짜
 
     @Field(type = Keyword)
     private String status; // 상품 상태

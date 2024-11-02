@@ -1,5 +1,6 @@
 package samryong.domain.item.converter;
 
+import java.time.OffsetDateTime;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -43,7 +44,7 @@ public class ItemConverter {
         return ItemDocument.builder()
                 .id(item.getId())
                 .name(item.getName())
-                .createdDate(item.getCreatedAt())
+                .createdDate(OffsetDateTime.from(item.getCreatedAt()))
                 .status(String.valueOf(item.getStatus()))
                 .description(item.getDescription())
                 .period(item.getPeriod())
