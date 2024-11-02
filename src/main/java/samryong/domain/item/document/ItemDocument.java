@@ -26,13 +26,13 @@ public class ItemDocument {
 
     @Id private Long id;
 
-    @Field(type = Text, analyzer = "korean")
+    @Field(type = Text, analyzer = "nori")
     private String name; // 상품명
 
-    @Field(type = FieldType.Text, analyzer = "korean")
+    @Field(type = FieldType.Text, analyzer = "nori")
     private String description; // 상품 설명
 
-    @Field(type = Text, analyzer = "korean")
+    @Field(type = Text, analyzer = "nori")
     private String createdDate; // 상품 등록 날짜
 
     @Field(type = Keyword)
