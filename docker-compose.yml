@@ -17,7 +17,9 @@ services:
 
   # Elasticsearch service
   es:
-    build: .
+    build:
+      context: .
+      dockerfile: Dockerfile
     container_name: es
     environment:
       - node.name=single-node
