@@ -1,0 +1,67 @@
+# github repository Actions 페이지에 나타낼 이름
+name: samryong CI/CD with Gradle
+
+# event trigger
+# main, develop 브랜치에 push, pr 생성시 실행되는 트리거
+on:
+  push:
+    branches: [ "main", "develop" ]
+  pull_request:
+    branches: [ "main", "develop" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-20.04
+    steps:
+      ## jdk setting
+      - uses: actions/checkout@v3
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      ## gradle caching
+      - name: Gradle Caching
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
+
+      - name: application-server.yml 파일을 생성 합니다.
+        run: |
+          cd ./src/main/resources
+          touch ./application-sever.yml
+          echo "${{ secrets.PROPERTIES }}" > ./application-server.yml
+        shell: bash
+
+      - name: gradle build를 위한 권한을 부여합니다.
+        run: chmod +x gradlew
+
+      - name: gradle build 중입니다.
+        run: ./gradlew build
+        shell: bash # ci는 여기까지
+
+      - name: docker image build 후 docker hub에 push합니다.
+        run: |
+          docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
+          docker build -f Dockerfile -t ${{ secrets.DOCKER_USERNAME }}/samryong .
+          docker push ${{ secrets.DOCKER_USERNAME }}/samryong
+
+      ## deploy to production
+      - name:  docker hub에서 pull 후 deploy합니다.
+        uses: appleboy/ssh-action@master
+        with:
+          username: ${{ secrets.EC2_USERNAME }}
+          host: ${{ secrets.EC2_HOST }}
+          key: ${{ secrets.EC2_PRIVATE_KEY }}
+          envs: GITHUB_SHA
+          script: |
+            sudo docker pull ${{ secrets.DOCKER_USERNAME }}/samryong
+            sudo docker rm -f $(docker ps -qa) 
+            docker compose up -d
+            docker image prune -f
