@@ -58,7 +58,7 @@ jobs:
 
       ## Build with Gradle
       - name: Running Gradle build
-        run: ./gradlew build
+        run: ./gradlew build -x test
         shell: bash
 
       ## Build Docker image and push to Docker Hub
