@@ -40,6 +40,8 @@ jobs:
         shell: bash
 
       - name: Docker Compose 시작
+        env:
+          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
         run: docker compose up -d
         shell: bash
 
