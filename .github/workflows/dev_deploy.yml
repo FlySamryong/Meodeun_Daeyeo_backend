@@ -12,8 +12,6 @@ on:
 jobs:
   build:
     runs-on: ubuntu-20.04
-    env:
-      DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
     steps:
       ## jdk setting
       - uses: actions/checkout@v3
@@ -55,7 +53,7 @@ jobs:
           docker push ${{ secrets.DOCKER_USERNAME }}/samryong
 
       ## deploy to production
-      - name:  docker hub에서 pull 후 deploy합니다.
+      - name: docker hub에서 pull 후 deploy합니다.
         uses: appleboy/ssh-action@master
         with:
           username: ${{ secrets.EC2_USERNAME }}
@@ -64,6 +62,10 @@ jobs:
           envs: GITHUB_SHA
           script: |
             sudo docker pull ${{ secrets.DOCKER_USERNAME }}/samryong
-            sudo docker rm -f $(docker ps -qa) 
+            if [ "$(sudo docker ps -qa)" ]; then
+                sudo docker rm -f $(sudo docker ps -qa)
+            else
+                echo "No containers to remove"
+            fi
             docker compose up -d
             docker image prune -f
