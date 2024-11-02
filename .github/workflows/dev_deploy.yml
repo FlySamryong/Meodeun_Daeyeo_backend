@@ -1,8 +1,5 @@
-# github repository Actions 페이지에 나타낼 이름
 name: samryong CI/CD with Gradle
 
-# event trigger
-# main, develop 브랜치에 push, pr 생성시 실행되는 트리거
 on:
   push:
     branches: [ "main", "develop" ]
@@ -13,15 +10,16 @@ jobs:
   build:
     runs-on: ubuntu-20.04
     steps:
-      ## jdk setting
       - uses: actions/checkout@v3
+
+      ## Set up JDK 17
       - name: Set up JDK 17
         uses: actions/setup-java@v3
         with:
           java-version: '17'
           distribution: 'temurin'
 
-      ## gradle caching
+      ## Gradle caching
       - name: Gradle Caching
         uses: actions/cache@v3
         with:
@@ -32,38 +30,46 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-gradle-
 
-      - name: application-server.yml 파일을 생성 합니다.
+      ## Start services with Docker Compose
+      - name: Start MongoDB, Elasticsearch, and Kibana
+        run: docker compose up -d mongodb es kibana
+        shell: bash
+
+      ## Wait for Elasticsearch to be ready
+      - name: Wait for Elasticsearch to start
+        run: |
+          until curl -s http://localhost:9200 >/dev/null; do
+            echo "Waiting for Elasticsearch to start..."
+            sleep 5
+          done
+        shell: bash
+
+      ## Generate application-server.yml file
+      - name: Create application-server.yml file
         run: |
           cd ./src/main/resources
-          touch ./application-sever.yml
+          touch ./application-server.yml
           echo "${{ secrets.PROPERTIES }}" > ./application-server.yml
         shell: bash
 
-      - name: Docker Compose 시작
-        env:
-          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
-        run: docker compose up -d
-        shell: bash
-
-      - name: gradle build를 위한 권한을 부여합니다.
+      ## Grant permissions for Gradle build
+      - name: Grant permissions for Gradle build
         run: chmod +x gradlew
 
-      - name: gradle build 중입니다.
+      ## Build with Gradle
+      - name: Running Gradle build
         run: ./gradlew build
-        shell: bash # ci는 여기까지
-
-      - name: Docker Compose 중지
-        run: docker compose down
         shell: bash
 
-      - name: docker image build 후 docker hub에 push합니다.
+      ## Build Docker image and push to Docker Hub
+      - name: Docker image build and push
         run: |
           docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
           docker build -f Dockerfile -t ${{ secrets.DOCKER_USERNAME }}/samryong .
           docker push ${{ secrets.DOCKER_USERNAME }}/samryong
 
-      ## deploy to production
-      - name: docker hub에서 pull 후 deploy합니다.
+      ## Deploy to production
+      - name: Deploy to production
         uses: appleboy/ssh-action@master
         with:
           username: ${{ secrets.EC2_USERNAME }}
