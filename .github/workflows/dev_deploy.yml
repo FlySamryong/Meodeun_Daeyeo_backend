@@ -30,7 +30,7 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-gradle-
 
-      ## Start services with Docker Compose
+      ## Start services with Docker Compose (MongoDB, Elasticsearch, Kibana)
       - name: Start MongoDB, Elasticsearch, and Kibana
         run: docker compose up -d mongodb es kibana
         shell: bash
