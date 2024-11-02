@@ -40,7 +40,7 @@ jobs:
         shell: bash
 
       - name: Docker Compose 시작
-        run: docker-compose up -d
+        run: docker compose up -d
         shell: bash
 
       - name: gradle build를 위한 권한을 부여합니다.
@@ -51,7 +51,7 @@ jobs:
         shell: bash # ci는 여기까지
 
       - name: Docker Compose 중지
-        run: docker-compose down
+        run: docker compose down
         shell: bash
 
       - name: docker image build 후 docker hub에 push합니다.
