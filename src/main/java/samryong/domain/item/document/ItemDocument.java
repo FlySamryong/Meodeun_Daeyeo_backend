@@ -1,6 +1,6 @@
 package samryong.domain.item.document;
 
-import static org.springframework.data.elasticsearch.annotations.FieldType.Keyword;
+import static org.springframework.data.elasticsearch.annotations.FieldType.*;
 
 import java.util.List;
 import lombok.AccessLevel;
@@ -26,13 +26,13 @@ public class ItemDocument {
 
     @Id private Long id;
 
-    @Field(type = Keyword, analyzer = "korean")
+    @Field(type = Text, analyzer = "korean")
     private String name; // 상품명
 
     @Field(type = FieldType.Text, analyzer = "korean")
     private String description; // 상품 설명
 
-    @Field(type = Keyword, analyzer = "korean")
+    @Field(type = Text, analyzer = "korean")
     private String createdDate; // 상품 등록 날짜
 
     @Field(type = Keyword)
