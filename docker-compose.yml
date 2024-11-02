@@ -16,9 +16,7 @@ services:
 
   # Elasticsearch service
   es:
-    build:
-      context: .
-      dockerfile: ./src/main/resources/elastic/Dockerfile
+    build: .
     container_name: es
     environment:
       - node.name=single-node

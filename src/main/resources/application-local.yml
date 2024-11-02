@@ -27,6 +27,7 @@ spring:
       port: 6379
   elasticsearch:
     host: localhost:9200
+
 kakao:
   client: ${KAKAO_CLIENT_ID} # REST-API 키
   redirect-uri: ${KAKAO_REDIRECT_URI} # 설정해놓은 redirect-uri
