@@ -11,6 +11,7 @@ services:
     depends_on:
       - es
       - mongodb
+      - redis  # Redis 컨테이너가 시작될 때까지 대기
     networks:
       - app-network
 
@@ -48,6 +49,15 @@ services:
     image: mongo:latest
     ports:
       - 27017:27017
+    networks:
+      - app-network
+
+  # Redis service
+  redis:
+    container_name: redis
+    image: redis:latest
+    ports:
+      - 6379:6379
     networks:
       - app-network
 
