@@ -12,6 +12,8 @@ on:
 jobs:
   build:
     runs-on: ubuntu-20.04
+    env:
+      DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
     steps:
       ## jdk setting
       - uses: actions/checkout@v3
@@ -59,9 +61,10 @@ jobs:
           username: ${{ secrets.EC2_USERNAME }}
           host: ${{ secrets.EC2_HOST }}
           key: ${{ secrets.EC2_PRIVATE_KEY }}
-          envs: GITHUB_SHA
+          envs: GITHUB_SHA, DOCKER_USERNAME
           script: |
-            sudo docker pull ${{ secrets.DOCKER_USERNAME }}/samryong
+            export DOCKER_USERNAME=${DOCKER_USERNAME}
+            sudo docker pull $DOCKER_USERNAME/samryong
             if [ "$(sudo docker ps -qa)" ]; then
                 sudo docker rm -f $(sudo docker ps -qa)
             else
