@@ -1,9 +1,24 @@
 version: '3.7'
+
 services:
+  # Main application service
+  trothcam:
+    image: ${DOCKER_USERNAME}/samryong
+    container_name: samryong
+    restart: always
+    ports:
+      - 8080:8080
+    depends_on:
+      - es
+      - mongodb
+    networks:
+      - app-network
+
+  # Elasticsearch service
   es:
     build:
       context: .
-      dockerfile: Dockerfile  # 루트 디렉토리의 Dockerfile 사용
+      dockerfile: ./src/main/resources/elastic/Dockerfile
     container_name: es
     environment:
       - node.name=single-node
@@ -13,24 +28,31 @@ services:
       - 9200:9200
       - 9300:9300
     networks:
-      - es-bridge
+      - app-network
 
+  # Kibana service
   kibana:
     container_name: kibana
     image: docker.elastic.co/kibana/kibana:7.17.9
     environment:
       SERVER_NAME: kibana
-      # Elasticsearch 기본 호스트는 http://elasticsearch:9200 이다.
-      # 현재 docker-compose 파일에 Elasticsearch 서비스 명은 es로 설정되어있다.
       ELASTICSEARCH_HOSTS: http://es:9200
     ports:
       - 5601:5601
-    # Elasticsearch Start Dependency
     depends_on:
       - es
     networks:
-      - es-bridge
+      - app-network
+
+  # MongoDB service
+  mongodb:
+    container_name: mongodb
+    image: mongo:latest
+    ports:
+      - 27017:27017
+    networks:
+      - app-network
 
 networks:
-  es-bridge:
+  app-network:
     driver: bridge
