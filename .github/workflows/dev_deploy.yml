@@ -9,18 +9,19 @@ on:
 jobs:
   build:
     runs-on: ubuntu-20.04
-    services:
-      # 필요한 서비스 정의 (예: Elasticsearch, Redis)
-      docker:
-        image: docker:20.10.7
-        options: --privileged # Docker 내부에서 Docker를 실행할 수 있도록 설정
     steps:
       - uses: actions/checkout@v3
 
-      ## Docker Compose 파일로 서비스 시작
-      - name: Start Docker Compose services
+      ## Docker Compose 설치
+      - name: Install Docker Compose
         run: |
-          docker-compose -f docker-compose.yml up -d
+          sudo curl -L "https://github.com/docker/compose/releases/download/$(curl -s https://api.github.com/repos/docker/compose/releases/latest | grep -Po '"tag_name": "\K[^"]*')" -o /usr/local/bin/docker-compose
+          sudo chmod +x /usr/local/bin/docker-compose
+        shell: bash
+
+      ## Docker Compose로 필요한 서비스 시작
+      - name: Start Docker Compose services
+        run: docker-compose -f docker-compose.yml up -d
         shell: bash
 
       ## JDK 설정
