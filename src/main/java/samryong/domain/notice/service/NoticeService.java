@@ -1,7 +1,9 @@
 package samryong.domain.notice.service;
 
-public interface NoticeService {
-    public void dailyRemind();
+import samryong.domain.rent.entity.Rent;
 
-    public void tradeRemind();
+public interface NoticeService {
+    void dailyRemind();
+
+    void tradeRemind(Rent rent);
 }

@@ -61,6 +61,7 @@ public class Rent extends BaseEntity {
         RENT_PROCESS, // 대여 진행
         RETURN_ACCEPT, // 반납 승인
         OVERDUE, // 연체
+        NOTICE, // 공지 및 알림
     }
 
     public void setItem(Item item) {

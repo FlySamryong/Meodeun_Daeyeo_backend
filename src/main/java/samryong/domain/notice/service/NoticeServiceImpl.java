@@ -16,9 +16,9 @@ import samryong.domain.rent.repository.RentRepository;
 @Service
 @RequiredArgsConstructor
 public class NoticeServiceImpl implements NoticeService {
-    private final String DAILY_REMINDER_MESSAGE = "안녕하세요!\n오늘은 물품 반납일입니다. \n반납 준비를 미리 시작해 주세요. 😊";
-    private final String REMINDER_MESSAGE =
-            "안녕하세요!\n반납 예정 시간이 두 시간 남았습니다. \n반납 준비가 완료되었는지 확인해 주세요. 감사합니다! 🙏";
+    private final String DAILY_REMINDER_MESSAGE = "안녕하세요!\n오늘은 물품 반납일입니다.\n반납 준비를 미리 시작해 주세요. 😊";
+    private final String RENT_REMINDER_MESSAGE =
+            "안녕하세요!\n반납 예정 시간이 두 시간 남았습니다.\n반납 준비가 완료되었는지 확인해 주세요. 감사합니다! 🙏";
 
     private final RentRepository rentRepository;
     private final ChatRoomRepository chatRoomRepository;
@@ -38,7 +38,7 @@ public class NoticeServiceImpl implements NoticeService {
                 chatMessageService.publishMessage(
                         ChatMessageDTO.ChatMessageRequestDTO.builder()
                                 .chatRoomId(chatRoom.getId())
-                                .senderId(0L) // 관리자 ID 지정
+                                .senderId(rent.getOwner().getId())
                                 .message(DAILY_REMINDER_MESSAGE)
                                 .type(ChatMessage.ChatType.NOTICE)
                                 .build());
@@ -47,5 +47,17 @@ public class NoticeServiceImpl implements NoticeService {
     }
 
     @Override
-    public void tradeRemind() {}
+    public void tradeRemind(Rent rent) {
+        ChatRoom chatRoom =
+                chatRoomRepository
+                        .findByRenterAndOwnerAndItem(rent.getRenter(), rent.getOwner(), rent.getItem())
+                        .get();
+        chatMessageService.publishMessage(
+                ChatMessageDTO.ChatMessageRequestDTO.builder()
+                        .chatRoomId(chatRoom.getId())
+                        .senderId(rent.getOwner().getId())
+                        .message(RENT_REMINDER_MESSAGE)
+                        .type(ChatMessage.ChatType.NOTICE)
+                        .build());
+    }
 }
