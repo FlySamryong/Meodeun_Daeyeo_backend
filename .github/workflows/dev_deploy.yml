@@ -1,13 +1,13 @@
 # github repository Actions 페이지에 나타낼 이름
 name: samryong CI/CD with Gradle
 
-# event trigger
-# main, develop 브랜치에 push, pr 생성시 실행되는 트리거
 on:
-  push:
-    branches: [ "main", "develop" ]
   pull_request:
-    branches: [ "main", "develop" ]
+    branches:
+      - develop
+    types:
+      - closed
+  workflow_dispatch: # (2).수동 실행도 가능하도록
 
 jobs:
   build:
