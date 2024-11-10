@@ -1,5 +1,6 @@
 package samryong.domain.item.converter;
 
+import java.time.ZoneOffset;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -43,7 +44,7 @@ public class ItemConverter {
         return ItemDocument.builder()
                 .id(item.getId())
                 .name(item.getName())
-                .createdDate(item.getCreatedAt().toString())
+                .createdDate(item.getCreatedAt().atOffset(ZoneOffset.UTC))
                 .status(String.valueOf(item.getStatus()))
                 .description(item.getDescription())
                 .period(item.getPeriod())
@@ -67,7 +68,7 @@ public class ItemConverter {
                 .name(itemDocument.getName())
                 .status(itemDocument.getStatus())
                 .fee(itemDocument.getFee())
-                .createdDate(itemDocument.getCreatedDate())
+                .createdDate(itemDocument.getCreatedDate().toString())
                 .deposit(itemDocument.getDeposit())
                 .imageUrl(
                         itemDocument.getImageUrlList() != null && !itemDocument.getImageUrlList().isEmpty()

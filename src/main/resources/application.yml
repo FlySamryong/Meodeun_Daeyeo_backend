@@ -3,7 +3,7 @@ spring:
   application:
     name: samryong
   profiles:
-    active: local
+    active: server
 
 springdoc:
   swagger-ui:

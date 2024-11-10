@@ -22,6 +22,6 @@ public class CategoryDocument {
 
     @Id private Long id;
 
-    @Field(type = FieldType.Text, analyzer = "korean")
+    @Field(type = FieldType.Text, analyzer = "nori")
     private String name; // 카테고리명
 }

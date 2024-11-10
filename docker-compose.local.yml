@@ -1,25 +1,12 @@
 version: '3.7'
 
 services:
-  # Main application service
-  trothcam:
-    image: ${DOCKER_USERNAME}/samryong
-    container_name: samryong
-    restart: always
-    ports:
-      - 8080:8080
-    depends_on:
-      - es
-      - mongodb
-      - redis  # Redis 컨테이너가 시작될 때까지 대기
-    networks:
-      - app-network
 
   # Elasticsearch service
   es:
     build:
       context: .
-      dockerfile: Dockerfile
+      dockerfile: ./src/main/resources/elastic/Dockerfile
     container_name: es
     environment:
       - node.name=single-node
@@ -51,15 +38,6 @@ services:
     image: mongo:latest
     ports:
       - 27017:27017
-    networks:
-      - app-network
-
-  # Redis service
-  redis:
-    container_name: redis
-    image: redis:latest
-    ports:
-      - 6379:6379
     networks:
       - app-network
 
