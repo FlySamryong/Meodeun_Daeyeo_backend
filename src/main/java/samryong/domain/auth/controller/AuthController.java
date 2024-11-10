@@ -23,10 +23,11 @@ public class AuthController {
 
     private final AuthService authService;
 
-    @Operation(summary = "카카오 로그인", description = "인가 코드를 입력 받아서 카카오 로그인을 합니다.")
+    @Operation(summary = "카카오 로그인", description = "토큰을 입력 받아서 카카오 로그인을 합니다.")
     @GetMapping("/kakao/login")
-    public ApiResponse<AuthResponseDTO.LoginResponse> kakaoLogin(@RequestParam("code") String code) {
-        return ApiResponse.onSuccess("카카오 로그인 성공", authService.kakaoLogin(code));
+    public ApiResponse<AuthResponseDTO.LoginResponse> kakaoLogin(
+            @RequestParam("accessToken") String accessToken) {
+        return ApiResponse.onSuccess("카카오 로그인 성공", authService.kakaoLogin(accessToken));
     }
 
     @Operation(summary = "토큰 재발급", description = "access 토큰이 만료된 경우 refresh 토큰을 통해 토큰을 재발급 합니다.")

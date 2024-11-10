@@ -15,9 +15,10 @@ public class AuthServiceImpl implements AuthService {
     private final RefreshTokenService refreshTokenService;
 
     @Override
-    public AuthResponseDTO.LoginResponse kakaoLogin(String code) {
+    public AuthResponseDTO.LoginResponse kakaoLogin(String accessToken) {
 
-        String accessToken = kakaoAuthProvider.getAccessToken(code); // 1. 인가 코드로 토큰 발급
+        // String accessToken = kakaoAuthProvider.getAccessToken(code); // 1. 인가 코드로 토큰 발급
+
         HashMap<String, Object> userInfo =
                 kakaoAuthProvider.getKakaoUserInfo(accessToken); // 2. 토큰으로 카카오 유저 정보 가져오기
         AuthResponseDTO.LoginResponse kakaoUserResponse =
