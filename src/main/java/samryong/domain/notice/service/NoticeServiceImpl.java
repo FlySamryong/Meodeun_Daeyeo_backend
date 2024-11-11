@@ -22,6 +22,7 @@ public class NoticeServiceImpl implements NoticeService {
     private final ChatRoomRepository chatRoomRepository;
     private final ChatMessageService chatMessageService;
 
+
     @Override
     @Scheduled(cron = "0 0 9 * * *") // 매일 오전 9시에 실행
     public void dailyRemind() {
