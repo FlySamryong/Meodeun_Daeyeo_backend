@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import samryong.domain.account.dto.NonghyupAccountDTO.NonghyupAccountRequestDTO;
 import samryong.domain.account.dto.NonghyupAccountDTO.NonghyupAccountResponseDTO;
+import samryong.domain.location.dto.LocationDTO;
 import samryong.domain.member.dto.MemberDTO.MyInformationResponseDTO;
 import samryong.domain.member.entity.Member;
 import samryong.domain.member.service.MemberService;
@@ -37,5 +38,12 @@ public class MemberController {
     @GetMapping("/myPage")
     public ApiResponse<MyInformationResponseDTO> getMyPage(@AuthMember Member member) {
         return ApiResponse.onSuccess("마이페이지 조회 성공", memberService.getMyPage(member.getId()));
+    }
+
+    @Operation(summary = "사용자 주소 등록", description = "사용자의 주소를 입력받아 등록합니다.")
+    @PostMapping("/register/location")
+    public ApiResponse<LocationDTO.LocationResponseDTO> registerLocation(
+            @AuthMember Member member, @Valid @RequestBody LocationDTO.LocationRequestDTO requestDTO) {
+        return ApiResponse.onSuccess("주소지 등록 성공", memberService.registerLocation(member, requestDTO));
     }
 }

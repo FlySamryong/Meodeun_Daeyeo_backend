@@ -101,4 +101,8 @@ public class Member extends BaseEntity {
     public void addProfileImage(Image profileImage) {
         this.profileImage = profileImage;
     }
+
+    public void addLocation(Location location) {
+        this.location = location;
+    }
 }

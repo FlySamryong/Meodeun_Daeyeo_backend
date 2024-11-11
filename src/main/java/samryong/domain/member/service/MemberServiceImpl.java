@@ -9,6 +9,10 @@ import samryong.domain.account.dto.NonghyupAccountDTO.NonghyupAccountResponseDTO
 import samryong.domain.account.entity.Account;
 import samryong.domain.account.repository.AccountRepository;
 import samryong.domain.bank.nonghyup.provider.NonghyupTransactionProvider;
+import samryong.domain.location.converter.LocationConverter;
+import samryong.domain.location.dto.LocationDTO;
+import samryong.domain.location.entity.Location;
+import samryong.domain.location.repository.LocationRepository;
 import samryong.domain.member.converter.MemberConverter;
 import samryong.domain.member.dto.MemberDTO.MyInformationResponseDTO;
 import samryong.domain.member.entity.Member;
@@ -23,6 +27,7 @@ public class MemberServiceImpl implements MemberService {
     private final MemberRepository memberRepository;
     private final AccountRepository accountRepository;
     private final NonghyupTransactionProvider nonghyupTransactionProvider;
+    private final LocationRepository locationRepository;
 
     @Override
     public Member getMember(Long memberId) {
@@ -59,5 +64,28 @@ public class MemberServiceImpl implements MemberService {
                         .orElseThrow(() -> new GlobalException(GlobalErrorCode.MEMBER_NOT_FOUND));
 
         return MemberConverter.toMemberResponseDTO(member);
+    }
+
+    @Override
+    public LocationDTO.LocationResponseDTO registerLocation(
+            Member member, LocationDTO.LocationRequestDTO reqestDTO) {
+
+        String City = reqestDTO.getCity();
+        String District = reqestDTO.getDistrict();
+        String Neighborhood = reqestDTO.getNeighborhood();
+
+        Location location =
+                locationRepository
+                        .findByCityAndDistrictAndNeighborhood(City, District, Neighborhood)
+                        .orElse(null);
+        if (location != null) {
+            throw new GlobalException(GlobalErrorCode.LOCATION_ALREADY_EXIST);
+        }
+
+        location = LocationConverter.toLocation(reqestDTO);
+        member.addLocation(location);
+
+        memberRepository.save(member);
+        return LocationConverter.toLocationResponseDTO(location);
     }
 }
