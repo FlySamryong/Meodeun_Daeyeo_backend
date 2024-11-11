@@ -5,11 +5,10 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
-import samryong.domain.chat.dto.ChatMessageDTO;
-import samryong.domain.chat.entity.ChatMessage;
 import samryong.domain.chat.entity.ChatRoom;
 import samryong.domain.chat.repository.ChatRoomRepository;
 import samryong.domain.chat.service.ChatMessageService;
+import samryong.domain.notice.converter.NoticeConverter;
 import samryong.domain.rent.entity.Rent;
 import samryong.domain.rent.repository.RentRepository;
 
@@ -17,8 +16,7 @@ import samryong.domain.rent.repository.RentRepository;
 @RequiredArgsConstructor
 public class NoticeServiceImpl implements NoticeService {
     private final String DAILY_REMINDER_MESSAGE = "안녕하세요!\n오늘은 물품 반납일입니다.\n반납 준비를 미리 시작해 주세요. 😊";
-    private final String RENT_REMINDER_MESSAGE =
-            "안녕하세요!\n반납 예정 시간이 두 시간 남았습니다.\n반납 준비가 완료되었는지 확인해 주세요. 감사합니다! 🙏";
+    private final String RENT_REMINDER_MESSAGE = "안녕하세요!\n반납 예정 시간이 두 시간 남았습니다.\n반납 준비가 완료되었는지 확인해 주세요. 감사합니다! 🙏";
 
     private final RentRepository rentRepository;
     private final ChatRoomRepository chatRoomRepository;
@@ -29,35 +27,16 @@ public class NoticeServiceImpl implements NoticeService {
     public void dailyRemind() {
         List<Rent> rentList = rentRepository.findAll();
         for (Rent rent : rentList) {
-            if (rent.getEndDate().toLocalDate().equals(LocalDate.now())
-                    && (rent.getStatus() == Rent.RentStatus.RENT_PROCESS)) { // 반납일자가 오늘이고 대여중인 경우
-                ChatRoom chatRoom =
-                        chatRoomRepository
-                                .findByRenterAndOwnerAndItem(rent.getRenter(), rent.getOwner(), rent.getItem())
-                                .get();
-                chatMessageService.publishMessage(
-                        ChatMessageDTO.ChatMessageRequestDTO.builder()
-                                .chatRoomId(chatRoom.getId())
-                                .senderId(rent.getOwner().getId())
-                                .message(DAILY_REMINDER_MESSAGE)
-                                .type(ChatMessage.ChatType.NOTICE)
-                                .build());
+            if (rent.getEndDate().toLocalDate().equals(LocalDate.now()) && (rent.getStatus() == Rent.RentStatus.RENT_PROCESS)) { // 반납일자가 오늘이고 대여중인 경우
+                ChatRoom chatRoom = chatRoomRepository.findByRenterAndOwnerAndItem(rent.getRenter(), rent.getOwner(), rent.getItem()).get();
+                chatMessageService.publishMessage(NoticeConverter.toChatMessageRequestDTO(chatRoom,DAILY_REMINDER_MESSAGE));
             }
         }
     }
 
     @Override
     public void tradeRemind(Rent rent) {
-        ChatRoom chatRoom =
-                chatRoomRepository
-                        .findByRenterAndOwnerAndItem(rent.getRenter(), rent.getOwner(), rent.getItem())
-                        .get();
-        chatMessageService.publishMessage(
-                ChatMessageDTO.ChatMessageRequestDTO.builder()
-                        .chatRoomId(chatRoom.getId())
-                        .senderId(rent.getOwner().getId())
-                        .message(RENT_REMINDER_MESSAGE)
-                        .type(ChatMessage.ChatType.NOTICE)
-                        .build());
+        ChatRoom chatRoom = chatRoomRepository.findByRenterAndOwnerAndItem(rent.getRenter(), rent.getOwner(), rent.getItem()).get();
+        chatMessageService.publishMessage(NoticeConverter.toChatMessageRequestDTO(chatRoom,RENT_REMINDER_MESSAGE));
     }
 }
