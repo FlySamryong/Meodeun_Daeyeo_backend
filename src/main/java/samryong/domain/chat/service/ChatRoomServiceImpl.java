@@ -145,10 +145,10 @@ public class ChatRoomServiceImpl implements ChatRoomService {
 
     // 채팅방 마지막 메시지 업데이트
     @Override
-    public void updateChatRoomLastMessage(Long chatRoomId) {
+    public void updateChatRoomLastMessage(Long chatRoomId, LocalDateTime updatedDate) {
         ChatRoom chatRoom = getChatRoom(chatRoomId);
 
-        chatRoom.setUpdatedDate(LocalDateTime.now());
+        chatRoom.setUpdatedDate(updatedDate);
         chatRoomRepository.save(chatRoom);
     }
 
