@@ -27,7 +27,9 @@ public class ChatMessageDTO {
         @NotBlank(message = "메시지 텍스트는 필수 입력 값입니다.")
         private String message; // 메시지 텍스트
 
-        private String imageCode; // 사진, 추후 바이트 코드를 받아서 S3 업로드 후 URI를 저장하는 과정을 거쳐야 함
+        private String imageUri; // 사진, 추후 바이트 코드를 받아서 S3 업로드 후 URI를 저장하는 과정을 거쳐야 함
+
+        private LocalDateTime createdAt; // 메시지 생성 시간
 
         @NotBlank(message = "채팅 타입은 필수 입력 값입니다.")
         private ChatType type;

@@ -20,8 +20,9 @@ public class ChatMessageConverter {
                 .chatRoomId(requestDTO.getChatRoomId())
                 .senderId(requestDTO.getSenderId())
                 .message(requestDTO.getMessage())
-                .imageUri(requestDTO.getImageCode())
-                .createdAt(LocalDateTime.now())
+                .imageUri(requestDTO.getImageUri())
+                .createdAt(
+                        requestDTO.getCreatedAt() != null ? requestDTO.getCreatedAt() : LocalDateTime.now())
                 .type(requestDTO.getType())
                 .build();
     }
@@ -53,6 +54,7 @@ public class ChatMessageConverter {
                 .chatRoomId(chatRoomId)
                 .senderId(sender.getId())
                 .message(message)
+                .createdAt(LocalDateTime.now())
                 .type(type)
                 .build();
     }
