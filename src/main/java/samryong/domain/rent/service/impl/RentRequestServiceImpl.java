@@ -126,9 +126,9 @@ public class RentRequestServiceImpl implements RentRequestService {
 
         // 4. Redis에 대여 정보 저장, 반납일로부터 2시간 후에 만료, 알림을 위한 키 저장
         LocalDateTime expirationDate = rent.getEndDate().plusHours(DEFAULT_PLUS_HOURS);
-        LocalDateTime expirationforNotice = rent.getEndDate().minusHours(DEFAULT_MINUS_HOURS);
+        LocalDateTime expirationForNotice = rent.getEndDate().minusHours(DEFAULT_MINUS_HOURS);
         rentService.saveRentKey(rentId, roomId, expirationDate);
-        rentService.saveNoticeKey(rentId, roomId, expirationforNotice);
+        rentService.saveNoticeKey(rentId, roomId, expirationForNotice);
 
         // 5. 사용자의 대여 정보 업데이트
         memberService.updateRentList(renter, rent);
