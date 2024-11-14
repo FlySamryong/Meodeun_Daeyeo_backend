@@ -1,5 +1,6 @@
 package samryong.domain.chat.service;
 
+import java.time.LocalDateTime;
 import org.springframework.data.redis.listener.ChannelTopic;
 import samryong.domain.chat.dto.ChatRoomDTO.ChatRoomListResponseDTO;
 import samryong.domain.chat.dto.ChatRoomDTO.ChatRoomRequestDTO;
@@ -19,7 +20,7 @@ public interface ChatRoomService {
 
     ChatRoomListResponseDTO getChatRoomList(Member member);
 
-    void updateChatRoomLastMessage(Long chatRoomId);
+    void updateChatRoomLastMessage(Long chatRoomId, LocalDateTime updatedAt);
 
     ChatMessage getLastMessage(Long roomId);
 

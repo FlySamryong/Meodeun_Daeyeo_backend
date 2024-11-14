@@ -14,16 +14,14 @@ import samryong.domain.member.entity.Member;
 @Component
 public class ChatMessageConverter {
 
-    public static ChatMessage toChatMessage(ChatMessageRequestDTO requestDTO) {
-
+    public static ChatMessage toChatMessage(ChatMessageResponseDTO responseDTO) {
         return ChatMessage.builder()
-                .chatRoomId(requestDTO.getChatRoomId())
-                .senderId(requestDTO.getSenderId())
-                .message(requestDTO.getMessage())
-                .imageUri(requestDTO.getImageUri())
-                .createdAt(
-                        requestDTO.getCreatedAt() != null ? requestDTO.getCreatedAt() : LocalDateTime.now())
-                .type(requestDTO.getType())
+                .chatRoomId(responseDTO.getChatRoomId())
+                .senderId(responseDTO.getSenderId())
+                .message(responseDTO.getMessage())
+                .imageUri(responseDTO.getImageUri())
+                .createdAt(responseDTO.getCreatedAt())
+                .type(responseDTO.getType())
                 .build();
     }
 
@@ -35,6 +33,17 @@ public class ChatMessageConverter {
                 .imageUri(chatMessage.getImageUri())
                 .createdAt(chatMessage.getCreatedAt())
                 .type(chatMessage.getType())
+                .build();
+    }
+
+    public static ChatMessageResponseDTO toChatMessageResponseDTO(ChatMessageRequestDTO requestDTO) {
+        return ChatMessageResponseDTO.builder()
+                .chatRoomId(requestDTO.getChatRoomId())
+                .senderId(requestDTO.getSenderId())
+                .message(requestDTO.getMessage())
+                .imageUri(requestDTO.getImageUri())
+                .createdAt(LocalDateTime.now())
+                .type(requestDTO.getType())
                 .build();
     }
 
@@ -54,7 +63,6 @@ public class ChatMessageConverter {
                 .chatRoomId(chatRoomId)
                 .senderId(sender.getId())
                 .message(message)
-                .createdAt(LocalDateTime.now())
                 .type(type)
                 .build();
     }
