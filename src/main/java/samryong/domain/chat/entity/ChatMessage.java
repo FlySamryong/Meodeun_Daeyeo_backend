@@ -48,5 +48,6 @@ public class ChatMessage {
         DEPOSIT_RES, // 보증금 반납 응답
         OVERDUE, // 연체
         CANCEL, // 취소
+        NOTICE, // 공지 및 알림
     }
 }

@@ -28,6 +28,7 @@ public class RentServiceImpl implements RentService {
     private final RedisTemplate<String, Object> redisTemplate;
 
     private static final String RENT = "RENT:";
+    private static final String NOTICE = "NOTICE:";
 
     // 대여 정보 검증
     @Override
@@ -92,6 +93,12 @@ public class RentServiceImpl implements RentService {
     public void saveRentKey(Long rentId, Long roomId, LocalDateTime endDate) {
         long expirationInSeconds = ChronoUnit.SECONDS.between(LocalDateTime.now(), endDate);
         redisTemplate.opsForValue().set(RENT + rentId, roomId, expirationInSeconds, TimeUnit.SECONDS);
+    }
+
+    @Override
+    public void saveNoticeKey(Long rentId, Long roomId, LocalDateTime endDate) {
+        long expirationInSeconds = ChronoUnit.SECONDS.between(LocalDateTime.now(), endDate);
+        redisTemplate.opsForValue().set(NOTICE + rentId, roomId, expirationInSeconds, TimeUnit.SECONDS);
     }
 
     @Override

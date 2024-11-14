@@ -116,7 +116,8 @@ public class ChatRoomServiceImpl implements ChatRoomService {
 
         for (ChatRoom chatRoom : chatRoomList) {
             ChatRoomResponseDTO chatRoomDTO =
-                    ChatRoomConverter.toChatRoomResponseDTO(chatRoom, getLastMessage(chatRoom.getId()));
+                    ChatRoomConverter.toChatRoomResponseDTO(
+                            member, chatRoom, getLastMessage(chatRoom.getId()));
             chatRoomDTOList.add(chatRoomDTO);
         }
 
