@@ -13,7 +13,7 @@ services:
     depends_on:
       - es
       - mongodb
-      - redis  # Redis 컨테이너가 시작될 때까지 대기
+      - redis
     networks:
       - app-network
 
@@ -32,6 +32,8 @@ services:
       - 9300:9300
     networks:
       - app-network
+    volumes:
+      - esdata:/usr/share/elasticsearch/data
 
   # Kibana service
   kibana:
@@ -53,8 +55,13 @@ services:
     image: mongo:latest
     ports:
       - 27017:27017
+    environment:
+      - MONGO_INITDB_DATABASE=samryong
     networks:
       - app-network
+    volumes:
+      - ./mongo_data:/data/db
+      - ./mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
 
   # Redis service
   redis:
@@ -68,3 +75,6 @@ services:
 networks:
   app-network:
     driver: bridge
+
+volumes:
+  esdata:
