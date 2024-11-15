@@ -6,7 +6,6 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Map;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -24,7 +23,6 @@ import samryong.domain.bank.nonghyup.dto.response.ReceivedTransferAccountNumberR
 import samryong.domain.bank.nonghyup.exception.NonghyupException;
 
 @Component
-@RequiredArgsConstructor
 public class NonghyupTransactionProvider {
 
     @Value("${nonghyup.api.access-token}")
