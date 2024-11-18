@@ -14,5 +14,8 @@ public interface ChatMessageService {
 
     void saveMessage(ChatMessageResponseDTO responseDTO);
 
-    void sendRentActivityMessage(Member member, Long roomId, String message, ChatType type);
+    void sendRentCommonMessage(Member member, Long roomId, String message, ChatType type);
+
+    void sendRentRequestMessage(
+            Member member, Long roomId, Long rentId, String message, ChatType type);
 }

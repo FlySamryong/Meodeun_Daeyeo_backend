@@ -17,6 +17,7 @@ public class ChatMessageConverter {
     public static ChatMessage toChatMessage(ChatMessageResponseDTO responseDTO) {
         return ChatMessage.builder()
                 .chatRoomId(responseDTO.getChatRoomId())
+                .rentId(responseDTO.getRentId())
                 .senderId(responseDTO.getSenderId())
                 .message(responseDTO.getMessage())
                 .imageUri(responseDTO.getImageUri())
@@ -28,6 +29,7 @@ public class ChatMessageConverter {
     public static ChatMessageResponseDTO toChatMessageResponseDTO(ChatMessage chatMessage) {
         return ChatMessageResponseDTO.builder()
                 .chatRoomId(chatMessage.getChatRoomId())
+                .rentId(chatMessage.getRentId())
                 .senderId(chatMessage.getSenderId())
                 .message(chatMessage.getMessage())
                 .imageUri(chatMessage.getImageUri())
@@ -39,6 +41,7 @@ public class ChatMessageConverter {
     public static ChatMessageResponseDTO toChatMessageResponseDTO(ChatMessageRequestDTO requestDTO) {
         return ChatMessageResponseDTO.builder()
                 .chatRoomId(requestDTO.getChatRoomId())
+                .rentId(requestDTO.getRentId())
                 .senderId(requestDTO.getSenderId())
                 .message(requestDTO.getMessage())
                 .imageUri(requestDTO.getImageUri())
@@ -61,6 +64,17 @@ public class ChatMessageConverter {
             Member sender, Long chatRoomId, String message, ChatType type) {
         return ChatMessageRequestDTO.builder()
                 .chatRoomId(chatRoomId)
+                .senderId(sender.getId())
+                .message(message)
+                .type(type)
+                .build();
+    }
+
+    public static ChatMessageRequestDTO toRentRequestMessage(
+            Member sender, Long chatRoomId, Long rentId, String message, ChatType type) {
+        return ChatMessageRequestDTO.builder()
+                .chatRoomId(chatRoomId)
+                .rentId(rentId)
                 .senderId(sender.getId())
                 .message(message)
                 .type(type)

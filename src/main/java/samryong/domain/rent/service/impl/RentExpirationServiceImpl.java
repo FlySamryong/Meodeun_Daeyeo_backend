@@ -84,10 +84,10 @@ public class RentExpirationServiceImpl implements RentExpirationService {
 
         // 3. 대여 정보 메시지 전송
         if (status == RentStatus.REQUEST) {
-            chatMessageService.sendRentActivityMessage(
+            chatMessageService.sendRentCommonMessage(
                     owner, roomId, RENT_REQUEST_EXPIRATION_MESSAGE, CANCEL);
         } else if (status == RentStatus.ACCEPT) {
-            chatMessageService.sendRentActivityMessage(
+            chatMessageService.sendRentCommonMessage(
                     renter, roomId, RENT_ACCEPT_EXPIRATION_MESSAGE, CANCEL);
         }
     }
@@ -118,7 +118,7 @@ public class RentExpirationServiceImpl implements RentExpirationService {
         rentService.saveRentKey(rent.getId(), roomId, DEFAULT_OVERDUE_HOURS, TimeUnit.HOURS);
 
         // 4. 연체료 메시지 전송
-        chatMessageService.sendRentActivityMessage(owner, roomId, OVERDUE_MESSAGE, OVERDUE);
+        chatMessageService.sendRentCommonMessage(owner, roomId, OVERDUE_MESSAGE, OVERDUE);
     }
 
     private Long extractId(String expiredKey, String prefix) {

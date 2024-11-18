@@ -14,6 +14,7 @@ import samryong.domain.chat.dto.ChatMessageDTO.ChatMessageRequestDTO;
 import samryong.domain.chat.dto.ChatMessageDTO.ChatMessageResponseDTO;
 import samryong.domain.chat.dto.ChatMessageDTO.ChatMessageResponseListDTO;
 import samryong.domain.chat.entity.ChatMessage;
+import samryong.domain.chat.entity.ChatMessage.ChatType;
 import samryong.domain.chat.redis.RedisPublisher;
 import samryong.domain.chat.repository.ChatMessageRepository;
 import samryong.domain.member.entity.Member;
@@ -55,7 +56,7 @@ public class ChatMessageServiceImpl implements ChatMessageService {
 
         redisTemplateMessage.opsForList().leftPush(key, chatMessage);
 
-        redisTemplateMessage.expire(key, 30, TimeUnit.MINUTES);
+        redisTemplateMessage.expire(key, 5, TimeUnit.DAYS);
 
         chatRoomService.updateChatRoomLastMessage(
                 chatMessage.getChatRoomId(), responseDTO.getCreatedAt());
@@ -88,10 +89,20 @@ public class ChatMessageServiceImpl implements ChatMessageService {
 
     @Override
     @Transactional
-    public void sendRentActivityMessage(
-            Member member, Long roomId, String message, ChatMessage.ChatType type) {
+    public void sendRentCommonMessage(Member member, Long roomId, String message, ChatType type) {
         ChatMessageRequestDTO chatMessage =
                 ChatMessageConverter.toRentMessage(member, roomId, message, type);
+        publishMessage(chatMessage);
+    }
+
+    @Override
+    @Transactional
+    public void sendRentRequestMessage(
+            Member member, Long roomId, Long rentId, String message, ChatType type) {
+
+        ChatMessageRequestDTO chatMessage =
+                ChatMessageConverter.toRentRequestMessage(member, roomId, rentId, message, type);
+
         publishMessage(chatMessage);
     }
 }
