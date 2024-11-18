@@ -1,6 +1,7 @@
 package samryong.domain.member.service;
 
 import jakarta.transaction.Transactional;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import samryong.domain.account.converter.AccountConverter;
@@ -13,6 +14,8 @@ import samryong.domain.member.converter.MemberConverter;
 import samryong.domain.member.dto.MemberDTO.MyInformationResponseDTO;
 import samryong.domain.member.entity.Member;
 import samryong.domain.member.repository.MemberRepository;
+import samryong.domain.rent.converter.RentConverter;
+import samryong.domain.rent.dto.RentDTO;
 import samryong.domain.rent.entity.Rent;
 import samryong.global.code.GlobalErrorCode;
 import samryong.global.exception.GlobalException;
@@ -87,5 +90,16 @@ public class MemberServiceImpl implements MemberService {
     @Transactional
     public void updateLoanList(Member member, Rent rent) {
         member.addLoan(rent);
+    }
+
+    @Override
+    public List<RentDTO.RentResponseDTO> getMyRentList(Long memberId) {
+
+        Member member =
+                memberRepository
+                        .findById(memberId)
+                        .orElseThrow(() -> new GlobalException(GlobalErrorCode.MEMBER_NOT_FOUND));
+
+        return RentConverter.toRentResponseDTOList(member);
     }
 }
