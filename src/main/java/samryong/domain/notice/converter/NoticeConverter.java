@@ -7,7 +7,8 @@ import samryong.domain.chat.entity.ChatRoom;
 
 @Component
 public class NoticeConverter {
-    public static ChatMessageDTO.ChatMessageRequestDTO toChatMessageRequestDTO(ChatRoom chatRoom, String message){
+    public static ChatMessageDTO.ChatMessageRequestDTO toChatMessageRequestDTO(
+            ChatRoom chatRoom, String message) {
         return ChatMessageDTO.ChatMessageRequestDTO.builder()
                 .chatRoomId(chatRoom.getId())
                 .senderId(chatRoom.getOwner().getId())
