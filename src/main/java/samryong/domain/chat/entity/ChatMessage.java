@@ -27,6 +27,8 @@ public class ChatMessage {
 
     private Long senderId; // 보낸 사람 ID
 
+    private Long rentId; // 대여 ID
+
     private String message; // 메시지 텍스트
 
     private String imageUri; // 사진
