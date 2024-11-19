@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.stereotype.Component;
+import samryong.domain.chat.TimeZoneUtil;
 import samryong.domain.chat.dto.ChatMessageDTO.ChatMessageRequestDTO;
 import samryong.domain.chat.dto.ChatMessageDTO.ChatMessageResponseDTO;
 import samryong.domain.chat.dto.ChatMessageDTO.ChatMessageResponseListDTO;
@@ -33,7 +34,7 @@ public class ChatMessageConverter {
                 .senderId(chatMessage.getSenderId())
                 .message(chatMessage.getMessage())
                 .imageUri(chatMessage.getImageUri())
-                .createdAt(chatMessage.getCreatedAt())
+                .createdAt(TimeZoneUtil.toMinus9Hours(chatMessage.getCreatedAt())) // UTC -> KST 변환
                 .type(chatMessage.getType())
                 .build();
     }
@@ -45,7 +46,7 @@ public class ChatMessageConverter {
                 .senderId(requestDTO.getSenderId())
                 .message(requestDTO.getMessage())
                 .imageUri(requestDTO.getImageUri())
-                .createdAt(LocalDateTime.now())
+                .createdAt(TimeZoneUtil.toPlus9Hours(LocalDateTime.now())) // KST -> UTC 변환
                 .type(requestDTO.getType())
                 .build();
     }
