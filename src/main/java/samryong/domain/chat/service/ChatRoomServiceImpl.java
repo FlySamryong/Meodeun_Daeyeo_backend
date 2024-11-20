@@ -162,12 +162,21 @@ public class ChatRoomServiceImpl implements ChatRoomService {
 
         if (latestMessage == null) {
 
-            latestMessage = chatMessageRepository.findTopByChatRoomIdOrderByCreatedAtDesc(roomId);
+            List<ChatMessage> dbMessageList =
+                    chatMessageRepository.findTop100ByChatRoomIdOrderByCreatedAtDesc(roomId);
 
-            if (latestMessage == null) return null;
+            if (dbMessageList == null || dbMessageList.isEmpty()) {
+                return null;
+            }
 
             redisTemplateMessage.setValueSerializer(new Jackson2JsonRedisSerializer<>(ChatMessage.class));
-            redisTemplateMessage.opsForList().leftPush(key, latestMessage);
+
+            // MongoDB에서 가져온 메시지를 Redis에 저장
+            for (ChatMessage chatMessage : dbMessageList) {
+                redisTemplateMessage.opsForList().leftPush(key, chatMessage);
+            }
+
+            latestMessage = dbMessageList.get(0);
         }
 
         return latestMessage;
