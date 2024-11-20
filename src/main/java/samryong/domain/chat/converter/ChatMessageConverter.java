@@ -22,7 +22,7 @@ public class ChatMessageConverter {
                 .senderId(responseDTO.getSenderId())
                 .message(responseDTO.getMessage())
                 .imageUri(responseDTO.getImageUri())
-                .createdAt(responseDTO.getCreatedAt())
+                .createdAt(TimeZoneUtil.toPlus9Hours(responseDTO.getCreatedAt())) // KST -> UTC 변환
                 .type(responseDTO.getType())
                 .build();
     }
@@ -46,7 +46,7 @@ public class ChatMessageConverter {
                 .senderId(requestDTO.getSenderId())
                 .message(requestDTO.getMessage())
                 .imageUri(requestDTO.getImageUri())
-                .createdAt(TimeZoneUtil.toPlus9Hours(LocalDateTime.now())) // KST -> UTC 변환
+                .createdAt(LocalDateTime.now())
                 .type(requestDTO.getType())
                 .build();
     }
