@@ -10,6 +10,7 @@ import samryong.domain.account.entity.Account;
 import samryong.domain.account.repository.AccountRepository;
 import samryong.domain.bank.nonghyup.provider.NonghyupTransactionProvider;
 import samryong.domain.member.converter.MemberConverter;
+import samryong.domain.member.dto.MemberDTO.WishListDTO;
 import samryong.domain.member.dto.MemberDTO.MyInformationResponseDTO;
 import samryong.domain.member.entity.Member;
 import samryong.domain.member.repository.MemberRepository;
@@ -60,6 +61,10 @@ public class MemberServiceImpl implements MemberService {
                         .orElseThrow(() -> new GlobalException(GlobalErrorCode.MEMBER_NOT_FOUND));
 
         return MemberConverter.toMemberResponseDTO(member);
+    }
+    @Override
+    public WishListDTO getWishList(Long memberId){
+        return MemberConverter.toWishListDTO(getWishList(memberId));
     }
 
     @Override

@@ -93,6 +93,10 @@ public class Member extends BaseEntity {
     @OneToMany(mappedBy = "renter")
     private List<ChatRoom> renterChatRoomList;
 
+    // 찜 리스트
+    @OneToMany(mappedBy = "wishlist")
+    private List<Item> wishList;
+
     public void addItem(Item item) {
         if (itemList == null) itemList = new ArrayList<>();
         itemList.add(item);
@@ -118,6 +122,10 @@ public class Member extends BaseEntity {
         this.profileImage = profileImage;
     }
 
+    public void addWishList(Item item) {
+        if (wishList == null) wishList = new ArrayList<>();
+        wishList.add(item);
+    }
     public void setMannerRate(double mannerRate, Long mannerCount) {
         this.mannerRate = mannerRate;
         this.mannerCount = mannerCount;
