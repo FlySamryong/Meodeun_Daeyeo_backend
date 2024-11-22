@@ -75,6 +75,9 @@ dependencies {
 	// elastic search
 	implementation 'org.springframework.boot:spring-boot-starter-data-elasticsearch'
 
+	// jackson
+	implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310'
+
 }
 
 tasks.named('test') {

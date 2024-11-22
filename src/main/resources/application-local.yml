@@ -19,7 +19,9 @@ spring:
         format_sql: false
   data:
     mongodb:
-      uri: mongodb://localhost:27017/samryong
+      host: localhost
+      port: 27017
+      database: samryong
     redis:
       host: localhost
       port: 6379

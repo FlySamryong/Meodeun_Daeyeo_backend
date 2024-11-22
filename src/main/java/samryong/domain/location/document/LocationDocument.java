@@ -22,12 +22,12 @@ public class LocationDocument {
 
     @Id private Long id;
 
-    @Field(type = FieldType.Text, analyzer = "korean")
+    @Field(type = FieldType.Text, analyzer = "nori")
     private String city;
 
-    @Field(type = FieldType.Text, analyzer = "korean")
+    @Field(type = FieldType.Text, analyzer = "nori")
     private String district;
 
-    @Field(type = FieldType.Text, analyzer = "korean")
+    @Field(type = FieldType.Text, analyzer = "nori")
     private String neighborhood;
 }

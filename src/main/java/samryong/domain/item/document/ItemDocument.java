@@ -1,7 +1,8 @@
 package samryong.domain.item.document;
 
-import static org.springframework.data.elasticsearch.annotations.FieldType.Keyword;
+import static org.springframework.data.elasticsearch.annotations.FieldType.*;
 
+import java.time.OffsetDateTime;
 import java.util.List;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -9,6 +10,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.elasticsearch.annotations.DateFormat;
 import org.springframework.data.elasticsearch.annotations.Document;
 import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.data.elasticsearch.annotations.FieldType;
@@ -26,14 +28,14 @@ public class ItemDocument {
 
     @Id private Long id;
 
-    @Field(type = Keyword, analyzer = "korean")
+    @Field(type = Text, analyzer = "nori")
     private String name; // 상품명
 
-    @Field(type = FieldType.Text, analyzer = "korean")
+    @Field(type = FieldType.Text, analyzer = "nori")
     private String description; // 상품 설명
 
-    @Field(type = Keyword, analyzer = "korean")
-    private String createdDate; // 상품 등록 날짜
+    @Field(type = FieldType.Date, format = DateFormat.date_time)
+    private OffsetDateTime createdDate; // 상품 등록 날짜
 
     @Field(type = Keyword)
     private String status; // 상품 상태

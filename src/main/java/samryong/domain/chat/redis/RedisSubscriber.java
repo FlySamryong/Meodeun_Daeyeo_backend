@@ -7,7 +7,7 @@ import org.springframework.data.redis.connection.MessageListener;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.stereotype.Service;
-import samryong.domain.chat.dto.ChatMessageDTO.ChatMessageRequestDTO;
+import samryong.domain.chat.dto.ChatMessageDTO.ChatMessageResponseDTO;
 import samryong.global.code.GlobalErrorCode;
 import samryong.global.exception.GlobalException;
 
@@ -26,11 +26,11 @@ public class RedisSubscriber implements MessageListener {
             String publishMessage =
                     (String) redisTemplate.getStringSerializer().deserialize(message.getBody());
 
-            ChatMessageRequestDTO requestDTO =
-                    objectMapper.readValue(publishMessage, ChatMessageRequestDTO.class);
+            ChatMessageResponseDTO responseDTO =
+                    objectMapper.readValue(publishMessage, ChatMessageResponseDTO.class);
 
             messagingTemplate.convertAndSend(
-                    "/topic/chat/room/" + requestDTO.getChatRoomId(), requestDTO); // 구독 대상으로 메시지 발송
+                    "/topic/chat/room/" + responseDTO.getChatRoomId(), responseDTO); // 구독 대상으로 메시지 발송
         } catch (Exception e) {
             throw new GlobalException(GlobalErrorCode.CHAT_INTERNAL_ERROR);
         }

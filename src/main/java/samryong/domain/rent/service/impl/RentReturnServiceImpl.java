@@ -97,7 +97,7 @@ public class RentReturnServiceImpl implements RentReturnService {
         }
 
         // 6. 물품 등록자에게 메시지 전송, 보증금을 반환해야 함을 알림
-        chatMessageService.sendRentActivityMessage(renter, roomId, ITEM_RETURN_MESSAGE, DEPOSIT_REQ);
+        chatMessageService.sendRentCommonMessage(renter, roomId, ITEM_RETURN_MESSAGE, DEPOSIT_REQ);
     }
 
     // 보증금 반환
@@ -113,12 +113,10 @@ public class RentReturnServiceImpl implements RentReturnService {
         Long deposit = rent.getItem().getDeposit();
         if (isReturn) { // 물품 손상이 없으면 보증금 반환
             accountService.receiveTransfer(rent.getRenter(), deposit);
-            chatMessageService.sendRentActivityMessage(
-                    owner, roomId, DEPOSIT_RETURN_MESSAGE, DEPOSIT_RES);
+            chatMessageService.sendRentCommonMessage(owner, roomId, DEPOSIT_RETURN_MESSAGE, DEPOSIT_RES);
         } else { // 물품 손상이 있으면 보증금 반환 거부
             accountService.receiveTransfer(owner, deposit);
-            chatMessageService.sendRentActivityMessage(
-                    owner, roomId, DEPOSIT_REJECT_MESSAGE, DEPOSIT_RES);
+            chatMessageService.sendRentCommonMessage(owner, roomId, DEPOSIT_REJECT_MESSAGE, DEPOSIT_RES);
         }
     }
 }

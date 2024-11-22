@@ -20,13 +20,19 @@ public class ChatRoomConverter {
     }
 
     public static ChatRoomResponseDTO toChatRoomResponseDTO(
-            ChatRoom chatRoom, ChatMessage lastMessage) {
+            Member currentMember, ChatRoom chatRoom, ChatMessage lastMessage) {
+        Member otherMember =
+                currentMember.getId().equals(chatRoom.getOwner().getId())
+                        ? chatRoom.getRenter()
+                        : chatRoom.getOwner();
+
         return ChatRoomDTO.ChatRoomResponseDTO.builder()
                 .chatRoomId(chatRoom.getId())
                 .ownerName(chatRoom.getOwner().getNickName())
+                .ownerId(chatRoom.getOwner().getId())
                 .renterName(chatRoom.getRenter().getNickName())
                 .itemName(chatRoom.getItem().getName())
-                .ownerProfileImage(chatRoom.getOwner().getProfileImage().getImageUri())
+                .otherMemberProfile(otherMember.getProfileImage().getImageUri())
                 .updatedDate(
                         chatRoom.getUpdatedDate() != null
                                 ? chatRoom
