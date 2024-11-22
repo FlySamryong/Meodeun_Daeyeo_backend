@@ -14,10 +14,6 @@ public class WishItemConverter {
         return WishItem.builder().member(member).item(item).build();
     }
 
-    public static Item WishItmetoItem(WishItem wishItem) {
-        return wishItem.getItem();
-    }
-
     public static WishListResponseDTO toWishListResponse(List<WishItem> wishList) {
         List<ItemPreviewResponseDTO> responseList =
                 wishList.stream()
