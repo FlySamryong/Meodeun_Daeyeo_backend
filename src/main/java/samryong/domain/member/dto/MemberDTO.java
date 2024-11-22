@@ -6,7 +6,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import samryong.domain.account.dto.NonghyupAccountDTO.NonghyupAccountResponseDTO;
-import samryong.domain.item.dto.ItemDTO;
+import samryong.domain.item.dto.ItemDTO.ItemResponseListDTO;
 import samryong.domain.location.dto.LocationDTO.LocationResponseDTO;
 
 public class MemberDTO {
@@ -46,15 +46,15 @@ public class MemberDTO {
 
         private LocationResponseDTO location;
     }
+
     @Getter
     @Builder
     @NoArgsConstructor
     @AllArgsConstructor
-    public static class WishListDTO{
+    public static class WishListResponseDTO {
 
         private String nickName;
 
-        private List<ItemDTO.ItemResponseDTO> wishlist;
+        private ItemResponseListDTO wishlist;
     }
-
 }

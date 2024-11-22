@@ -13,11 +13,13 @@ import samryong.domain.item.dto.ItemDTO.ItemListRequestDTO;
 import samryong.domain.item.dto.ItemDTO.ItemPreviewListResponseDTO;
 import samryong.domain.item.dto.ItemDTO.ItemRequestDTO;
 import samryong.domain.item.dto.ItemDTO.ItemResponseDTO;
+import samryong.domain.item.dto.ItemDTO.ItemResponseListDTO;
 import samryong.domain.item.dto.ItemDTO.RecentItemResponseListDTO;
 import samryong.domain.item.service.category.CategoryService;
 import samryong.domain.item.service.item.ItemService;
 import samryong.domain.location.dto.LocationDTO.LocationRequestDTO;
 import samryong.domain.member.entity.Member;
+import samryong.domain.member.service.MemberService;
 import samryong.domain.redis.service.RecentItemService;
 import samryong.global.annotation.AuthMember;
 import samryong.global.response.ApiResponse;
@@ -29,6 +31,7 @@ import samryong.global.response.ApiResponse;
 public class ItemController {
 
     private final ItemService itemService;
+    private final MemberService memberService;
     private final CategoryService categoryService;
     private final RecentItemService recentItemService;
 
@@ -68,5 +71,11 @@ public class ItemController {
             @RequestBody @Valid ItemListRequestDTO requestDTO,
             @RequestParam(value = "page", defaultValue = "0", required = false) int page) {
         return ApiResponse.onSuccess("물품 검색 성공", itemService.searchItem(requestDTO, page));
+    }
+
+    @GetMapping("/wishList")
+    @Operation(summary = "찜목록 조회", description = "찜목록을 조회합니다.")
+    public ApiResponse<ItemResponseListDTO> getWishList(@AuthMember Member member) {
+        return ApiResponse.onSuccess("찜목록 조회 성공", itemService.getWishList(member));
     }
 }

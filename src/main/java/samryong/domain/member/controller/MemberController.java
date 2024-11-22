@@ -7,8 +7,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import samryong.domain.account.dto.NonghyupAccountDTO.NonghyupAccountRequestDTO;
 import samryong.domain.account.dto.NonghyupAccountDTO.NonghyupAccountResponseDTO;
-import samryong.domain.item.dto.ItemDTO;
-import samryong.domain.member.dto.MemberDTO;
 import samryong.domain.member.dto.MemberDTO.MyInformationResponseDTO;
 import samryong.domain.member.entity.Member;
 import samryong.domain.member.service.MemberService;
@@ -37,16 +35,10 @@ public class MemberController {
         return ApiResponse.onSuccess("마이페이지 조회 성공", memberService.getMyPage(member.getId()));
     }
 
-    @Operation(summary = "찜목록 등록", description = "아이템을 찜목록에 추가합니다..")
+    @Operation(summary = "찜목록 등록", description = "아이템을 찜목록에 추가합니다.")
     @PostMapping("/wishList/{itemId}")
-    public ApiResponse<MemberDTO.WishListDTO> getWishList(@AuthMember Member member, @PathVariable Long itemId){
-
-        return ApiResponse.onSuccess("찜 등록 성공",memberService.addWishList(member.addWishList(itemId));
-    }
-
-    @Operation(summary = "찜목록 조회", description = "찜목록을 조회합니다.")
-    @GetMapping("/wishList")
-    public ApiResponse<MemberDTO.WishListDTO> getWishList(@AuthMember Member member){
-        return ApiResponse.onSuccess("찜목록 조회 성공",memberService.getWishList(member.getId()));
+    public ApiResponse<?> getWishList(@AuthMember Member member, @PathVariable Long itemId) {
+        memberService.updateWishList(member, itemId);
+        return ApiResponse.onSuccess("찜 등록 성공");
     }
 }

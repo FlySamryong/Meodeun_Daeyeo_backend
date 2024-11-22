@@ -2,14 +2,10 @@ package samryong.domain.member.converter;
 
 import org.springframework.stereotype.Component;
 import samryong.domain.account.converter.AccountConverter;
-import samryong.domain.item.dto.ItemDTO;
-import samryong.domain.item.entity.Item;
 import samryong.domain.location.converter.LocationConverter;
 import samryong.domain.member.dto.MemberDTO.MemberResponseDTO;
 import samryong.domain.member.dto.MemberDTO.MyInformationResponseDTO;
 import samryong.domain.member.entity.Member;
-
-import java.util.List;
 
 @Component
 public class MemberConverter {
@@ -35,9 +31,4 @@ public class MemberConverter {
                 .location(LocationConverter.toLocationResponseDTO(owner.getLocation()))
                 .build();
     }
-
-    public static List<ItemDTO.ItemResponseListDTO> toWishListDTO(List<Item> itemList) {
-        return
-    }
-
 }

@@ -6,6 +6,7 @@ import samryong.domain.item.dto.ItemDTO.ItemListRequestDTO;
 import samryong.domain.item.dto.ItemDTO.ItemPreviewListResponseDTO;
 import samryong.domain.item.dto.ItemDTO.ItemRequestDTO;
 import samryong.domain.item.dto.ItemDTO.ItemResponseDTO;
+import samryong.domain.item.dto.ItemDTO.ItemResponseListDTO;
 import samryong.domain.location.dto.LocationDTO.LocationRequestDTO;
 import samryong.domain.member.entity.Member;
 
@@ -20,4 +21,6 @@ public interface ItemService {
     ItemResponseDTO getItemDetail(Long itemId, Member member);
 
     ItemPreviewListResponseDTO searchItem(ItemListRequestDTO requestDTO, int page);
+
+    ItemResponseListDTO getWishList(Member member);
 }

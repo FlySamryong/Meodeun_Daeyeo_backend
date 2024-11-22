@@ -9,8 +9,9 @@ import samryong.domain.account.dto.NonghyupAccountDTO.NonghyupAccountResponseDTO
 import samryong.domain.account.entity.Account;
 import samryong.domain.account.repository.AccountRepository;
 import samryong.domain.bank.nonghyup.provider.NonghyupTransactionProvider;
+import samryong.domain.item.entity.Item;
+import samryong.domain.item.repository.ItemRepository;
 import samryong.domain.member.converter.MemberConverter;
-import samryong.domain.member.dto.MemberDTO.WishListDTO;
 import samryong.domain.member.dto.MemberDTO.MyInformationResponseDTO;
 import samryong.domain.member.entity.Member;
 import samryong.domain.member.repository.MemberRepository;
@@ -25,6 +26,7 @@ public class MemberServiceImpl implements MemberService {
     private final MemberRepository memberRepository;
     private final AccountRepository accountRepository;
     private final NonghyupTransactionProvider nonghyupTransactionProvider;
+    private final ItemRepository itemRepository;
 
     @Override
     public Member getMember(Long memberId) {
@@ -62,15 +64,10 @@ public class MemberServiceImpl implements MemberService {
 
         return MemberConverter.toMemberResponseDTO(member);
     }
-    @Override
-    public WishListDTO getWishList(Long memberId){
-        return MemberConverter.toWishListDTO(getWishList(memberId));
-    }
 
     @Override
     @Transactional
     public void updateMannerRate(Member member, Long mannerRate) {
-
         double newMannerRate =
                 (member.getMannerRate() * member.getMannerCount() + mannerRate)
                         / (member.getMannerCount() + 1);
@@ -92,5 +89,12 @@ public class MemberServiceImpl implements MemberService {
     @Transactional
     public void updateLoanList(Member member, Rent rent) {
         member.addLoan(rent);
+    }
+
+    @Override
+    @Transactional
+    public void updateWishList(Member member, Long itemID) {
+        Item item = itemRepository.findById(itemID).orElse(null);
+        member.addWishList(item);
     }
 }

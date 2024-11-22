@@ -126,6 +126,7 @@ public class Member extends BaseEntity {
         if (wishList == null) wishList = new ArrayList<>();
         wishList.add(item);
     }
+
     public void setMannerRate(double mannerRate, Long mannerCount) {
         this.mannerRate = mannerRate;
         this.mannerCount = mannerCount;
