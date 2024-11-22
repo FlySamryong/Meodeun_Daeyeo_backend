@@ -19,7 +19,6 @@ import samryong.domain.item.service.category.CategoryService;
 import samryong.domain.item.service.item.ItemService;
 import samryong.domain.location.dto.LocationDTO.LocationRequestDTO;
 import samryong.domain.member.entity.Member;
-import samryong.domain.member.service.MemberService;
 import samryong.domain.redis.service.RecentItemService;
 import samryong.global.annotation.AuthMember;
 import samryong.global.response.ApiResponse;
@@ -31,7 +30,6 @@ import samryong.global.response.ApiResponse;
 public class ItemController {
 
     private final ItemService itemService;
-    private final MemberService memberService;
     private final CategoryService categoryService;
     private final RecentItemService recentItemService;
 
