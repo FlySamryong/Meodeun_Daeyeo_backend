@@ -11,11 +11,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import samryong.domain.image.ImageConverter;
 import samryong.domain.item.converter.ItemConverter;
+import samryong.domain.item.converter.WishItemConverter;
 import samryong.domain.item.document.ItemDocument;
 import samryong.domain.item.dto.ItemDTO.ItemListRequestDTO;
 import samryong.domain.item.dto.ItemDTO.ItemPreviewListResponseDTO;
 import samryong.domain.item.dto.ItemDTO.ItemRequestDTO;
 import samryong.domain.item.dto.ItemDTO.ItemResponseDTO;
+import samryong.domain.item.dto.ItemDTO.WishListResponseDTO;
 import samryong.domain.item.entity.Category;
 import samryong.domain.item.entity.Item;
 import samryong.domain.item.entity.ItemCategory;
@@ -125,5 +127,10 @@ public class ItemServiceImpl implements ItemService {
         recentItemService.saveRecentItem(member, itemId); // 최근 본 상품 저장
 
         return ItemConverter.toItemResponseDTO(item);
+    }
+
+    @Override
+    public WishListResponseDTO getWishList(Member member) {
+        return WishItemConverter.toWishListResponse(member.getWishList());
     }
 }
