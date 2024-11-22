@@ -116,7 +116,8 @@ public class ChatRoomServiceImpl implements ChatRoomService {
 
         for (ChatRoom chatRoom : chatRoomList) {
             ChatRoomResponseDTO chatRoomDTO =
-                    ChatRoomConverter.toChatRoomResponseDTO(chatRoom, getLastMessage(chatRoom.getId()));
+                    ChatRoomConverter.toChatRoomResponseDTO(
+                            member, chatRoom, getLastMessage(chatRoom.getId()));
             chatRoomDTOList.add(chatRoomDTO);
         }
 
@@ -144,10 +145,10 @@ public class ChatRoomServiceImpl implements ChatRoomService {
 
     // 채팅방 마지막 메시지 업데이트
     @Override
-    public void updateChatRoomLastMessage(Long chatRoomId) {
+    public void updateChatRoomLastMessage(Long chatRoomId, LocalDateTime updatedDate) {
         ChatRoom chatRoom = getChatRoom(chatRoomId);
 
-        chatRoom.setUpdatedDate(LocalDateTime.now());
+        chatRoom.setUpdatedDate(updatedDate);
         chatRoomRepository.save(chatRoom);
     }
 
@@ -161,12 +162,21 @@ public class ChatRoomServiceImpl implements ChatRoomService {
 
         if (latestMessage == null) {
 
-            latestMessage = chatMessageRepository.findTopByChatRoomIdOrderByCreatedAtDesc(roomId);
+            List<ChatMessage> dbMessageList =
+                    chatMessageRepository.findTop100ByChatRoomIdOrderByCreatedAtDesc(roomId);
 
-            if (latestMessage == null) return null;
+            if (dbMessageList == null || dbMessageList.isEmpty()) {
+                return null;
+            }
 
             redisTemplateMessage.setValueSerializer(new Jackson2JsonRedisSerializer<>(ChatMessage.class));
-            redisTemplateMessage.opsForList().leftPush(key, latestMessage);
+
+            // MongoDB에서 가져온 메시지를 Redis에 저장
+            for (ChatMessage chatMessage : dbMessageList) {
+                redisTemplateMessage.opsForList().leftPush(key, chatMessage);
+            }
+
+            latestMessage = dbMessageList.get(0);
         }
 
         return latestMessage;

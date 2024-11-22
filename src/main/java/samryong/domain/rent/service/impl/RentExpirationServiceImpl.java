@@ -15,7 +15,6 @@ import samryong.domain.item.entity.Item;
 import samryong.domain.item.entity.Item.Status;
 import samryong.domain.item.repository.ItemRepository;
 import samryong.domain.member.entity.Member;
-import samryong.domain.notice.service.NoticeService;
 import samryong.domain.rent.entity.Rent;
 import samryong.domain.rent.entity.Rent.RentStatus;
 import samryong.domain.rent.service.RentExpirationService;
@@ -31,7 +30,6 @@ public class RentExpirationServiceImpl implements RentExpirationService {
     private final ChatMessageService chatMessageService;
     private final ChatRoomRepository chatRoomRepository;
     private final ItemRepository itemRepository;
-    private final NoticeService noticeService;
 
     private static final String RENT = "RENT:";
     private static final int DEFAULT_OVERDUE_HOURS = 24; // 다음 연체료 출금까지 기간
@@ -56,9 +54,6 @@ public class RentExpirationServiceImpl implements RentExpirationService {
                 break;
             case RENT_PROCESS, OVERDUE:
                 processRentReturnExpiration(rent);
-                break;
-            case NOTICE:
-                noticeService.tradeRemind(rent);
                 break;
             default:
         }
@@ -89,10 +84,10 @@ public class RentExpirationServiceImpl implements RentExpirationService {
 
         // 3. 대여 정보 메시지 전송
         if (status == RentStatus.REQUEST) {
-            chatMessageService.sendRentActivityMessage(
+            chatMessageService.sendRentCommonMessage(
                     owner, roomId, RENT_REQUEST_EXPIRATION_MESSAGE, CANCEL);
         } else if (status == RentStatus.ACCEPT) {
-            chatMessageService.sendRentActivityMessage(
+            chatMessageService.sendRentCommonMessage(
                     renter, roomId, RENT_ACCEPT_EXPIRATION_MESSAGE, CANCEL);
         }
     }
@@ -123,7 +118,7 @@ public class RentExpirationServiceImpl implements RentExpirationService {
         rentService.saveRentKey(rent.getId(), roomId, DEFAULT_OVERDUE_HOURS, TimeUnit.HOURS);
 
         // 4. 연체료 메시지 전송
-        chatMessageService.sendRentActivityMessage(owner, roomId, OVERDUE_MESSAGE, OVERDUE);
+        chatMessageService.sendRentCommonMessage(owner, roomId, OVERDUE_MESSAGE, OVERDUE);
     }
 
     private Long extractId(String expiredKey, String prefix) {

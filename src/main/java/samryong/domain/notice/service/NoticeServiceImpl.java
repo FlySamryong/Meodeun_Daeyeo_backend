@@ -11,6 +11,8 @@ import samryong.domain.chat.service.ChatMessageService;
 import samryong.domain.notice.converter.NoticeConverter;
 import samryong.domain.rent.entity.Rent;
 import samryong.domain.rent.repository.RentRepository;
+import samryong.global.code.GlobalErrorCode;
+import samryong.global.exception.GlobalException;
 
 @Service
 @RequiredArgsConstructor
@@ -23,6 +25,7 @@ public class NoticeServiceImpl implements NoticeService {
     private final ChatRoomRepository chatRoomRepository;
     private final ChatMessageService chatMessageService;
 
+    // 매일 오전 9시에 실행, 반납일자가 오늘이고 대여중인 경우 대여자에게 알림
     @Override
     @Scheduled(cron = "0 0 9 * * *") // 매일 오전 9시에 실행
     public void dailyRemind() {
@@ -40,12 +43,16 @@ public class NoticeServiceImpl implements NoticeService {
         }
     }
 
-    @Override
-    public void tradeRemind(Rent rent) {
+    // 대여자에게 대여 종료 1시간 전 알림
+    public void tradeRemind(Long rentId) {
+        Rent rent =
+                rentRepository
+                        .findById(rentId)
+                        .orElseThrow(() -> new GlobalException(GlobalErrorCode.RENT_NOT_EXIST));
         ChatRoom chatRoom =
                 chatRoomRepository
                         .findByRenterAndOwnerAndItem(rent.getRenter(), rent.getOwner(), rent.getItem())
-                        .get();
+                        .orElseThrow(() -> new GlobalException(GlobalErrorCode.CHAT_ROOM_NOT_FOUND));
         chatMessageService.publishMessage(
                 NoticeConverter.toChatMessageRequestDTO(chatRoom, RENT_REMINDER_MESSAGE));
     }

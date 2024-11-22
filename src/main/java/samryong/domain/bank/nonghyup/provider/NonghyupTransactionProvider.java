@@ -6,7 +6,6 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Map;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -24,20 +23,26 @@ import samryong.domain.bank.nonghyup.dto.response.ReceivedTransferAccountNumberR
 import samryong.domain.bank.nonghyup.exception.NonghyupException;
 
 @Component
-@RequiredArgsConstructor
 public class NonghyupTransactionProvider {
 
-    @Value("${nonghyup.api.access-token}")
     private String accessToken; // 접근 토큰
 
-    @Value("${nonghyup.api.iscd}")
     private String iscd; // 이용기관 코드
 
-    @Value("${nonghyup.api.fintech-apsno}")
     private String fintechApsno; // 핀테크 앱 일련번호, 테스트 시 001로 고정
 
-    @Value("${nonghyup.api.brdt-brno}")
     private String brdtBrno; // 생년월일/사업자번호
+
+    public NonghyupTransactionProvider(
+            @Value("${nonghyup.api.access-token}") String accessToken,
+            @Value("${nonghyup.api.iscd}") String iscd,
+            @Value("${nonghyup.api.fintech-apsno}") String fintechApsno,
+            @Value("${nonghyup.api.brdt-brno}") String brdtBrno) {
+        this.accessToken = accessToken;
+        this.iscd = iscd;
+        this.fintechApsno = fintechApsno;
+        this.brdtBrno = brdtBrno;
+    }
 
     // 핀테크 발급 요청, 계좌번호를 받아 핀테크 발급 확인을 위한 고유번호를 반환
     public String openFinAccountDirect(String accountNum) {
@@ -183,7 +188,7 @@ public class NonghyupTransactionProvider {
                 "Tsymd", LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd"))); // 전송일자
         header.put("Trtm", LocalDateTime.now().format(DateTimeFormatter.ofPattern("HHmmss"))); // 전송시간
         header.put("Iscd", iscd); // 이용기관코드
-        header.put("FintechApsno", fintechApsno); // 핀테크 앱 일련번호
+        header.put("FintechApsno", "001"); // 핀테크 앱 일련번호
         header.put("ApiSvcCd", apiSvcCd); // API서비스코드
         header.put(
                 "IsTuno",
