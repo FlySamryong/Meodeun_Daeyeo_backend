@@ -12,8 +12,6 @@ public interface MemberService {
 
     NonghyupAccountResponseDTO registerAccount(Member member, NonghyupAccountRequestDTO requestDTO);
 
-    void updateWishList(Member member, Long itemID);
-
     MyInformationResponseDTO getMyPage(Long memberId);
 
     void updateMannerRate(Member member, Long mannerRate);
@@ -21,4 +19,6 @@ public interface MemberService {
     void updateRentList(Member member, Rent rent);
 
     void updateLoanList(Member member, Rent rent);
+
+    void updateWishList(Member member, Long itemId);
 }

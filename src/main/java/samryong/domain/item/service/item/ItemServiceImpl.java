@@ -16,7 +16,6 @@ import samryong.domain.item.dto.ItemDTO.ItemListRequestDTO;
 import samryong.domain.item.dto.ItemDTO.ItemPreviewListResponseDTO;
 import samryong.domain.item.dto.ItemDTO.ItemRequestDTO;
 import samryong.domain.item.dto.ItemDTO.ItemResponseDTO;
-import samryong.domain.item.dto.ItemDTO.ItemResponseListDTO;
 import samryong.domain.item.entity.Category;
 import samryong.domain.item.entity.Item;
 import samryong.domain.item.entity.ItemCategory;
@@ -126,12 +125,5 @@ public class ItemServiceImpl implements ItemService {
         recentItemService.saveRecentItem(member, itemId); // 최근 본 상품 저장
 
         return ItemConverter.toItemResponseDTO(item);
-    }
-
-    @Override
-    @Transactional
-    public ItemResponseListDTO getWishList(Member member) {
-        List<Item> itemList = member.getWishList();
-        return ItemConverter.toItemResponseListDTO(itemList);
     }
 }

@@ -22,6 +22,7 @@ import samryong.domain.account.entity.Account;
 import samryong.domain.chat.entity.ChatRoom;
 import samryong.domain.image.Image;
 import samryong.domain.item.entity.Item;
+import samryong.domain.item.entity.WishItem;
 import samryong.domain.location.entity.Location;
 import samryong.domain.rent.entity.Rent;
 import samryong.domain.report.entity.Report;
@@ -94,8 +95,8 @@ public class Member extends BaseEntity {
     private List<ChatRoom> renterChatRoomList;
 
     // 찜 리스트
-    @OneToMany(mappedBy = "wishlist")
-    private List<Item> wishList;
+    @OneToMany(mappedBy = "item")
+    private List<WishItem> wishList;
 
     public void addItem(Item item) {
         if (itemList == null) itemList = new ArrayList<>();
@@ -122,9 +123,9 @@ public class Member extends BaseEntity {
         this.profileImage = profileImage;
     }
 
-    public void addWishList(Item item) {
+    public void addWishList(WishItem wishItem) {
         if (wishList == null) wishList = new ArrayList<>();
-        wishList.add(item);
+        wishList.add(wishItem);
     }
 
     public void setMannerRate(double mannerRate, Long mannerCount) {

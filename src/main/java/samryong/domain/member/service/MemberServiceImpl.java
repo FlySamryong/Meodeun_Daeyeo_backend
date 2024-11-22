@@ -9,7 +9,8 @@ import samryong.domain.account.dto.NonghyupAccountDTO.NonghyupAccountResponseDTO
 import samryong.domain.account.entity.Account;
 import samryong.domain.account.repository.AccountRepository;
 import samryong.domain.bank.nonghyup.provider.NonghyupTransactionProvider;
-import samryong.domain.item.entity.Item;
+import samryong.domain.item.converter.WishItemConverter;
+import samryong.domain.item.entity.WishItem;
 import samryong.domain.item.repository.ItemRepository;
 import samryong.domain.member.converter.MemberConverter;
 import samryong.domain.member.dto.MemberDTO.MyInformationResponseDTO;
@@ -93,8 +94,13 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     @Transactional
-    public void updateWishList(Member member, Long itemID) {
-        Item item = itemRepository.findById(itemID).orElse(null);
-        member.addWishList(item);
+    public void updateWishList(Member member, Long ItemId) {
+        WishItem wishItem =
+                WishItemConverter.toWishItem(
+                        member,
+                        itemRepository
+                                .findById(ItemId)
+                                .orElseThrow(() -> new GlobalException(GlobalErrorCode.MEMBER_NOT_FOUND)));
+        member.addWishList(wishItem);
     }
 }
