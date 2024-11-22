@@ -18,12 +18,6 @@ public class WishItemConverter {
         return wishItem.getItem();
     }
 
-    public static List<Item> ItemListtoWishList(List<WishItem> wishlist) {
-        return wishlist.stream()
-                .map(WishItemConverter::WishItmetoItem) // WishItem을 Item으로 변환
-                .collect(Collectors.toList()); // 변환된 Item들을 리스트로 수집
-    }
-
     public static WishListResponseDTO toWishListResponse(List<WishItem> wishList) {
         List<ItemPreviewResponseDTO> responseList =
                 wishList.stream()

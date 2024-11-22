@@ -8,6 +8,7 @@ import samryong.domain.member.entity.Member;
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 @Builder
 @Getter
+@Setter
 @Entity
 public class WishItem {
     @Id
@@ -22,12 +23,4 @@ public class WishItem {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "item_id")
     private Item item;
-
-    public void setItem(Item item) {
-        this.item = item;
-    }
-
-    public void setMember(Member member) {
-        this.member = member;
-    }
 }
