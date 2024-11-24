@@ -9,6 +9,11 @@ import samryong.domain.account.dto.NonghyupAccountDTO.NonghyupAccountResponseDTO
 import samryong.domain.account.entity.Account;
 import samryong.domain.account.repository.AccountRepository;
 import samryong.domain.bank.nonghyup.provider.NonghyupTransactionProvider;
+import samryong.domain.location.converter.LocationConverter;
+import samryong.domain.location.dto.LocationDTO.LocationRequestDTO;
+import samryong.domain.location.dto.LocationDTO.LocationResponseDTO;
+import samryong.domain.location.entity.Location;
+import samryong.domain.location.repository.LocationRepository;
 import samryong.domain.member.converter.MemberConverter;
 import samryong.domain.member.dto.MemberDTO.MyInformationResponseDTO;
 import samryong.domain.member.entity.Member;
@@ -22,8 +27,11 @@ import samryong.global.exception.GlobalException;
 public class MemberServiceImpl implements MemberService {
 
     private final MemberRepository memberRepository;
+    private final LocationRepository locationRepository;
     private final AccountRepository accountRepository;
     private final NonghyupTransactionProvider nonghyupTransactionProvider;
+
+    private final String AlreadyExistAccount = "A0013";
 
     @Override
     public Member getMember(Long memberId) {
@@ -34,21 +42,53 @@ public class MemberServiceImpl implements MemberService {
     @Transactional
     public NonghyupAccountResponseDTO registerAccount(
             Member member, NonghyupAccountRequestDTO requestDTO) {
-
         String accountNumber = requestDTO.getAccountNumber();
+
+        // 농협에 계좌 등록 요청 및 처리
         String rgNum = nonghyupTransactionProvider.openFinAccountDirect(accountNumber);
-        String finTechAccountNum = nonghyupTransactionProvider.checkOpenFinAccountDirect(rgNum);
+        String finTechAccountNum = getFinTechAccountNum(accountNumber, rgNum);
 
-        Account account = accountRepository.findByAccountNum(accountNumber).orElse(null);
-        if (account != null) {
-            throw new GlobalException(GlobalErrorCode.ACCOUNT_ALREADY_EXIST);
-        }
+        // 계좌 정보를 조회하거나 새로 생성
+        Account account =
+                accountRepository
+                        .findByAccountNum(accountNumber)
+                        .orElseGet(() -> createNewAccount(member, accountNumber, finTechAccountNum));
 
-        account = AccountConverter.toAccount(accountNumber, finTechAccountNum);
-        member.addAccount(account);
-
-        memberRepository.save(member);
         return AccountConverter.toAccountResponseDTO(account);
+    }
+
+    private String getFinTechAccountNum(String accountNumber, String rgNum) {
+        if (rgNum.equals(AlreadyExistAccount)) {
+            return accountRepository
+                    .findByAccountNum(accountNumber)
+                    .map(Account::getFinTechAccountNum)
+                    .orElseThrow(() -> new GlobalException(GlobalErrorCode.ACCOUNT_NOT_FOUND));
+        }
+        return nonghyupTransactionProvider.checkOpenFinAccountDirect(rgNum);
+    }
+
+    private Account createNewAccount(Member member, String accountNumber, String finTechAccountNum) {
+        Account account = AccountConverter.toAccount(accountNumber, finTechAccountNum);
+        member.addAccount(account);
+        return account;
+    }
+
+    @Override
+    @Transactional
+    public LocationResponseDTO registerLocation(Member member, LocationRequestDTO requestDTO) {
+
+        String City = requestDTO.getCity();
+        String District = requestDTO.getDistrict();
+        String Neighborhood = requestDTO.getNeighborhood();
+
+        Location location =
+                locationRepository
+                        .findByCityAndDistrictAndNeighborhood(City, District, Neighborhood)
+                        .orElseThrow(() -> new GlobalException(GlobalErrorCode.LOCATION_NOT_FOUND));
+
+        member.setLocation(location);
+
+        return LocationConverter.toLocationResponseDTO(location);
     }
 
     @Override
