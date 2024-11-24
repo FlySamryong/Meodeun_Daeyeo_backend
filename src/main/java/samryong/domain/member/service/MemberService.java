@@ -23,4 +23,6 @@ public interface MemberService {
     void updateLoanList(Member member, Rent rent);
 
     List<RentDTO.RentResponseDTO> getMyRentList(Long memberId);
+
+    List<RentDTO.LoanResponseDTO> getMyLoanList(Long memberId);
 }

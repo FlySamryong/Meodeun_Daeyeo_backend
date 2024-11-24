@@ -102,4 +102,15 @@ public class MemberServiceImpl implements MemberService {
 
         return RentConverter.toRentResponseDTOList(member);
     }
+
+    @Override
+    public List<RentDTO.LoanResponseDTO> getMyLoanList(Long memberId) {
+
+        Member member =
+                memberRepository
+                        .findById(memberId)
+                        .orElseThrow(() -> new GlobalException(GlobalErrorCode.MEMBER_NOT_FOUND));
+
+        return RentConverter.toLoanResponseDTOList(member);
+    }
 }

@@ -39,4 +39,22 @@ public class RentConverter {
                                         .build())
                 .collect(Collectors.toList());
     }
+
+    public static List<RentDTO.LoanResponseDTO> toLoanResponseDTOList(Member member) {
+        return member.getLoanList().stream()
+                .map(
+                        loan ->
+                                RentDTO.LoanResponseDTO.builder()
+                                        .rentId(loan.getId())
+                                        .itemName(loan.getItem().getName()) // 아이템 이름 가져오기
+                                        .renterName(loan.getRenter().getNickName()) // 대여자 이름
+                                        .ownerName(loan.getOwner().getNickName()) // 소유자 이름
+                                        .startDate(loan.getStartDate())
+                                        .endDate(loan.getEndDate())
+                                        .rentFee(loan.getRentFee())
+                                        .overDueFee(loan.getOverDueFee())
+                                        .status(loan.getStatus().name()) // 상태 Enum의 이름
+                                        .build())
+                .collect(Collectors.toList());
+    }
 }
