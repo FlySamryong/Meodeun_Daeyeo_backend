@@ -44,8 +44,7 @@ public class NoticeServiceImpl implements NoticeService {
         }
     }
 
-    // 대여자에게 대여 종료 2시간 전 알림
-    @Override
+    // 대여자에게 대여 종료 1시간 전 알림
     public void tradeRemind(Long rentId) {
         Rent rent =
                 rentRepository

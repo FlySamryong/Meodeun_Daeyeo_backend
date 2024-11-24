@@ -137,4 +137,12 @@ public class ItemDTO {
         private long totalElement; // 전체 아이템 개수
         private List<ItemPreviewResponseDTO> itemPreviewResponseDTOList;
     }
+
+    @Getter
+    @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class WishListResponseDTO {
+        private List<ItemPreviewResponseDTO> itemPreviewResponseDTOList;
+    }
 }

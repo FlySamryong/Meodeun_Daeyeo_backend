@@ -14,6 +14,7 @@ import samryong.domain.item.dto.ItemDTO.ItemPreviewListResponseDTO;
 import samryong.domain.item.dto.ItemDTO.ItemRequestDTO;
 import samryong.domain.item.dto.ItemDTO.ItemResponseDTO;
 import samryong.domain.item.dto.ItemDTO.RecentItemResponseListDTO;
+import samryong.domain.item.dto.ItemDTO.WishListResponseDTO;
 import samryong.domain.item.service.category.CategoryService;
 import samryong.domain.item.service.item.ItemService;
 import samryong.domain.location.dto.LocationDTO.LocationRequestDTO;
@@ -68,5 +69,11 @@ public class ItemController {
             @RequestBody @Valid ItemListRequestDTO requestDTO,
             @RequestParam(value = "page", defaultValue = "0", required = false) int page) {
         return ApiResponse.onSuccess("물품 검색 성공", itemService.searchItem(requestDTO, page));
+    }
+
+    @GetMapping("/wishList")
+    @Operation(summary = "사용자 관심 목록 조회", description = "사용자의 관심 아이템 목록을 조회합니다.")
+    public ApiResponse<WishListResponseDTO> getWishList(@AuthMember Member member) {
+        return ApiResponse.onSuccess("관심 아이템 목록 조회 성공", itemService.getWishList(member));
     }
 }

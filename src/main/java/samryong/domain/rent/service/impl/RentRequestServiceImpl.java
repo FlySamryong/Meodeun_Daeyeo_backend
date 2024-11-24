@@ -34,7 +34,7 @@ public class RentRequestServiceImpl implements RentRequestService {
 
     private static final int DEFAULT_REDIS_EXPIRATION_HOURS = 12;
     private static final int DEFAULT_PLUS_HOURS = 2;
-    private static final int DEFAULT_MINUS_HOURS = 2;
+    private static final int DEFAULT_MINUS_HOURS = 1;
     private static final String RENT_REQUEST_MESSAGE = "대여료를 송금했습니다. 12시간 내로 확인해주세요.";
     private static final String RENT_ACCEPT_MESSAGE = "물품 대여 요청이 수락되었습니다. 최종 확인 후 대여 진행해주세요.";
     private static final String RENT_PROCESS_MESSAGE = "대여 진행이 시작됩니다. 사용자의 계좌로 입금된 대여료를 확인해주세요.";
@@ -130,7 +130,8 @@ public class RentRequestServiceImpl implements RentRequestService {
         LocalDateTime expirationDate = rent.getEndDate().plusHours(DEFAULT_PLUS_HOURS);
         LocalDateTime expirationForNotice = rent.getEndDate().minusHours(DEFAULT_MINUS_HOURS);
         rentService.saveRentKey(rentId, roomId, expirationDate);
-        rentService.saveNoticeKey(rentId, roomId, expirationForNotice);
+        if (expirationForNotice.isAfter(LocalDateTime.now()))
+            rentService.saveNoticeKey(rentId, roomId, expirationForNotice);
 
         // 5. 사용자의 대여 정보 업데이트
         memberService.updateRentList(renter, rent);

@@ -9,6 +9,9 @@ import samryong.domain.account.dto.NonghyupAccountDTO.NonghyupAccountResponseDTO
 import samryong.domain.account.entity.Account;
 import samryong.domain.account.repository.AccountRepository;
 import samryong.domain.bank.nonghyup.provider.NonghyupTransactionProvider;
+import samryong.domain.item.converter.WishItemConverter;
+import samryong.domain.item.entity.WishItem;
+import samryong.domain.item.repository.ItemRepository;
 import samryong.domain.location.converter.LocationConverter;
 import samryong.domain.location.dto.LocationDTO.LocationRequestDTO;
 import samryong.domain.location.dto.LocationDTO.LocationResponseDTO;
@@ -30,6 +33,7 @@ public class MemberServiceImpl implements MemberService {
     private final LocationRepository locationRepository;
     private final AccountRepository accountRepository;
     private final NonghyupTransactionProvider nonghyupTransactionProvider;
+    private final ItemRepository itemRepository;
 
     private final String AlreadyExistAccount = "A0013";
 
@@ -105,7 +109,6 @@ public class MemberServiceImpl implements MemberService {
     @Override
     @Transactional
     public void updateMannerRate(Member member, Long mannerRate) {
-
         double newMannerRate =
                 (member.getMannerRate() * member.getMannerCount() + mannerRate)
                         / (member.getMannerCount() + 1);
@@ -127,5 +130,18 @@ public class MemberServiceImpl implements MemberService {
     @Transactional
     public void updateLoanList(Member member, Rent rent) {
         member.addLoan(rent);
+    }
+
+    @Override
+    @Transactional
+    public void updateWishItemList(Member member, Long itemId) {
+        WishItem wishItem =
+                WishItemConverter.toWishItem(
+                        member,
+                        itemRepository
+                                .findById(itemId)
+                                .orElseThrow(() -> new GlobalException(GlobalErrorCode.ITEM_NOT_FOUND)));
+        member.addWishItemList(wishItem);
+        memberRepository.save(member);
     }
 }

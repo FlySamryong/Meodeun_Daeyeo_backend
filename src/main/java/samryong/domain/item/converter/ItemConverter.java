@@ -20,6 +20,7 @@ import samryong.domain.item.dto.ItemDTO.RecentItemResponseListDTO;
 import samryong.domain.item.entity.Category;
 import samryong.domain.item.entity.Item;
 import samryong.domain.item.entity.ItemCategory;
+import samryong.domain.item.entity.WishItem;
 import samryong.domain.location.converter.LocationConverter;
 import samryong.domain.location.entity.Location;
 import samryong.domain.member.converter.MemberConverter;
@@ -75,6 +76,26 @@ public class ItemConverter {
                                 ? itemDocument.getImageUrlList().get(0)
                                 : null)
                 .location(LocationConverter.toLocationResponseDTO(itemDocument.getLocation()))
+                .build();
+    }
+
+    public static ItemPreviewResponseDTO toItemPreviewResponseDTO(WishItem wishItem) {
+        Item item = wishItem.getItem();
+        return ItemPreviewResponseDTO.builder()
+                .id(item.getId())
+                .name(item.getName())
+                .status(item.getStatus() != null ? item.getStatus().toString() : null)
+                .fee(item.getFee())
+                .createdDate(item.getCreatedAt() != null ? item.getCreatedAt().toString() : null)
+                .deposit(item.getDeposit())
+                .imageUrl(
+                        item.getImageList() != null && !item.getImageList().isEmpty()
+                                ? item.getImageList().get(0).getImageUri()
+                                : null)
+                .location(
+                        item.getLocation() != null
+                                ? LocationConverter.toLocationResponseDTO(item.getLocation())
+                                : null)
                 .build();
     }
 
