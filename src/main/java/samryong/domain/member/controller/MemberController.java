@@ -12,6 +12,7 @@ import samryong.domain.location.dto.LocationDTO.LocationResponseDTO;
 import samryong.domain.member.dto.MemberDTO.MyInformationResponseDTO;
 import samryong.domain.member.entity.Member;
 import samryong.domain.member.service.MemberService;
+import samryong.domain.rent.dto.RentDTO;
 import samryong.global.annotation.AuthMember;
 import samryong.global.response.ApiResponse;
 
@@ -29,6 +30,13 @@ public class MemberController {
             @AuthMember Member member, @Valid @RequestBody NonghyupAccountRequestDTO requestDTO) {
         return ApiResponse.onSuccess(
                 "농협 입출금 계좌 등록 성공", memberService.registerAccount(member, requestDTO));
+    }
+
+    @Operation(summary = "내 대여 목록 조회", description = "현재 진행 중인 대여 목록을 조회합니다.")
+    @GetMapping("/myRentOrLoanList")
+    public ApiResponse<RentDTO.MyRentOrLoanResponseListDTO> getMyRentOrLoanList(
+            @AuthMember Member member) {
+        return ApiResponse.onSuccess("대여 목록 조회 성공", memberService.getMyRentOrLoanList(member));
     }
 
     @Operation(summary = "마이페이지 정보 조회", description = "농협 계좌 정보를 입력 받아서 계좌 정보를 등록합니다.")

@@ -6,6 +6,7 @@ import samryong.domain.location.dto.LocationDTO.LocationRequestDTO;
 import samryong.domain.location.dto.LocationDTO.LocationResponseDTO;
 import samryong.domain.member.dto.MemberDTO.MyInformationResponseDTO;
 import samryong.domain.member.entity.Member;
+import samryong.domain.rent.dto.RentDTO.MyRentOrLoanResponseListDTO;
 import samryong.domain.rent.entity.Rent;
 
 public interface MemberService {
@@ -24,5 +25,8 @@ public interface MemberService {
 
     void updateLoanList(Member member, Rent rent);
 
+    MyRentOrLoanResponseListDTO getMyRentOrLoanList(Member member);
+
     void updateWishItemList(Member member, Long itemId);
+
 }
