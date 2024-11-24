@@ -23,6 +23,7 @@ public enum GlobalErrorCode {
     ACCOUNT_ALREADY_EXIST(HttpStatus.BAD_REQUEST, "ACCOUNT400", "이미 등록된 계좌입니다."),
     MANNER_RATE_INVALID(HttpStatus.BAD_REQUEST, "MANNER403", "매너 온도는 0~5 사이의 값이어야 합니다."),
     NO_ACCOUNT_REGISTERED(HttpStatus.NOT_FOUND, "ACCOUNT404", "등록된 계좌가 없습니다."),
+    ACCOUNT_NOT_FOUND(HttpStatus.NOT_FOUND, "ACCOUNT404", "해당 계좌를 찾을 수 없습니다."),
 
     // 아이템 관련 에러
     ITEM_NOT_FOUND(HttpStatus.NOT_FOUND, "ITEM404", "해당 아이템을 찾을 수 없습니다."),

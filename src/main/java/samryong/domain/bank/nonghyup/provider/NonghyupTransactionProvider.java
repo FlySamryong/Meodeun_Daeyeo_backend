@@ -33,6 +33,8 @@ public class NonghyupTransactionProvider {
 
     private String brdtBrno; // 생년월일/사업자번호
 
+    private final String AlreadyExistAccount = "A0013"; // 이미 등록된 계좌
+
     public NonghyupTransactionProvider(
             @Value("${nonghyup.api.access-token}") String accessToken,
             @Value("${nonghyup.api.iscd}") String iscd,
@@ -70,6 +72,9 @@ public class NonghyupTransactionProvider {
 
         if (responseBody != null && responseBody.getHeader().getRpcd().equals("00000")) {
             return responseBody.getRgno();
+        }
+        if (responseBody != null && responseBody.getHeader().getRpcd().equals(AlreadyExistAccount)) {
+            return AlreadyExistAccount;
         } else {
             throw new NonghyupException(
                     HttpStatus.BAD_REQUEST,
@@ -102,6 +107,9 @@ public class NonghyupTransactionProvider {
 
         if (responseBody != null && responseBody.getHeader().getRpcd().equals("00000")) {
             return responseBody.getFinAcno();
+        } else if (responseBody != null
+                && responseBody.getHeader().getRpcd().equals(AlreadyExistAccount)) {
+            return AlreadyExistAccount;
         } else {
             throw new NonghyupException(
                     HttpStatus.BAD_REQUEST,

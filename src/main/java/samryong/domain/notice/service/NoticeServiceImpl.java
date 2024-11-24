@@ -10,6 +10,7 @@ import samryong.domain.chat.repository.ChatRoomRepository;
 import samryong.domain.chat.service.ChatMessageService;
 import samryong.domain.notice.converter.NoticeConverter;
 import samryong.domain.rent.entity.Rent;
+import samryong.domain.rent.entity.Rent.RentStatus;
 import samryong.domain.rent.repository.RentRepository;
 import samryong.global.code.GlobalErrorCode;
 import samryong.global.exception.GlobalException;
@@ -43,8 +44,7 @@ public class NoticeServiceImpl implements NoticeService {
         }
     }
 
-    // 대여자에게 대여 종료 2시간 전 알림
-    @Override
+    // 대여자에게 대여 종료 1시간 전 알림
     public void tradeRemind(Long rentId) {
         Rent rent =
                 rentRepository
@@ -54,7 +54,10 @@ public class NoticeServiceImpl implements NoticeService {
                 chatRoomRepository
                         .findByRenterAndOwnerAndItem(rent.getRenter(), rent.getOwner(), rent.getItem())
                         .orElseThrow(() -> new GlobalException(GlobalErrorCode.CHAT_ROOM_NOT_FOUND));
-        chatMessageService.publishMessage(
-                NoticeConverter.toChatMessageRequestDTO(chatRoom, RENT_REMINDER_MESSAGE));
+
+        if (rent.getStatus() == RentStatus.RENT_PROCESS || rent.getStatus() == RentStatus.OVERDUE) {
+            chatMessageService.publishMessage(
+                    NoticeConverter.toChatMessageRequestDTO(chatRoom, RENT_REMINDER_MESSAGE));
+        }
     }
 }

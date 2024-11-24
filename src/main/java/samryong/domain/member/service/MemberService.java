@@ -2,6 +2,8 @@ package samryong.domain.member.service;
 
 import samryong.domain.account.dto.NonghyupAccountDTO.NonghyupAccountRequestDTO;
 import samryong.domain.account.dto.NonghyupAccountDTO.NonghyupAccountResponseDTO;
+import samryong.domain.location.dto.LocationDTO.LocationRequestDTO;
+import samryong.domain.location.dto.LocationDTO.LocationResponseDTO;
 import samryong.domain.member.dto.MemberDTO.MyInformationResponseDTO;
 import samryong.domain.member.entity.Member;
 import samryong.domain.rent.dto.RentDTO.MyRentOrLoanResponseListDTO;
@@ -13,6 +15,8 @@ public interface MemberService {
 
     NonghyupAccountResponseDTO registerAccount(Member member, NonghyupAccountRequestDTO requestDTO);
 
+    LocationResponseDTO registerLocation(Member member, LocationRequestDTO requestDTO);
+
     MyInformationResponseDTO getMyPage(Long memberId);
 
     void updateMannerRate(Member member, Long mannerRate);
@@ -22,4 +26,7 @@ public interface MemberService {
     void updateLoanList(Member member, Rent rent);
 
     MyRentOrLoanResponseListDTO getMyRentOrLoanList(Member member);
+
+    void updateWishItemList(Member member, Long itemId);
+
 }

@@ -29,6 +29,8 @@ public class ChatMessageDTO {
         @NotNull(message = "보낸 사람 ID는 필수 입력 값입니다.")
         private Long senderId; // 보낸 사람 ID
 
+        private Long rentId; // 대여 ID
+
         @NotBlank(message = "메시지 텍스트는 필수 입력 값입니다.")
         private String message; // 메시지 텍스트
 
@@ -47,6 +49,8 @@ public class ChatMessageDTO {
         private Long chatRoomId; // 채팅방 ID
 
         private Long senderId; // 보낸 사람 ID
+
+        private Long rentId; // 대여 ID
 
         private String message; // 메시지 텍스트
 
