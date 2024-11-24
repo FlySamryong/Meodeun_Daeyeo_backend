@@ -116,6 +116,7 @@ public class RentExpirationServiceImpl implements RentExpirationService {
 
         // 3. Redis에 대여 정보 갱신
         rentService.saveRentKey(rent.getId(), roomId, DEFAULT_OVERDUE_HOURS, TimeUnit.HOURS);
+        rentService.saveNoticeKey(rent.getId(), roomId, DEFAULT_OVERDUE_HOURS + 2, TimeUnit.HOURS);
 
         // 4. 연체료 메시지 전송
         chatMessageService.sendRentCommonMessage(owner, roomId, OVERDUE_MESSAGE, OVERDUE);
