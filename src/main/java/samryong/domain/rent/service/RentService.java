@@ -26,6 +26,8 @@ public interface RentService {
 
     void saveNoticeKey(Long rentId, Long roomId, LocalDateTime endDate);
 
+    void saveNoticeKey(Long rentId, Long roomId, int duration, TimeUnit timeUnit);
+
     // 대여자인지 확인 후 ChatRoom 반환
     ChatRoom getValidatedChatRoomForRenter(Member renter, Long roomId);
 
