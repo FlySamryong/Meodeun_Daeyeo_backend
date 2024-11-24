@@ -134,13 +134,14 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     @Transactional
-    public void updateWishList(Member member, Long ItemId) {
+    public void updateWishItemList(Member member, Long itemId) {
         WishItem wishItem =
                 WishItemConverter.toWishItem(
                         member,
                         itemRepository
-                                .findById(ItemId)
-                                .orElseThrow(() -> new GlobalException(GlobalErrorCode.MEMBER_NOT_FOUND)));
-        member.addWishList(wishItem);
+                                .findById(itemId)
+                                .orElseThrow(() -> new GlobalException(GlobalErrorCode.ITEM_NOT_FOUND)));
+        member.addWishItemList(wishItem);
+        memberRepository.save(member);
     }
 }

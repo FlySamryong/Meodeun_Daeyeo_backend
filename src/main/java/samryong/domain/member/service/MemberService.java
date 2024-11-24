@@ -24,5 +24,5 @@ public interface MemberService {
 
     void updateLoanList(Member member, Rent rent);
 
-    void updateWishList(Member member, Long itemId);
+    void updateWishItemList(Member member, Long itemId);
 }
