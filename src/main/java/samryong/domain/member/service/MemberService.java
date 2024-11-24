@@ -28,5 +28,4 @@ public interface MemberService {
     MyRentOrLoanResponseListDTO getMyRentOrLoanList(Member member);
 
     void updateWishItemList(Member member, Long itemId);
-
 }

@@ -1,5 +1,6 @@
 package samryong.domain.rent.converter;
 
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -44,9 +45,20 @@ public class RentConverter {
         // 날짜 및 시간 포맷 정의
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 
-        // StartDate와 EndDate를 포맷팅
-        String period =
-                rent.getStartDate().format(formatter) + " ~ " + rent.getEndDate().format(formatter);
+        // 서울 시간대로 변경
+        ZoneId seoul = ZoneId.of("Asia/Seoul");
+        String startDate =
+                rent.getStartDate()
+                        .atZone(ZoneId.systemDefault())
+                        .withZoneSameInstant(seoul)
+                        .format(formatter);
+        String endDate =
+                rent.getEndDate()
+                        .atZone(ZoneId.systemDefault())
+                        .withZoneSameInstant(seoul)
+                        .format(formatter);
+
+        String period = startDate + " ~ " + endDate;
 
         return RentDTO.RentResponseDTO.builder()
                 .id(rent.getId())
