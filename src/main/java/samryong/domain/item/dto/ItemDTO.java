@@ -143,6 +143,6 @@ public class ItemDTO {
     @AllArgsConstructor
     @NoArgsConstructor
     public static class WishListResponseDTO {
-        private List<ItemPreviewResponseDTO> WishListResponseDTOList;
+        private List<ItemPreviewResponseDTO> itemPreviewResponseDTOList;
     }
 }

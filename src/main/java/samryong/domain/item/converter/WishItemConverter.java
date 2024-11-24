@@ -6,41 +6,18 @@ import samryong.domain.item.dto.ItemDTO.ItemPreviewResponseDTO;
 import samryong.domain.item.dto.ItemDTO.WishListResponseDTO;
 import samryong.domain.item.entity.Item;
 import samryong.domain.item.entity.WishItem;
-import samryong.domain.location.converter.LocationConverter;
 import samryong.domain.member.entity.Member;
 
 public class WishItemConverter {
+
     public static WishItem toWishItem(Member member, Item item) {
         return WishItem.builder().member(member).item(item).build();
     }
 
-    public static WishListResponseDTO toWishListResponse(List<WishItem> wishList) {
+    public static WishListResponseDTO toWishListResponseDTO(List<WishItem> wishList) {
         List<ItemPreviewResponseDTO> responseList =
-                wishList.stream()
-                        .map(
-                                wishItem -> {
-                                    Item item = wishItem.getItem(); // WishItem에서 Item 가져오기
-                                    return ItemPreviewResponseDTO.builder()
-                                            .id(item.getId())
-                                            .name(item.getName())
-                                            .status(item.getStatus() != null ? item.getStatus().toString() : null)
-                                            .fee(item.getFee())
-                                            .createdDate(
-                                                    item.getCreatedAt() != null ? item.getCreatedAt().toString() : null)
-                                            .deposit(item.getDeposit())
-                                            .imageUrl(
-                                                    (item.getImageList() != null && !item.getImageList().isEmpty())
-                                                            ? item.getImageList().get(0).getImageUri()
-                                                            : null)
-                                            .location(
-                                                    item.getLocation() != null
-                                                            ? LocationConverter.toLocationResponseDTO(item.getLocation())
-                                                            : null)
-                                            .build();
-                                })
-                        .collect(Collectors.toList());
+                wishList.stream().map(ItemConverter::toItemPreviewResponseDTO).collect(Collectors.toList());
 
-        // 빌더를 사용해 WishListResponseDTO 생성
-        return WishListResponseDTO.builder().WishListResponseDTOList(responseList).build();
+        return WishListResponseDTO.builder().itemPreviewResponseDTOList(responseList).build();
     }
 }

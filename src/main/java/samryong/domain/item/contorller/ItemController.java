@@ -72,8 +72,8 @@ public class ItemController {
     }
 
     @GetMapping("/wishList")
-    @Operation(summary = "찜목록 조회", description = "찜목록을 조회합니다.")
+    @Operation(summary = "사용자 관심 목록 조회", description = "사용자의 관심 아이템 목록을 조회합니다.")
     public ApiResponse<WishListResponseDTO> getWishList(@AuthMember Member member) {
-        return ApiResponse.onSuccess("찜목록 조회 성공", itemService.getWishList(member));
+        return ApiResponse.onSuccess("관심 아이템 목록 조회 성공", itemService.getWishList(member));
     }
 }

@@ -8,7 +8,6 @@ import samryong.domain.member.entity.Member;
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 @Builder
 @Getter
-@Setter
 @Entity
 public class WishItem {
     @Id
@@ -16,6 +15,7 @@ public class WishItem {
     @Column(name = "wish_list_id")
     private Long Id;
 
+    @Setter
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "memeber_id")
     private Member member;

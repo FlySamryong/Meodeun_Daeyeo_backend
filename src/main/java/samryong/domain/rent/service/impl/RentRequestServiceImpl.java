@@ -130,8 +130,8 @@ public class RentRequestServiceImpl implements RentRequestService {
         LocalDateTime expirationDate = rent.getEndDate().plusHours(DEFAULT_PLUS_HOURS);
         LocalDateTime expirationForNotice = rent.getEndDate().minusHours(DEFAULT_MINUS_HOURS);
         rentService.saveRentKey(rentId, roomId, expirationDate);
-        if (expirationforNotice.isAfter(LocalDateTime.now()))
-            rentService.saveNoticeKey(rentId, roomId, expirationforNotice);
+        if (expirationForNotice.isAfter(LocalDateTime.now()))
+            rentService.saveNoticeKey(rentId, roomId, expirationForNotice);
 
         // 5. 사용자의 대여 정보 업데이트
         memberService.updateRentList(renter, rent);

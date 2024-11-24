@@ -131,6 +131,6 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public WishListResponseDTO getWishList(Member member) {
-        return WishItemConverter.toWishListResponse(member.getWishList());
+        return WishItemConverter.toWishListResponseDTO(member.getWishItemList());
     }
 }

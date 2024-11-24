@@ -37,14 +37,13 @@ public class MemberController {
         return ApiResponse.onSuccess("마이페이지 조회 성공", memberService.getMyPage(member.getId()));
     }
 
-    @Operation(summary = "찜목록 등록", description = "아이템을 찜목록에 추가합니다.")
-    @PostMapping("/wishList/{itemId}")
+    @Operation(summary = "관심 목록 등록", description = "아이템을 관심 목록에 추가합니다.")
+    @GetMapping("/wishList/{itemId}")
     public ApiResponse<?> getWishList(@AuthMember Member member, @PathVariable Long itemId) {
-        memberService.updateWishList(member, itemId);
-        return ApiResponse.onSuccess("찜 등록 성공");
+        memberService.updateWishItemList(member, itemId);
+        return ApiResponse.onSuccess("관심 목록 등록 성공");
+    }
 
-    } 
-      
     @Operation(summary = "사용자 주소 등록", description = "사용자의 주소를 입력받아 등록합니다.")
     @PostMapping("/register/location")
     public ApiResponse<LocationResponseDTO> registerLocation(
