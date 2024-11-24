@@ -1,11 +1,13 @@
 package samryong.domain.rent.converter;
 
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.stereotype.Component;
 import samryong.domain.chat.entity.ChatRoom;
-import samryong.domain.member.entity.Member;
+import samryong.domain.location.converter.LocationConverter;
 import samryong.domain.rent.dto.RentDTO;
+import samryong.domain.rent.dto.RentDTO.MyRentOrLoanResponseListDTO;
 import samryong.domain.rent.entity.Rent;
 import samryong.domain.rent.entity.Rent.RentStatus;
 
@@ -22,39 +24,36 @@ public class RentConverter {
                 .build();
     }
 
-    public static List<RentDTO.RentResponseDTO> toRentResponseDTOList(Member member) {
-        return member.getRentList().stream()
-                .map(
-                        rent ->
-                                RentDTO.RentResponseDTO.builder()
-                                        .rentId(rent.getId())
-                                        .itemName(rent.getItem().getName()) // 아이템 이름 가져오기
-                                        .renterName(rent.getRenter().getNickName()) // 대여자 이름
-                                        .ownerName(rent.getOwner().getNickName()) // 소유자 이름
-                                        .startDate(rent.getStartDate())
-                                        .endDate(rent.getEndDate())
-                                        .rentFee(rent.getRentFee())
-                                        .overDueFee(rent.getOverDueFee())
-                                        .status(rent.getStatus().name()) // 상태 Enum의 이름
-                                        .build())
-                .collect(Collectors.toList());
+    public static MyRentOrLoanResponseListDTO toMyRentOrLoanResponseListDTO(List<Rent> rentList) {
+        return RentDTO.MyRentOrLoanResponseListDTO.builder()
+                .rentOrLoanList(
+                        rentList.stream()
+                                // 연체 및 대여 진행 중 상태만 필터링
+                                .filter(
+                                        rent ->
+                                                rent.getStatus() == Rent.RentStatus.OVERDUE
+                                                        || rent.getStatus() == Rent.RentStatus.RENT_PROCESS)
+                                // startDate와 endDate가 null이 아닌 데이터만 필터링
+                                .filter(rent -> rent.getStartDate() != null && rent.getEndDate() != null)
+                                .map(RentConverter::toRentResponseDTO)
+                                .collect(Collectors.toList()))
+                .build();
     }
 
-    public static List<RentDTO.LoanResponseDTO> toLoanResponseDTOList(Member member) {
-        return member.getLoanList().stream()
-                .map(
-                        loan ->
-                                RentDTO.LoanResponseDTO.builder()
-                                        .rentId(loan.getId())
-                                        .itemName(loan.getItem().getName()) // 아이템 이름 가져오기
-                                        .renterName(loan.getRenter().getNickName()) // 대여자 이름
-                                        .ownerName(loan.getOwner().getNickName()) // 소유자 이름
-                                        .startDate(loan.getStartDate())
-                                        .endDate(loan.getEndDate())
-                                        .rentFee(loan.getRentFee())
-                                        .overDueFee(loan.getOverDueFee())
-                                        .status(loan.getStatus().name()) // 상태 Enum의 이름
-                                        .build())
-                .collect(Collectors.toList());
+    public static RentDTO.RentResponseDTO toRentResponseDTO(Rent rent) {
+        // 날짜 및 시간 포맷 정의
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+
+        // StartDate와 EndDate를 포맷팅
+        String period =
+                rent.getStartDate().format(formatter) + " ~ " + rent.getEndDate().format(formatter);
+
+        return RentDTO.RentResponseDTO.builder()
+                .id(rent.getId())
+                .itemName(rent.getItem().getName())
+                .period(period)
+                .location(LocationConverter.toLocationResponseDTO(rent.getItem().getLocation()))
+                .status(rent.getStatus().name())
+                .build();
     }
 }

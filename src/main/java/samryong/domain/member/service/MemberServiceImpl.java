@@ -1,6 +1,8 @@
 package samryong.domain.member.service;
 
 import jakarta.transaction.Transactional;
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -15,7 +17,7 @@ import samryong.domain.member.dto.MemberDTO.MyInformationResponseDTO;
 import samryong.domain.member.entity.Member;
 import samryong.domain.member.repository.MemberRepository;
 import samryong.domain.rent.converter.RentConverter;
-import samryong.domain.rent.dto.RentDTO;
+import samryong.domain.rent.dto.RentDTO.MyRentOrLoanResponseListDTO;
 import samryong.domain.rent.entity.Rent;
 import samryong.global.code.GlobalErrorCode;
 import samryong.global.exception.GlobalException;
@@ -93,24 +95,16 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public List<RentDTO.RentResponseDTO> getMyRentList(Long memberId) {
+    public MyRentOrLoanResponseListDTO getMyRentOrLoanList(Member member) {
+        List<Rent> rentList = member.getRentList();
+        List<Rent> loanList = member.getLoanList();
+        List<Rent> rentOrLoanList = new ArrayList<>();
 
-        Member member =
-                memberRepository
-                        .findById(memberId)
-                        .orElseThrow(() -> new GlobalException(GlobalErrorCode.MEMBER_NOT_FOUND));
+        rentOrLoanList.addAll(rentList);
+        rentOrLoanList.addAll(loanList);
 
-        return RentConverter.toRentResponseDTOList(member);
-    }
+        rentOrLoanList.sort(Comparator.comparing(Rent::getCreatedAt).reversed());
 
-    @Override
-    public List<RentDTO.LoanResponseDTO> getMyLoanList(Long memberId) {
-
-        Member member =
-                memberRepository
-                        .findById(memberId)
-                        .orElseThrow(() -> new GlobalException(GlobalErrorCode.MEMBER_NOT_FOUND));
-
-        return RentConverter.toLoanResponseDTOList(member);
+        return RentConverter.toMyRentOrLoanResponseListDTO(rentOrLoanList);
     }
 }
