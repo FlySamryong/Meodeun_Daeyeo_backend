@@ -122,4 +122,8 @@ public class Member extends BaseEntity {
         this.mannerRate = mannerRate;
         this.mannerCount = mannerCount;
     }
+
+    public void setLocation(Location location) {
+        this.location = location;
+    }
 }
