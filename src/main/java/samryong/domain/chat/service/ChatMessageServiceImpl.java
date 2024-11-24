@@ -74,8 +74,8 @@ public class ChatMessageServiceImpl implements ChatMessageService {
             List<ChatMessage> dbMessageList =
                     chatMessageRepository.findTop100ByChatRoomIdOrderByCreatedAtDesc(roomId);
 
-            for (ChatMessage chatMessage : dbMessageList) {
-
+            for (int i = dbMessageList.size() - 1; i >= 0; i--) {
+                ChatMessage chatMessage = dbMessageList.get(i);
                 messageList.add(chatMessage);
                 redisTemplateMessage.opsForList().leftPush(key, chatMessage);
             }
