@@ -102,6 +102,11 @@ public class RentServiceImpl implements RentService {
     }
 
     @Override
+    public void saveNoticeKey(Long rentId, Long roomId, int duration, TimeUnit timeUnit) {
+        redisTemplate.opsForValue().set(NOTICE + rentId, roomId, duration, timeUnit);
+    }
+
+    @Override
     public ChatRoom getValidatedChatRoomForRenter(Member renter, Long roomId) {
         ChatRoom chatRoom = chatRoomService.getChatRoom(roomId);
         validateRenter(renter, chatRoom);

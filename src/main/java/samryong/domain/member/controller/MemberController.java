@@ -7,6 +7,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import samryong.domain.account.dto.NonghyupAccountDTO.NonghyupAccountRequestDTO;
 import samryong.domain.account.dto.NonghyupAccountDTO.NonghyupAccountResponseDTO;
+import samryong.domain.location.dto.LocationDTO.LocationRequestDTO;
+import samryong.domain.location.dto.LocationDTO.LocationResponseDTO;
 import samryong.domain.member.dto.MemberDTO.MyInformationResponseDTO;
 import samryong.domain.member.entity.Member;
 import samryong.domain.member.service.MemberService;
@@ -40,5 +42,13 @@ public class MemberController {
     public ApiResponse<?> getWishList(@AuthMember Member member, @PathVariable Long itemId) {
         memberService.updateWishList(member, itemId);
         return ApiResponse.onSuccess("찜 등록 성공");
+
+    } 
+      
+    @Operation(summary = "사용자 주소 등록", description = "사용자의 주소를 입력받아 등록합니다.")
+    @PostMapping("/register/location")
+    public ApiResponse<LocationResponseDTO> registerLocation(
+            @AuthMember Member member, @Valid @RequestBody LocationRequestDTO requestDTO) {
+        return ApiResponse.onSuccess("주소지 등록 성공", memberService.registerLocation(member, requestDTO));
     }
 }
