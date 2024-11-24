@@ -172,7 +172,8 @@ public class ChatRoomServiceImpl implements ChatRoomService {
             redisTemplateMessage.setValueSerializer(new Jackson2JsonRedisSerializer<>(ChatMessage.class));
 
             // MongoDB에서 가져온 메시지를 Redis에 저장
-            for (ChatMessage chatMessage : dbMessageList) {
+            for (int i = dbMessageList.size() - 1; i >= 0; i--) {
+                ChatMessage chatMessage = dbMessageList.get(i);
                 redisTemplateMessage.opsForList().leftPush(key, chatMessage);
             }
 
