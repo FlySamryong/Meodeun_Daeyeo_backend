@@ -1,4 +1,4 @@
-package samryong.domain.redis.service;
+package samryong.domain.item.service.recentItem;
 
 import java.util.List;
 import java.util.Optional;

@@ -1,4 +1,4 @@
-package samryong.domain.redis.service;
+package samryong.domain.item.service.recentItem;
 
 import samryong.domain.item.dto.ItemDTO.RecentItemResponseListDTO;
 import samryong.domain.member.entity.Member;

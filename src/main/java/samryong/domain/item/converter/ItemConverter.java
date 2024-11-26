@@ -138,8 +138,9 @@ public class ItemConverter {
 
     public static RecentItemResponseDTO toRecentItemResponseDTO(Item item) {
         return ItemDTO.RecentItemResponseDTO.builder()
+                .itemId(item.getId())
                 .name(item.getName())
-                .description(item.getDescription())
+                .location(LocationConverter.toLocationResponseDTO(item.getLocation()))
                 .fee(item.getFee())
                 .categoryList(
                         item.getItemCategoryList().stream()
