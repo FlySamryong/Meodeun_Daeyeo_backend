@@ -68,9 +68,11 @@ public class ItemDTO {
     @AllArgsConstructor
     @NoArgsConstructor
     public static class RecentItemResponseDTO {
+
+        private Long itemId;
         private String name;
-        private String description;
         private Long fee;
+        private LocationResponseDTO location;
         private List<CategoryResponseDTO> categoryList;
     }
 
