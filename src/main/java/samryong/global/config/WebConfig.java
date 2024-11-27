@@ -35,7 +35,7 @@ public class WebConfig implements WebMvcConfigurer {
         registry
                 .addMapping("/**")
                 .allowedHeaders("*")
-                .allowedOrigins("https://flysamryong.github.io")
+                .allowedOrigins("http://ec2-43-203-59-25.ap-northeast-2.compute.amazonaws.com")
                 .allowedMethods("*");
     }
 }
