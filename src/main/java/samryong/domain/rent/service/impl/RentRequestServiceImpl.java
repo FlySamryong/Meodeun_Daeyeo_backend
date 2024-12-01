@@ -12,8 +12,10 @@ import org.springframework.stereotype.Service;
 import samryong.domain.account.service.AccountService;
 import samryong.domain.chat.entity.ChatRoom;
 import samryong.domain.chat.service.ChatMessageService;
+import samryong.domain.item.converter.ItemConverter;
 import samryong.domain.item.entity.Item;
 import samryong.domain.item.repository.ItemRepository;
+import samryong.domain.item.repository.elastic.ItemElasticRepository;
 import samryong.domain.member.entity.Member;
 import samryong.domain.member.repository.MemberRepository;
 import samryong.domain.member.service.MemberService;
@@ -30,6 +32,7 @@ public class RentRequestServiceImpl implements RentRequestService {
     private final AccountService accountService;
     private final ChatMessageService chatMessageService;
     private final ItemRepository itemRepository;
+    private final ItemElasticRepository itemElasticRepository;
     private final MemberService memberService;
 
     private static final int DEFAULT_REDIS_EXPIRATION_HOURS = 12;
@@ -100,6 +103,7 @@ public class RentRequestServiceImpl implements RentRequestService {
 
         // 6. 물품 상태 변경 저장
         itemRepository.save(item);
+        itemElasticRepository.save(ItemConverter.toItemDocument(item));
 
         // 7. 대여 정보 메시지 전송
         chatMessageService.sendRentCommonMessage(owner, roomId, RENT_ACCEPT_MESSAGE, RENT_ACCEPT);

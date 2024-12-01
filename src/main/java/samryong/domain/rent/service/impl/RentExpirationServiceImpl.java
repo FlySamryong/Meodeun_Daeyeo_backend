@@ -11,9 +11,11 @@ import samryong.domain.account.service.AccountService;
 import samryong.domain.chat.entity.ChatRoom;
 import samryong.domain.chat.repository.ChatRoomRepository;
 import samryong.domain.chat.service.ChatMessageService;
+import samryong.domain.item.converter.ItemConverter;
 import samryong.domain.item.entity.Item;
 import samryong.domain.item.entity.Item.Status;
 import samryong.domain.item.repository.ItemRepository;
+import samryong.domain.item.repository.elastic.ItemElasticRepository;
 import samryong.domain.member.entity.Member;
 import samryong.domain.rent.entity.Rent;
 import samryong.domain.rent.entity.Rent.RentStatus;
@@ -30,6 +32,7 @@ public class RentExpirationServiceImpl implements RentExpirationService {
     private final ChatMessageService chatMessageService;
     private final ChatRoomRepository chatRoomRepository;
     private final ItemRepository itemRepository;
+    private final ItemElasticRepository itemElasticRepository;
 
     private static final String RENT = "RENT:";
     private static final int DEFAULT_OVERDUE_HOURS = 24; // 다음 연체료 출금까지 기간
@@ -81,6 +84,7 @@ public class RentExpirationServiceImpl implements RentExpirationService {
         // 3. 물품 상태 변경
         item.setStatus(Status.AVAILABLE);
         itemRepository.save(item);
+        itemElasticRepository.save(ItemConverter.toItemDocument(item));
 
         // 3. 대여 정보 메시지 전송
         if (status == RentStatus.REQUEST) {
