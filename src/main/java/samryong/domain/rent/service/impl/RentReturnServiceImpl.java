@@ -13,9 +13,11 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import samryong.domain.account.service.AccountService;
 import samryong.domain.chat.service.ChatMessageService;
+import samryong.domain.item.converter.ItemConverter;
 import samryong.domain.item.entity.Item;
 import samryong.domain.item.entity.Item.Status;
 import samryong.domain.item.repository.ItemRepository;
+import samryong.domain.item.repository.elastic.ItemElasticRepository;
 import samryong.domain.member.entity.Member;
 import samryong.domain.rent.entity.Rent;
 import samryong.domain.rent.service.RentReturnService;
@@ -31,6 +33,7 @@ public class RentReturnServiceImpl implements RentReturnService {
     private final ChatMessageService chatMessageService;
     private final AccountService accountService;
     private final ItemRepository itemRepository;
+    private final ItemElasticRepository itemElasticRepository;
 
     private static final String OTP = "OTP:";
     private static final String RENT = "RENT:";
@@ -90,6 +93,7 @@ public class RentReturnServiceImpl implements RentReturnService {
         item.setStatus(Status.AVAILABLE);
         rentService.changeRentStatus(rent, null, null, RETURN_ACCEPT);
         itemRepository.save(item);
+        itemElasticRepository.save(ItemConverter.toItemDocument(item));
 
         // 5. Redis에서 대여 정보 삭제
         if (Boolean.TRUE.equals(redisTemplate.hasKey(RENT + rentId))) {

@@ -63,6 +63,29 @@ public class ItemConverter {
                 .build();
     }
 
+    public static ItemDocument toItemDocument(Item item) {
+        return ItemDocument.builder()
+                .id(item.getId())
+                .name(item.getName())
+                .createdDate(item.getCreatedAt().atOffset(ZoneOffset.UTC))
+                .status(String.valueOf(item.getStatus()))
+                .description(item.getDescription())
+                .period(item.getPeriod())
+                .fee(item.getFee())
+                .deposit(item.getDeposit())
+                .location(LocationConverter.toLocationDocument(item.getLocation()))
+                .imageUrlList(
+                        item.getImageList() != null
+                                ? item.getImageList().stream().map(Image::getImageUri).collect(Collectors.toList())
+                                : Collections.emptyList())
+                .itemCategoryList(
+                        item.getItemCategoryList().stream()
+                                .map(ItemCategory::getCategory)
+                                .map(CategoryConverter::toCategoryDocument)
+                                .collect(Collectors.toList()))
+                .build();
+    }
+
     public static ItemPreviewResponseDTO toItemPreviewResponseDTO(ItemDocument itemDocument) {
         return ItemPreviewResponseDTO.builder()
                 .id(itemDocument.getId())
