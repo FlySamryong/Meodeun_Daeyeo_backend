@@ -143,6 +143,7 @@ public class ItemConverter {
                 .period(item.getPeriod())
                 .fee(item.getFee())
                 .deposit(item.getDeposit())
+                .status(item.getStatus() != null ? item.getStatus().toString() : null)
                 .categoryList(
                         CategoryConverter.toCategoryResponseListDTO(
                                 item.getItemCategoryList().stream()
