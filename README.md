@@ -2,6 +2,11 @@
 
 <img width="650" alt="image" src="https://github.com/user-attachments/assets/c5c39420-cf78-4c56-90f7-7ad022b48c2d">
 
+# 주요 기능
+
+<img width="853" alt="image" src="https://github.com/user-attachments/assets/a97e4b86-9cc3-49dc-9f89-4d901bc90918" />
+
+
 ### 사용 기술 스택
 
 **언어**
